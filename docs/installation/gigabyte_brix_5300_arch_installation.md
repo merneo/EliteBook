@@ -16,7 +16,8 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Full-Disk Encryption**: LUKS2 encryption with AES-XTS-PLAIN64 cipher and Argon2id key derivation
 - **Btrfs Filesystem**: Copy-on-write filesystem with subvolume organization for snapshots
 - **UEFI Boot**: GRUB bootloader with Windows 11 dual-boot support
-- **Minimal Window Manager**: Wayland compositor setup with AMD Radeon RX Vega graphics drivers
+- **Hyprland Wayland Compositor**: Dynamic tiling window manager with visual effects
+- **Complete Wayland Desktop**: Waybar status bar, Kitty terminal, Dolphin file manager
 - **AMD Ryzen 3 5300U Microcode**: AMD processor microcode updates for security and stability
 - **AMD Radeon RX Vega Graphics Drivers**: Mesa, Vulkan, and VA-API drivers for integrated Radeon RX Vega graphics
 - **Academic Documentation**: Comprehensive theoretical foundations, references, and citations
@@ -134,8 +135,11 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **SUCCESS:** Btrfs filesystem with subvolume organization
 - **SUCCESS:** AMD Ryzen 3 5300U microcode updates installed
 - **SUCCESS:** AMD Radeon RX Vega graphics drivers (Mesa, Vulkan, VA-API)
-- **SUCCESS:** Minimal window manager setup with full graphics acceleration
-- **SUCCESS:** Complete system ready for customization
+- **SUCCESS:** Hyprland Wayland compositor with dynamic tiling and visual effects
+- **SUCCESS:** Complete Wayland desktop environment (Waybar, Kitty, Dolphin, Firefox)
+- **SUCCESS:** PipeWire audio server with low latency
+- **SUCCESS:** SDDM display manager for graphical login
+- **SUCCESS:** Complete system ready for daily use
 
 ---
 
@@ -2237,6 +2241,23 @@ pacman -S \
 
 ### Step 12.7: Install Audio Server (PipeWire)
 
+#### 12.7.1 Theoretical Foundation of PipeWire
+
+**PipeWire** is a modern multimedia framework that unifies audio and video handling. It was designed to replace both PulseAudio (for desktop audio) and JACK (for professional audio) while providing superior capabilities.
+
+**Key Advantages:**
+- **Low Latency**: Designed for low latency (important for gaming, video calls, professional audio)
+- **Unified**: Handles both audio (PulseAudio replacement) and video (screen sharing, webcam)
+- **Security**: Better sandboxing and security model
+- **Compatibility**: Drop-in replacement for PulseAudio (applications don't need changes)
+- **Wayland Integration**: Better integration with Wayland compositors like Hyprland
+
+**Official Resources:**
+- [PipeWire Website](https://pipewire.org/)
+- [PipeWire Documentation](https://docs.pipewire.org/)
+- [PipeWire GitHub](https://gitlab.freedesktop.org/pipewire/pipewire)
+- [ArchWiki PipeWire](https://wiki.archlinux.org/title/PipeWire)
+
 ```bash
 # Install PipeWire audio stack
 pacman -S \
@@ -2248,9 +2269,13 @@ pacman -S \
   pavucontrol
 ```
 
-**Official Resources:**
-- [PipeWire Website](https://pipewire.org/)
-- [ArchWiki PipeWire](https://wiki.archlinux.org/title/PipeWire)
+**Package breakdown:**
+- `pipewire` - Core PipeWire server
+- `pipewire-alsa` - ALSA compatibility layer (for applications using ALSA directly)
+- `pipewire-pulse` - PulseAudio compatibility layer (for applications expecting PulseAudio)
+- `pipewire-jack` - JACK compatibility layer (for professional audio applications)
+- `wireplumber` - Session manager (handles device routing, policy, permissions)
+- `pavucontrol` - GUI volume control (familiar interface for PulseAudio users)
 
 ### Step 12.8: Install Display Manager (SDDM)
 
@@ -2302,7 +2327,368 @@ systemctl is-enabled sshd.service
 
 **SUCCESS:** SSH service enabled and will start automatically on first boot
 
-**SUCCESS:** Phase 12 Complete: Window manager and essential software installed, SSH enabled for remote access
+### Step 12.10: Configure Hyprland for AMD Radeon RX Vega
+
+#### 12.10.1 AMD-Specific Hyprland Configuration
+
+**Early KMS (Kernel Mode Setting) for AMD Graphics:**
+
+For AMD Radeon RX Vega graphics, early KMS enables graphics during boot (before user space starts). This is configured in `/etc/mkinitcpio.conf`:
+
+```bash
+# Edit /etc/mkinitcpio.conf
+nano /etc/mkinitcpio.conf
+
+# Find MODULES line:
+MODULES=()
+
+# Change to (add amdgpu for AMD Radeon RX Vega):
+MODULES=(amdgpu)
+
+# Rebuild initramfs
+mkinitcpio -P
+```
+
+**amdgpu** is the kernel module for AMD Radeon RX Vega (GCN 5.0 architecture). This enables early graphics initialization, improving boot experience and display output.
+
+#### 12.10.2 Create Hyprland Configuration Directory
+
+```bash
+# Create Hyprland config directory
+mkdir -p /home/username/.config/hypr
+
+# Replace "username" with your actual username
+```
+
+#### 12.10.3 Create Basic Hyprland Configuration
+
+**For GIGABYTE Brix 5300 with AMD Radeon RX Vega:**
+
+```bash
+# Create basic Hyprland configuration
+cat > /home/username/.config/hypr/hyprland.conf << 'EOF'
+# Hyprland Configuration for GIGABYTE Brix 5300
+# AMD Ryzen 3 5300U, Radeon RX Vega Graphics
+
+# Monitor Configuration
+# GIGABYTE Brix 5300 supports:
+# - HDMI 2.0 output
+# - DisplayPort 1.4 output
+# - USB-C (DisplayPort Alt Mode)
+monitor=,preferred,auto,auto
+
+# Workspace Assignment
+workspace = 1, monitor:HDMI-A-1, default:true
+workspace = 2, monitor:HDMI-A-1
+workspace = 3, monitor:HDMI-A-1
+workspace = 4, monitor:HDMI-A-1
+workspace = 5, monitor:HDMI-A-1
+
+# Application Aliases
+$terminal = kitty
+$fileManager = dolphin
+$menu = wofi --show drun
+
+# Autostart Applications
+exec-once = waybar
+exec-once = mako
+exec-once = swaybg --image ~/.config/wallpaper.png
+
+# Environment Variables
+env = XCURSOR_SIZE,24
+env = HYPRCURSOR_SIZE,24
+env = LANG,en_US.UTF-8
+env = LC_ALL,en_US.UTF-8
+
+# General Settings
+general {
+    gaps_in = 11
+    gaps_out = 11
+    border_size = 2
+    col.active_border = rgba(a6e3a1ff)
+    col.inactive_border = rgba(1e1e2eff)
+    layout = dwindle
+}
+
+# Decoration (Window Appearance)
+decoration {
+    rounding = 12
+    active_opacity = 1.0
+    inactive_opacity = 1.0
+    
+    blur {
+        enabled = yes
+        size = 10
+        passes = 2
+        vibrancy = 0.3
+    }
+    
+    shadow {
+        enabled = yes
+        range = 4
+        render_power = 3
+        color = rgba(11111bee)
+    }
+}
+
+# Animations
+animations {
+    enabled = yes
+    bezier = ios, 0.25, 0.1, 0.25, 1
+    bezier = smooth, 0.4, 0, 0.2, 1
+    
+    animation = windows, 1, 7, ios, slide
+    animation = windowsIn, 1, 7, ios, slide
+    animation = windowsOut, 1, 5, ios, slide
+    animation = fade, 1, 8, ios
+    animation = workspaces, 1, 6, ios, slide
+}
+
+# Dwindle Layout
+dwindle {
+    pseudotile = true
+    preserve_split = true
+}
+
+# Input Configuration
+input {
+    kb_layout = us
+    follow_mouse = 1
+    sensitivity = 0
+    
+    touchpad {
+        natural_scroll = false
+        tap-to-click = true
+        disable_while_typing = true
+    }
+}
+
+# Keybindings
+$mainMod = SUPER
+
+# Application Launchers
+bind = $mainMod, Q, exec, $terminal
+bind = $mainMod, E, exec, $fileManager
+bind = $mainMod, R, exec, $menu
+
+# Window Management
+bind = $mainMod, C, killactive
+bind = $mainMod, M, exit
+bind = $mainMod, V, togglefloating
+bind = , F11, fullscreen
+bind = $mainMod, P, pseudo
+
+# Window Navigation (vim-style)
+bind = $mainMod, h, movefocus, l
+bind = $mainMod, j, movefocus, d
+bind = $mainMod, k, movefocus, u
+bind = $mainMod, l, movefocus, r
+
+# Workspace Navigation
+bind = $mainMod, 1, workspace, 1
+bind = $mainMod, 2, workspace, 2
+bind = $mainMod, 3, workspace, 3
+bind = $mainMod, 4, workspace, 4
+bind = $mainMod, 5, workspace, 5
+
+# Move Window to Workspace
+bind = $mainMod SHIFT, 1, movetoworkspace, 1
+bind = $mainMod SHIFT, 2, movetoworkspace, 2
+bind = $mainMod SHIFT, 3, movetoworkspace, 3
+bind = $mainMod SHIFT, 4, movetoworkspace, 4
+bind = $mainMod SHIFT, 5, movetoworkspace, 5
+
+# Window Movement
+bind = $mainMod SHIFT, h, movewindow, l
+bind = $mainMod SHIFT, j, movewindow, d
+bind = $mainMod SHIFT, k, movewindow, u
+bind = $mainMod SHIFT, l, movewindow, r
+
+# Mouse Controls
+bind = $mainMod, mouse_down, workspace, e+1
+bind = $mainMod, mouse_up, workspace, e-1
+bindm = $mainMod, mouse:272, movewindow
+bindm = $mainMod, mouse:273, resizewindow
+EOF
+```
+
+**Note:** Replace `username` with your actual username created in Phase 10.
+
+**Official Resources:**
+- [Hyprland Configuration Documentation](https://wiki.hyprland.org/Configuring/Variables/)
+- [Hyprland Keybindings](https://wiki.hyprland.org/Configuring/Binds/)
+- [Hyprland AMD GPU Support](https://wiki.hyprland.org/Configuring/Master-Configuration/)
+
+#### 12.10.4 Create Waybar Configuration
+
+```bash
+# Create Waybar config directory
+mkdir -p /home/username/.config/waybar
+
+# Create basic Waybar configuration
+cat > /home/username/.config/waybar/config.jsonc << 'EOF'
+{
+  "layer": "top",
+  "position": "top",
+  "height": 24,
+  
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "battery", "clock"],
+  
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate"
+  },
+  
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M:%S}",
+    "tooltip-format": "{:%A %B %d %Y}"
+  },
+  
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "🔇 Muted",
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+  },
+  
+  "network": {
+    "format-wifi": "📶 {signalStrength}%",
+    "format-ethernet": "🌐 Connected",
+    "format-disconnected": "❌ Disconnected"
+  },
+  
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-charging": "🔌 {capacity}%",
+    "states": {
+      "warning": 30,
+      "critical": 15
+    }
+  }
+}
+EOF
+```
+
+**Official Resources:**
+- [Waybar Configuration](https://github.com/Alexays/Waybar/wiki/Configuration)
+- [Waybar Modules](https://github.com/Alexays/Waybar/wiki/Modules)
+
+#### 12.10.5 Create Waybar Style
+
+```bash
+# Create Waybar style
+cat > /home/username/.config/waybar/style.css << 'EOF'
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free";
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: rgba(24, 24, 37, 0.95);
+    color: #cdd6f4;
+    border-bottom: 2px solid rgba(166, 227, 161, 0.5);
+}
+
+#workspaces button {
+    padding: 0 10px;
+    background-color: transparent;
+    color: #6c7086;
+}
+
+#workspaces button.active {
+    color: #a6e3a1;
+    background-color: rgba(166, 227, 161, 0.1);
+}
+
+#clock, #pulseaudio, #network, #battery {
+    padding: 0 10px;
+    margin: 0 4px;
+}
+EOF
+```
+
+#### 12.10.6 Install Additional Wayland Utilities
+
+```bash
+# Install additional Wayland utilities for GIGABYTE Brix 5300
+pacman -S \
+  swaybg \
+  brightnessctl \
+  qt5-wayland \
+  qt6-wayland \
+  xdg-utils \
+  xdg-user-dirs
+```
+
+**Package breakdown:**
+- `swaybg` - Wallpaper utility for Wayland
+  - [swaybg GitHub](https://github.com/swaywm/swaybg)
+- `brightnessctl` - Screen brightness control (important for mini PC systems)
+  - [brightnessctl GitHub](https://github.com/Hummer12007/brightnessctl)
+- `qt5-wayland` + `qt6-wayland` - Qt Wayland support (for KDE applications like Dolphin)
+  - [Qt Wayland Documentation](https://doc.qt.io/qt-6/wayland.html)
+- `xdg-utils` - Desktop integration utilities
+  - [XDG Utils Specification](https://www.freedesktop.org/wiki/Software/xdg-utils/)
+- `xdg-user-dirs` - User directory management (Documents, Downloads, etc.)
+  - [XDG User Dirs Specification](https://www.freedesktop.org/wiki/Software/xdg-user-dirs/)
+
+#### 12.10.7 Install File Manager and Utilities
+
+```bash
+# Install file manager and essential utilities
+pacman -S \
+  dolphin \
+  firefox \
+  htop \
+  btop \
+  neofetch
+```
+
+**Package breakdown:**
+- `dolphin` - KDE file manager (works with Hyprland, full Wayland support)
+  - [Dolphin Website](https://apps.kde.org/dolphin/)
+- `firefox` - Web browser (Wayland native)
+  - [Firefox Website](https://www.mozilla.org/firefox/)
+- `htop` - Interactive process viewer
+- `btop` - Modern resource monitor
+- `neofetch` - System information tool
+
+#### 12.10.8 Configure SDDM for Hyprland Session
+
+```bash
+# Create SDDM session file for Hyprland
+mkdir -p /usr/share/wayland-sessions
+
+cat > /usr/share/wayland-sessions/hyprland.desktop << 'EOF'
+[Desktop Entry]
+Name=Hyprland
+Comment=Hyprland Wayland compositor
+Exec=/usr/bin/Hyprland
+Type=Application
+DesktopNames=Hyprland
+EOF
+```
+
+**Note:** SDDM should automatically detect Hyprland session after installation. Verify by checking SDDM session selection menu after first boot.
+
+**Official Resources:**
+- [SDDM Session Configuration](https://github.com/sddm/sddm/wiki/Sessions)
+- [ArchWiki SDDM](https://wiki.archlinux.org/title/SDDM)
+
+#### 12.10.9 Set Permissions for User Configuration Files
+
+```bash
+# Set correct ownership for user configuration files
+chown -R username:username /home/username/.config
+
+# Replace "username" with your actual username
+```
+
+**SUCCESS:** Phase 12 Complete: Hyprland Wayland compositor, AMD graphics drivers, and complete desktop environment installed
 
 **NEXT:** Next: Exit chroot and prepare for first boot (Phase 13)
 
