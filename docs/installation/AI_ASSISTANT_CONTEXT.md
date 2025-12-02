@@ -51,13 +51,13 @@
 **When user says:** "I need to install/setup fingerprint on HP notebook"
 
 **Your response should:**
-1. Reference that this is documented in `~/Documents/README_COMPLETE.md` Phase 15
+1. Reference that this is documented in `docs/installation/README_COMPLETE.md` Phase 15 (in this repository)
 2. Know that this requires:
    - `python-validity-git` from AUR
    - Device/0092 branch support (not in master)
    - `fprintd` and `libfprint`
    - PAM configuration for sudo and SDDM
-3. Follow the exact steps from Phase 15 in README_COMPLETE.md
+3. Follow the exact steps from Phase 15 in `docs/installation/README_COMPLETE.md` (in this repository)
 4. Use the AI prompt from Phase 15 if needed
 
 **Key commands:**
@@ -71,7 +71,7 @@ fprintd-enroll $USER
 sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_fprintd.so
 ```
 
-**Documentation:** `~/Documents/README_COMPLETE.md` - Phase 15
+**Documentation:** `docs/installation/README_COMPLETE.md` - Phase 15
 
 ---
 
@@ -90,7 +90,7 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_fprintd.so
    - `python-dlib` (CPU-only build recommended)
    - IR camera at `/dev/video2`
    - PAM configuration with `pam_python.so`
-3. Follow the exact steps from Phase 15c in README_COMPLETE.md
+3. Follow the exact steps from Phase 15c in `docs/installation/README_COMPLETE.md` (in this repository)
 4. Use the AI prompt from Phase 15c if needed
 
 **Key commands:**
@@ -163,7 +163,7 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/ho
 3. Follow the exact steps from Phase 17 in README_COMPLETE.md
 4. Use the AI prompt from Phase 17 if needed
 
-**Documentation:** `~/Documents/README_COMPLETE.md` - Phase 17
+**Documentation:** `docs/installation/README_COMPLETE.md` - Phase 17
 
 ---
 
@@ -199,12 +199,18 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/ho
 
 **Example workflow:**
 ```
-User: "I need to setup fingerprint on my HP notebook"
-You: "I see this is documented in your README_COMPLETE.md Phase 15. 
+User: "Potřebuji nastavit fingerprint na HP notebooku"
+You: [Automatically check docs/installation/AI_ASSISTANT_CONTEXT.md]
+     "I see this is documented in docs/installation/README_COMPLETE.md Phase 15. 
       Since you have HP EliteBook x360 1030 G2 with Validity 138a:0092 sensor,
       I'll guide you through the steps. This requires the device/0092 branch
-      of python-validity. Let me extract the relevant steps from your documentation..."
+      of python-validity. Let me check the documentation in this repository..."
 ```
+
+**Automatic Context Loading:**
+- When user mentions "HP notebook" or "EliteBook", check this file
+- When user asks about installation/configuration, check this file
+- This file is in the repository, so AI can access it automatically
 
 ---
 
