@@ -1756,28 +1756,35 @@ cat /etc/locale.conf
 ### Step 7.5: Set Hostname
 
 ```bash
-# Set hostname (replace "archlinux" with your desired hostname)
-echo "archlinux" > /etc/hostname
+# Set hostname (replace <HOSTNAME> with your desired hostname)
+echo "<HOSTNAME>" > /etc/hostname
+
+# Example: To set hostname "gigabyte-brix":
+# echo "gigabyte-brix" > /etc/hostname
 ```
 
 **Configure hosts file:**
 ```bash
 # Create /etc/hosts
+# Replace <HOSTNAME> with your actual hostname
 cat > /etc/hosts << EOF
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   archlinux.localdomain archlinux
+127.0.1.1   <HOSTNAME>.localdomain <HOSTNAME>
 EOF
+
+# Example: If hostname is "gigabyte-brix":
+# 127.0.1.1   gigabyte-brix.localdomain gigabyte-brix
 ```
 
 **Verify hosts file:**
 ```bash
 cat /etc/hosts
 
-# Should show:
+# Should show (with your actual hostname):
 # 127.0.0.1   localhost
 # ::1         localhost
-# 127.0.1.1   archlinux.localdomain archlinux
+# 127.0.1.1   <HOSTNAME>.localdomain <HOSTNAME>
 ```
 
 ### Step 7.6: Set Root Password
@@ -2340,7 +2347,7 @@ useradd -m -G wheel,video,audio,storage,input,power,network -s /bin/zsh <usernam
 ```
 
 # Explanation:
-# -m: Create home directory (/home/username)
+# -m: Create home directory (/home/<username>)
 # -G: Add to supplementary groups:
 #     wheel: sudo access
 #     video: GPU access
@@ -2414,9 +2421,9 @@ id <username>
 **SUCCESS:** Phase 10 Complete: User account created
 
 **Verification:**
-- [x] User created (`id username` shows user with groups)
-- [x] Home directory exists (`ls -la /home/username` shows directory)
-- [x] User in wheel group (`id username` shows `wheel` in groups)
+- [x] User created (`id <username>` shows user with groups)
+- [x] Home directory exists (`ls -la /home/<username>` shows directory)
+- [x] User in wheel group (`id <username>` shows `wheel` in groups)
 - [x] Sudo configured (`visudo` shows `%wheel ALL=(ALL:ALL) ALL` uncommented)
 - [x] User password set (can verify by attempting to change password)
 
@@ -2424,7 +2431,7 @@ id <username>
 
 **Troubleshooting:**
 - **If user creation fails:** Verify username doesn't contain special characters, check disk space
-- **If groups not added:** Verify group names are correct, re-run `usermod -aG ... username`
+- **If groups not added:** Verify group names are correct, re-run `usermod -aG ... <username>`
 - **If sudo not working:** Verify `%wheel` line is uncommented in `/etc/sudoers`, check user is in wheel group
 
 ---
@@ -3191,17 +3198,17 @@ chown -R <username>:<username> /home/<username>/.config
 - [x] Graphics drivers installed (`pacman -Q mesa vulkan-radeon` shows packages)
 - [x] PipeWire installed (`pacman -Q pipewire wireplumber` shows packages)
 - [x] SDDM installed (`pacman -Q sddm` shows package)
-- [x] Hyprland config exists (`ls /home/username/.config/hypr/hyprland.conf` shows file)
-- [x] Waybar config exists (`ls /home/username/.config/waybar/config.jsonc` shows file)
+- [x] Hyprland config exists (`ls /home/<username>/.config/hypr/hyprland.conf` shows file)
+- [x] Waybar config exists (`ls /home/<username>/.config/waybar/config.jsonc` shows file)
 - [x] SSH enabled (`systemctl is-enabled sshd` shows "enabled")
-- [x] File ownership correct (`ls -la /home/username/.config` shows correct user:group)
+- [x] File ownership correct (`ls -la /home/<username>/.config` shows correct user:group)
 
 **NEXT:** Next: Exit chroot and prepare for first boot (Phase 13)
 
 **Troubleshooting:**
 - **If package installation fails:** Check internet connection, verify disk space, check pacman keyring
 - **If configuration files not created:** Verify username is correct, check directory permissions
-- **If ownership incorrect:** Re-run `chown -R username:username /home/username/.config`
+- **If ownership incorrect:** Re-run `chown -R <username>:<username> /home/<username>/.config`
 
 ---
 
