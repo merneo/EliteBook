@@ -11,7 +11,32 @@
 
 ## Files in This Directory
 
+### Main Installation Guides
+
 - **`README_COMPLETE.md`** - Complete installation guide combining pre-reboot and post-reboot phases
+
+### Installation Templates
+
+- **`blank_arch.md`** - Core Arch Linux installation (vendor-neutral)
+  - Complete installation guide without Intel/AMD specific drivers
+  - Percentage-based disk partitioning
+  - Academic documentation with references and citations
+  - Suitable as base template for any hardware configuration
+
+- **`blank_intel_arch.md`** - Arch Linux with Intel hardware
+  - Intel CPU microcode updates (`intel-ucode`)
+  - Intel graphics drivers (Mesa, Vulkan, VA-API)
+  - Intel-specific configuration notes
+  - For Intel processors and integrated graphics
+
+- **`blank_amd_arch.md`** - Arch Linux with AMD hardware
+  - AMD CPU microcode updates (`amd-ucode`)
+  - AMD graphics drivers (Mesa, Vulkan, VA-API)
+  - AMD-specific configuration notes
+  - For AMD processors and Radeon graphics
+
+### AI Assistant Documentation
+
 - **`AI_ASSISTANT_CONTEXT.md`** - Context file for AI assistants (Cursor CLI, Claude, ChatGPT)
 - **`HOW_TO_ASK_AI.md`** - Guide on how to ask AI assistants for help
 - **`AI_ASSISTANT_CONTEXT_USAGE.md`** - Comprehensive academic documentation on purpose, structure, and usage
