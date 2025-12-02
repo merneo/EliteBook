@@ -2,7 +2,9 @@
 
 **Purpose:** This file provides context and instructions for AI assistants (Cursor CLI, Claude, ChatGPT) when helping with Arch Linux installation and configuration on HP EliteBook x360 1030 G2.
 
-**Primary Documentation:** `~/Documents/README_COMPLETE.md` contains complete installation guide with all phases documented.
+**Primary Documentation:** `docs/installation/README_COMPLETE.md` (in this repository) contains complete installation guide with all phases documented.
+
+**Repository Location:** This file is in `docs/installation/AI_ASSISTANT_CONTEXT.md` in the EliteBook repository.
 
 ---
 
@@ -82,7 +84,7 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_fprintd.so
 **When user says:** "I need to setup face recognition/Howdy on HP notebook"
 
 **Your response should:**
-1. Reference that this is documented in `~/Documents/README_COMPLETE.md` Phase 15c
+1. Reference that this is documented in `docs/installation/README_COMPLETE.md` Phase 15c (in this repository)
 2. Know that this requires:
    - `howdy-bin` from AUR
    - `python-dlib` (CPU-only build recommended)
@@ -103,7 +105,7 @@ sudo howdy add
 sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/howdy/pam.py
 ```
 
-**Documentation:** `~/Documents/README_COMPLETE.md` - Phase 15c
+**Documentation:** `docs/installation/README_COMPLETE.md` - Phase 15c (in this repository)
 
 ---
 
@@ -114,7 +116,7 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/ho
 **When user says:** "I need to configure Hyprland/window manager on HP notebook"
 
 **Your response should:**
-1. Reference that this is documented in `~/Documents/README_COMPLETE.md` Phase 13 (installation) and Phase 17 (dotfiles deployment)
+1. Reference that this is documented in `docs/installation/README_COMPLETE.md` Phase 13 (installation) and Phase 17 (dotfiles deployment) (in this repository)
 2. Know that:
    - Hyprland is a window manager (compositor), not a full desktop environment
    - Configuration is in `~/.config/hypr/hyprland.conf`
@@ -123,7 +125,7 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/ho
 3. Follow the exact steps from Phase 13 or Phase 17 in README_COMPLETE.md
 4. Use the AI prompt from the relevant phase if needed
 
-**Documentation:** `~/Documents/README_COMPLETE.md` - Phase 13, Phase 17
+**Documentation:** `docs/installation/README_COMPLETE.md` - Phase 13, Phase 17 (in this repository)
 
 ---
 
@@ -190,10 +192,10 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/ho
 
 **When user asks about installation/configuration:**
 
-1. **Check this file first** for quick reference
-2. **Reference README_COMPLETE.md** for complete documentation
-3. **Use AI prompts** from README_COMPLETE.md if needed
-4. **Remember:** This has been done before - you have the documentation
+1. **Check this file first** (`docs/installation/AI_ASSISTANT_CONTEXT.md`) for quick reference
+2. **Reference README_COMPLETE.md** (`docs/installation/README_COMPLETE.md`) for complete documentation
+3. **Remember:** This has been done before - you have the documentation
+4. **Know the hardware:** HP EliteBook x360 1030 G2 (when user says "HP notebook")
 
 **Example workflow:**
 ```
@@ -208,33 +210,36 @@ You: "I see this is documented in your README_COMPLETE.md Phase 15.
 
 ## File Locations
 
-**Main Documentation:**
-- `~/Documents/README_COMPLETE.md` - Complete installation guide with AI prompts
+**Main Documentation (in this repository):**
+- `docs/installation/README_COMPLETE.md` - Complete installation guide
+- `docs/installation/AI_ASSISTANT_CONTEXT.md` - This file (instructions for AI assistants)
+- `docs/installation/HOW_TO_ASK_AI.md` - Guide on how to ask AI assistants
 
-**Repository:**
-- `~/EliteBook/` - Dotfiles and configuration repository
-- `~/EliteBook/browsers/` - Browser theme configurations
-- `~/EliteBook/scripts/` - Helper scripts
+**Repository Structure:**
+- `browsers/` - Browser theme configurations
+- `scripts/` - Helper scripts
+- `docs/installation/` - Installation documentation
 
-**This Context File:**
-- `~/Documents/AI_ASSISTANT_CONTEXT.md` - This file (instructions for AI assistants)
+**Local Files (not in repository):**
+- `~/Documents/README_COMPLETE.md` - Version WITH AI prompts (for local use)
+- `~/Documents/extract-phase-prompt.sh` - Script to extract prompts
 
 ---
 
 ## Quick Command Reference
 
 ```bash
-# Extract AI prompt for a phase
+# Extract AI prompt for a phase (if using local version with prompts)
 ~/Documents/extract-phase-prompt.sh <phase_number>
 
-# Find phase in documentation
-grep -n "## Phase" ~/Documents/README_COMPLETE.md
+# Find phase in documentation (in repository)
+grep -n "## Phase" docs/installation/README_COMPLETE.md
 
-# Open documentation
-nvim ~/Documents/README_COMPLETE.md
+# Open documentation (in repository)
+nvim docs/installation/README_COMPLETE.md
 
-# Open this context file
-nvim ~/Documents/AI_ASSISTANT_CONTEXT.md
+# Open this context file (in repository)
+nvim docs/installation/AI_ASSISTANT_CONTEXT.md
 ```
 
 ---
