@@ -15,7 +15,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 - **Full-Disk Encryption**: LUKS2 encryption with AES-XTS-PLAIN64 cipher and Argon2id key derivation
 - **Btrfs Filesystem**: Copy-on-write filesystem with subvolume organization for snapshots
-- **UEFI Boot**: GRUB bootloader with dual-boot support (optional Windows installation)
+- **UEFI Boot**: GRUB bootloader with Windows 11 dual-boot support
 - **Minimal Window Manager**: Wayland compositor setup with AMD Radeon RX Vega graphics drivers
 - **AMD Ryzen 3 5300U Microcode**: AMD processor microcode updates for security and stability
 - **AMD Radeon RX Vega Graphics Drivers**: Mesa, Vulkan, and VA-API drivers for integrated Radeon RX Vega graphics
@@ -27,7 +27,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Graphics**: AMD Radeon™ RX Vega (6 compute units, integrated)
 - **Memory**: DDR4 SO-DIMM (user-installed, 8-32 GB recommended)
 - **Storage**: M.2 NVMe SSD (user-installed, PCIe 3.0 ×4)
-- **Network**: Gigabit Ethernet, WiFi 6 (802.11ax), Bluetooth 5.0
+- **Network**: Gigabit Ethernet, AMD RZ608 WiFi 6 (802.11ax), Bluetooth 5.2
 
 **Target Audience:**
 - System administrators installing Arch Linux on GIGABYTE Brix 5300
@@ -118,13 +118,14 @@ This installation guide documents the complete procedure for installing Arch Lin
 ### Important Pre-Installation Notes
 
 **WARNING: Critical Information:**
+- **Windows 11 MUST BE INSTALLED FIRST** - This guide assumes Windows 11 is already installed
 - UEFI boot mode **REQUIRED** (not legacy BIOS - verify in BIOS settings)
 - Secure Boot should be **DISABLED** during Arch installation (can re-enable later with signed bootloader)
-- If dual-booting with Windows:
-  - Fast Startup in Windows **MUST BE DISABLED** (prevents filesystem corruption)
-  - BitLocker encryption in Windows **MUST BE DISABLED** before proceeding
+- **Fast Startup in Windows 11 MUST BE DISABLED** (prevents filesystem corruption)
+- **BitLocker encryption in Windows 11 MUST BE DISABLED** before proceeding
 
 **What You Will Have After Installation:**
+- **SUCCESS:** Dual-boot system: Windows 11 + Arch Linux with GRUB menu
 - **SUCCESS:** Arch Linux with GRUB bootloader on GIGABYTE Brix 5300
 - **SUCCESS:** LUKS2 full-disk encryption (AES-XTS-PLAIN64, 512-bit key)
 - **SUCCESS:** Optional automatic LUKS decryption on boot (can be toggled for security)
@@ -140,20 +141,28 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 ### Partition Layout (Percentage-Based)
 
-This guide uses percentage-based partitioning to accommodate various disk sizes. The following table provides a recommended partition layout:
+**IMPORTANT:** This guide assumes **Windows 11 is already installed**. The partitioning strategy below shows the layout after Windows 11 installation, with space reserved for Arch Linux.
+
+**Final Partition Layout (after Windows 11 installation):**
 
 | Partition | Percentage | Type | Filesystem | Mount Point | Purpose | Encrypted |
 |-----------|------------|------|------------|-------------|---------|-----------|
-| `/dev/sdX1` or `/dev/nvme0n1p1` | 0.2% (min 512 MB) | EFI System | FAT32 | `/boot` | UEFI bootloader (GRUB) | **No** |
-| `/dev/sdX2` or `/dev/nvme0n1p2` | 70% | Linux filesystem | Btrfs | `/` | Arch Linux root (encrypted) | **Yes (LUKS2)** |
-| `/dev/sdX3` or `/dev/nvme0n1p3` | 3-5% | Linux swap | swap | `[SWAP]` | Encrypted swap partition | **Yes (LUKS2)** |
-| Remaining space | ~25-27% | - | - | - | Optional: Windows, data, or unallocated | - |
+| `/dev/nvme0n1p1` | 0.2% (min 512 MB) | EFI System | FAT32 | `/boot` | UEFI bootloader (GRUB + Windows) | **No** |
+| `/dev/nvme0n1p2` | 50-60% | Microsoft basic data | NTFS | N/A | Windows 11 system partition | **No** |
+| `/dev/nvme0n1p3` | ~1% | Microsoft recovery | NTFS | N/A | Windows Recovery Environment | **No** |
+| `/dev/nvme0n1p4` | 30-35% | Linux filesystem | Btrfs | `/` | Arch Linux root (encrypted) | **Yes (LUKS2)** |
+| `/dev/nvme0n1p5` | 3-5% | Linux swap | swap | `[SWAP]` | Encrypted swap partition | **Yes (LUKS2)** |
 
-**Note:** For dual-boot scenarios, adjust percentages accordingly. For example:
-- Windows partition: 50-60%
-- Arch Linux root: 30-35%
-- Swap: 3-5%
-- EFI: 0.2% (minimum 512 MB)
+**Note:** Windows 11 installation typically creates:
+- EFI System Partition (512 MB)
+- Windows system partition (50-60% of disk)
+- Windows Recovery partition (~1%)
+- Remaining space (~30-40%) for Arch Linux
+
+**Recommended allocation for Arch Linux:**
+- Root partition: 30-35% of total disk space
+- Swap partition: 3-5% of total disk space (minimum 2 GB, recommended 4-8 GB)
+- EFI partition: Shared with Windows (already created)
 
 ### Encryption Details
 
@@ -343,7 +352,7 @@ systemctl status sshd
 ping -c 3 archlinux.org
 ```
 
-**For WiFi:**
+**For WiFi (AMD RZ608 WiFi 6):**
 ```bash
 # Launch iwctl (interactive WiFi tool)
 iwctl
@@ -355,7 +364,7 @@ iwctl
 ```bash
 # List WiFi devices
 device list
-# Should show: wlan0 (or similar)
+# Should show: wlan0 (AMD RZ608 WiFi 6 adapter)
 
 # Scan for networks
 station wlan0 scan
@@ -374,6 +383,8 @@ station wlan0 connect "YourSSID"
 # Exit iwctl
 exit
 ```
+
+**Note:** AMD RZ608 WiFi 6 adapter uses the `mt7921e` kernel module (MediaTek chipset). The driver is included in `linux-firmware` package, which is installed in Phase 6.
 
 **Verify internet connection:**
 ```bash
@@ -450,23 +461,29 @@ root@archiso ~ #
 
 **WARNING:** CRITICAL WARNING: Double-check every command before pressing Enter
 
-### Step 3.1: Identify Disk Device
+### Step 3.1: Verify Existing Windows 11 Partitions
 
 ```bash
 # List all block devices and partitions
 lsblk
 
-# Example output:
+# Expected output for GIGABYTE Brix 5300 (M.2 NVMe SSD):
 # NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
-# sda         8:0      0 500.0G  0 disk
-# or
 # nvme0n1     259:0    0 500.0G  0 disk
+# ├─nvme0n1p1 259:1    0   512M  0 part  (EFI System - Windows 11)
+# ├─nvme0n1p2 259:2    0 250.0G  0 part  (Windows 11 system partition)
+# ├─nvme0n1p3 259:3    0   500M  0 part  (Windows Recovery)
+# └─(free space ~250 GB - not shown yet)
 
-# Identify your target disk (usually the largest one, NOT the USB drive)
-# USB drives are typically smaller (8-32 GB)
+# Verify:
+# - Three partitions exist (p1, p2, p3)
+# - Total used space: ~250-300 GB (Windows 11)
+# - Free space: ~200-250 GB remaining (for Arch Linux)
 ```
 
-**Note your disk device name** (e.g., `/dev/sda` or `/dev/nvme0n1`)
+**Note your disk device name** (typically `/dev/nvme0n1` for M.2 NVMe SSD on GIGABYTE Brix 5300)
+
+**If Windows 11 partitions are missing, DO NOT PROCEED** - install Windows 11 first.
 
 ### Step 3.2: Launch cfdisk Partition Editor
 
@@ -491,38 +508,46 @@ cfdisk /dev/nvme0n1
 - **Enter**: Execute selected menu option
 - **Esc**: Cancel current operation
 
-### Step 3.4: Create EFI System Partition
+**Current partition list should show:**
+```
+Device          Start        End    Sectors  Size Type
+/dev/nvme0n1p1   2048    1050623    1048576  512M EFI System
+/dev/nvme0n1p2   ...         ...        ... 250.0G Microsoft basic data
+/dev/nvme0n1p3   ...         ...        ...  500M Microsoft reserved
+Free space       ...         ...        ...  ~250G
+```
 
-1. **Use arrow keys** to navigate to **Free space** row
-2. **Press Enter** on **[ New ]** menu option
-3. **Partition size**: Type `512M` (minimum 512 MB for EFI) and press **Enter**
-4. **Navigate to the newly created partition**
-5. **Press Enter** on **[ Type ]** menu option
-6. **Scroll down** to find **EFI System** (type code EF00)
-7. **Press Enter** to select EFI System
+**WARNING:** DO NOT modify existing Windows 11 partitions (p1, p2, p3). Only create new partitions in the free space.
 
-**New partition created: /dev/sdX1 (512 MB, EFI System)**
+### Step 3.4: Skip EFI System Partition (Already Exists)
+
+**The EFI System Partition (p1) was already created by Windows 11. We will use it for GRUB bootloader.**
+
+**No action needed** - proceed to Step 3.5.
 
 ### Step 3.5: Create Linux Root Partition
 
-1. **Use arrow keys** to navigate to remaining **Free space** row
+1. **Use arrow keys** to navigate to remaining **Free space** row (after Windows partitions)
 2. **Press Enter** on **[ New ]** menu option
-3. **Partition size**: Type `70%` (or calculate: if disk is 500 GB, use ~350 GB) and press **Enter**
+3. **Partition size**: Type `35%` (or calculate: if 250 GB free, use ~175 GB) and press **Enter**
+   - **Alternative**: Type specific size like `175G` for 175 GB
 4. Partition type will default to **Linux filesystem** (correct, do not change)
 
-**New partition created: /dev/sdX2 (70%, Linux filesystem)**
+**New partition created: /dev/nvme0n1p4 (35%, Linux filesystem)**
 
 ### Step 3.6: Create Linux Swap Partition
 
 1. **Use arrow keys** to navigate to remaining **Free space** row
 2. **Press Enter** on **[ New ]** menu option
-3. **Partition size**: Type `5%` (or calculate: if disk is 500 GB, use ~25 GB, minimum 2 GB) and press **Enter**
+3. **Partition size**: Type `8G` (8 GB recommended for 16 GB RAM) or `4G` (4 GB for 8 GB RAM) and press **Enter**
+   - **Minimum**: 2 GB
+   - **Recommended**: 4-8 GB (equal to or half of system RAM)
 4. **Navigate to the newly created partition**
 5. **Press Enter** on **[ Type ]** menu option
 6. **Scroll down** to find **Linux swap** (type code 19 or 82)
 7. **Press Enter** to select Linux swap
 
-**New partition created: /dev/sdX3 (5%, Linux swap)**
+**New partition created: /dev/nvme0n1p5 (8 GB, Linux swap)**
 
 ### Step 3.7: Verify Final Partition Layout
 
@@ -530,16 +555,20 @@ cfdisk /dev/nvme0n1
 
 ```
 Device          Start        End    Sectors  Size Type
-/dev/sdX1       2048    1050623    1048576  512M EFI System
-/dev/sdX2       ...         ...        ...  70%  Linux filesystem
-/dev/sdX3       ...         ...        ...   5%  Linux swap
+/dev/nvme0n1p1   2048    1050623    1048576  512M EFI System (Windows 11)
+/dev/nvme0n1p2   ...         ...        ... 250.0G Microsoft basic data (Windows 11)
+/dev/nvme0n1p3   ...         ...        ...  500M Microsoft reserved (Windows Recovery)
+/dev/nvme0n1p4   ...         ...        ...  35%  Linux filesystem (NEW)
+/dev/nvme0n1p5   ...         ...        ...   8G  Linux swap (NEW)
 ```
 
 **SUCCESS:** Verify:
-- Total partitions: **3** (or more if dual-booting)
-- sdX1: **512M EFI System**
-- sdX2: **70% Linux filesystem** (NEW)
-- sdX3: **5% Linux swap** (NEW)
+- Total partitions: **5**
+- nvme0n1p1: **512M EFI System** (Windows 11 - shared)
+- nvme0n1p2: **250.0G Microsoft basic data** (Windows 11)
+- nvme0n1p3: **500M Microsoft reserved** (Windows Recovery)
+- nvme0n1p4: **35% Linux filesystem** (NEW - Arch Linux)
+- nvme0n1p5: **8G Linux swap** (NEW)
 
 **If anything is wrong, DO NOT WRITE. Press 'q' to quit without saving and start over.**
 
