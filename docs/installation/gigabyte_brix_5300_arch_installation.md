@@ -150,6 +150,55 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 ---
 
+## Placeholders and Variables
+
+**IMPORTANT:** This guide uses specific placeholders and variables. Replace them with your actual values when executing commands.
+
+### Device Partitions (GIGABYTE Brix 5300)
+
+| Variable | Value | Description | First Used In |
+|----------|-------|-------------|---------------|
+| `<DISK>` | `/dev/nvme0n1` | Main disk device (M.2 NVMe SSD) | Phase 3 |
+| `<EFI_PARTITION>` | `/dev/nvme0n1p1` | EFI System Partition (512 MB, shared with Windows) | Phase 5 |
+| `<ROOT_PARTITION>` | `/dev/nvme0n1p4` | Arch Linux root partition (225 GB, encrypted) | Phase 4 |
+| `<SWAP_PARTITION>` | `/dev/nvme0n1p5` | Swap partition (8 GB, encrypted) | Phase 4 |
+
+**Note:** These are the standard partition numbers for GIGABYTE Brix 5300 with Windows 11 pre-installed. Verify with `lsblk` before proceeding.
+
+### User-Specific Variables
+
+| Variable | Description | When to Set | Example |
+|----------|-------------|-------------|---------|
+| `<username>` | Your chosen username | Phase 10 | `john`, `alice`, `user` |
+| `<YOUR_UUID>` | UUID of encrypted root partition | Phase 8, Step 8.2 | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
+| `<YOUR_PASSWORD>` | User account password | Phase 10 | (choose strong password) |
+| `<LUKS_PASSPHRASE>` | LUKS encryption passphrase | Phase 4 | (choose strong passphrase, 20+ chars) |
+| `<TIMEZONE>` | System timezone | Phase 7 | `Europe/London`, `America/New_York` |
+| `<HOSTNAME>` | System hostname | Phase 7 | `archlinux`, `gigabyte-brix` |
+
+### Network Variables (if using WiFi)
+
+| Variable | Description | When to Set |
+|----------|-------------|-------------|
+| `<YourSSID>` | WiFi network name (SSID) | Phase 2 |
+| `<WiFi_PASSWORD>` | WiFi network password | Phase 2 |
+| `<IP_ADDRESS>` | IP address assigned to target system | Phase 2 |
+
+### Environment Indicators
+
+Throughout this guide, you will see environment indicators:
+
+- **`[Live USB]`** - Commands executed in Arch Linux live USB environment
+- **`[Chroot]`** - Commands executed inside chroot (installed system)
+- **`[First Boot]`** - Commands executed after first system boot
+
+**Prompt Examples:**
+- Live USB: `root@archiso ~ #`
+- Chroot: `[root@archiso /]#`
+- First Boot: `username@hostname ~ $`
+
+---
+
 ## Disk Partitioning Strategy
 
 ### Partition Layout for SAMSUNG 970 EVO Plus 500GB
@@ -257,8 +306,21 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 ## Phase 1: Arch Linux Live USB Preparation
 
+**ENVIRONMENT:** [Preparation Machine] → [Live USB]  
 **TIME:** Estimated Time: 10-15 minutes  
 **NEXT:** Restart Count: 0 (preparation only)
+
+**Prerequisites Checklist:**
+- [ ] Second computer available (for USB creation)
+- [ ] USB flash drive (8 GB minimum) available
+- [ ] Internet connection on preparation machine
+- [ ] Arch Linux ISO downloaded (or ready to download)
+
+**Success Criteria:**
+- [ ] Arch Linux ISO downloaded and verified
+- [ ] USB drive created successfully
+- [ ] System boots from USB into Arch Linux live environment
+- [ ] UEFI boot mode verified
 
 ### Step 1.1: Download Arch Linux ISO
 
@@ -363,14 +425,37 @@ setfont ter-132b
 
 **SUCCESS:** Phase 1 Complete: Booted into Arch Linux live USB in UEFI mode
 
+**Verification:**
+- [x] UEFI mode confirmed (`/sys/firmware/efi/efivars` exists)
+- [x] Root prompt available (`root@archiso ~ #`)
+- [x] Network connectivity (if needed for Phase 2)
+
 **NEXT:** Next: Setup SSH for remote installation (Phase 2) or proceed to disk partitioning (Phase 3)
+
+**Troubleshooting:**
+- **If UEFI directory doesn't exist:** Reboot and enter BIOS/UEFI settings, ensure UEFI mode is enabled (not Legacy/CSM)
+- **If system doesn't boot from USB:** Check boot order in BIOS/UEFI settings, ensure USB is first boot device
 
 ---
 
 ## Phase 2: Remote Installation via SSH (Optional)
 
+**ENVIRONMENT:** [Live USB]  
 **TIME:** Estimated Time: 5-10 minutes  
 **NEXT:** Restart Count: 0
+
+**Prerequisites Checklist:**
+- [ ] Phase 1 completed successfully
+- [ ] Booted into Arch Linux live USB
+- [ ] Second computer available for SSH connection
+- [ ] Network connection available (Ethernet or WiFi credentials)
+
+**Success Criteria:**
+- [ ] Root password set on live USB
+- [ ] SSH service running
+- [ ] Network connected (Ethernet or WiFi)
+- [ ] IP address obtained
+- [ ] SSH connection established from second computer
 
 **Why Remote SSH Installation?**
 
@@ -514,16 +599,41 @@ root@archiso ~ #
 
 **SUCCESS:** Phase 2 Complete: SSH connection established
 
+**Verification:**
+- [x] SSH service running (`systemctl status sshd` shows "active (running)")
+- [x] Network connected (`ping -c 3 archlinux.org` succeeds)
+- [x] IP address known (`ip -brief addr show` shows assigned IP)
+- [x] SSH connection working (can execute commands from second computer)
+
 **NEXT:** Next: Partition the disk (Phase 3)
+
+**Troubleshooting:**
+- **If SSH connection fails:** Verify IP address, check firewall on second computer, ensure SSH service is running
+- **If WiFi doesn't connect:** Verify SSID and password, check if `mt7921e` driver is loaded (`lsmod | grep mt7921e`)
+- **If network ping fails:** Check cable (Ethernet) or WiFi credentials, verify router is working
 
 ---
 
 ## Phase 3: Disk Partitioning
 
+**ENVIRONMENT:** [Live USB]  
 **TIME:** Estimated Time: 5-10 minutes  
 **NEXT:** Restart Count: 0
 
 **WARNING:** CRITICAL WARNING: Double-check every command before pressing Enter
+
+**Prerequisites Checklist:**
+- [ ] Phase 1 completed (booted into live USB)
+- [ ] Windows 11 already installed (verified in Step 3.1)
+- [ ] Disk device identified (`/dev/nvme0n1` for GIGABYTE Brix 5300)
+- [ ] Free space available (~250 GB for Arch Linux)
+
+**Success Criteria:**
+- [ ] Windows 11 partitions verified (p1, p2, p3 exist)
+- [ ] Root partition created (`/dev/nvme0n1p4`, 225 GB)
+- [ ] Swap partition created (`/dev/nvme0n1p5`, 8 GB)
+- [ ] Partition table written successfully
+- [ ] Partitions verified with `lsblk`
 
 ### Step 3.1: Verify Existing Windows 11 Partitions
 
@@ -552,10 +662,8 @@ lsblk
 ### Step 3.2: Launch cfdisk Partition Editor
 
 ```bash
-# Open cfdisk for your disk (replace /dev/sdX with your actual device)
-cfdisk /dev/sdX
-
-# For NVMe drives:
+# Open cfdisk for your disk
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1 (M.2 NVMe SSD)
 cfdisk /dev/nvme0n1
 
 # Partition table type should be: gpt
@@ -682,7 +790,8 @@ Device          Start        End    Sectors  Size Type
 
 ```bash
 # Force kernel to re-read partition table
-partprobe /dev/sdX
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1
+partprobe /dev/nvme0n1
 
 # List partitions again
 lsblk -f
@@ -696,14 +805,38 @@ lsblk -f
 
 **SUCCESS:** Phase 3 Complete: Disk partitioned successfully
 
+**Verification:**
+- [x] All 5 partitions exist (p1=EFI, p2=Windows, p3=Recovery, p4=Root, p5=Swap)
+- [x] Partition sizes correct (p4=225 GB, p5=8 GB)
+- [x] Partition table written (`partprobe` executed)
+- [x] Partitions visible in `lsblk`
+
 **NEXT:** Next: Encrypt Linux partitions with LUKS2 (Phase 4)
+
+**Troubleshooting:**
+- **If partition creation fails:** Verify free space exists, check disk is not mounted, ensure Windows partitions are not modified
+- **If "target is busy" error:** Unmount any mounted partitions, close any programs accessing the disk
+- **If partition sizes incorrect:** Recalculate based on actual disk size, verify Windows partition sizes first
 
 ---
 
 ## Phase 4: LUKS2 Encryption Setup
 
+**ENVIRONMENT:** [Live USB]  
 **TIME:** Estimated Time: 10-15 minutes  
 **NEXT:** Restart Count: 0
+
+**Prerequisites Checklist:**
+- [ ] Phase 3 completed successfully
+- [ ] Root partition exists (`/dev/nvme0n1p4`)
+- [ ] Swap partition exists (`/dev/nvme0n1p5`)
+- [ ] Strong passphrase prepared (20+ characters recommended)
+
+**Success Criteria:**
+- [ ] Root partition encrypted with LUKS2
+- [ ] Swap partition encrypted with LUKS2
+- [ ] Both partitions unlocked and mapped (`cryptroot`, `cryptswap`)
+- [ ] Encryption verified (`cryptsetup luksDump` shows correct configuration)
 
 ### 4.1 Theoretical Foundation of Disk Encryption
 
@@ -938,14 +1071,39 @@ cryptsetup luksDump /dev/nvme0n1p4 | head -20
 
 **SUCCESS:** Phase 4 Complete: Both Linux partitions encrypted with LUKS2
 
+**Verification:**
+- [x] Root partition encrypted (`cryptsetup luksDump /dev/nvme0n1p4` shows LUKS2 header)
+- [x] Swap partition encrypted (`cryptsetup luksDump /dev/nvme0n1p5` shows LUKS2 header)
+- [x] Both volumes unlocked (`ls -la /dev/mapper/` shows `cryptroot` and `cryptswap`)
+- [x] Passphrase works (can unlock both volumes)
+
 **NEXT:** Next: Create Btrfs filesystem with subvolumes (Phase 5)
+
+**Troubleshooting:**
+- **If "device already in use" error:** Close any existing mappings (`cryptsetup close cryptroot`), verify partition is not mounted
+- **If passphrase rejected:** Verify passphrase is correct, check keyboard layout (especially for special characters)
+- **If encryption takes too long:** Normal for large partitions (30-60 seconds), wait for completion
 
 ---
 
 ## Phase 5: Btrfs Filesystem Creation
 
+**ENVIRONMENT:** [Live USB]  
 **TIME:** Estimated Time: 5-10 minutes  
 **NEXT:** Restart Count: 0
+
+**Prerequisites Checklist:**
+- [ ] Phase 4 completed successfully
+- [ ] Root partition encrypted and unlocked (`cryptroot` mapped)
+- [ ] Swap partition encrypted and unlocked (`cryptswap` mapped)
+- [ ] `btrfs-progs` package available (included in live USB)
+
+**Success Criteria:**
+- [ ] Btrfs filesystem created on `cryptroot`
+- [ ] All 5 subvolumes created (@, @home, @log, @cache, @snapshots)
+- [ ] All subvolumes mounted correctly
+- [ ] EFI partition mounted
+- [ ] Swap enabled and active
 
 ### 5.1 Theoretical Foundation of Copy-on-Write Filesystems
 
@@ -1166,16 +1324,41 @@ lsblk -f
 
 **SUCCESS:** Phase 5 Complete: Btrfs filesystem with 5 subvolumes + swap active
 
+**Verification:**
+- [x] Btrfs filesystem created (`mkfs.btrfs` completed successfully)
+- [x] All 5 subvolumes exist (`btrfs subvolume list /mnt` shows all subvolumes)
+- [x] All mount points correct (`lsblk -f` shows all subvolumes mounted)
+- [x] EFI partition mounted (`/mnt/boot` exists and mounted)
+- [x] Swap active (`swapon --show` shows `cryptswap`)
+
 **NEXT:** Next: Install base Arch Linux system (Phase 6)
+
+**Troubleshooting:**
+- **If subvolume creation fails:** Verify Btrfs filesystem exists, check mount point permissions
+- **If mount fails:** Verify subvolume names are correct (including @ symbol), check device mapping exists
+- **If swap not active:** Verify swap partition is formatted (`mkswap` executed), check `swapon` command succeeded
 
 ---
 
 ## Phase 6: Base System Installation
 
+**ENVIRONMENT:** [Live USB]  
 **TIME:** Estimated Time: 15-30 minutes (depends on internet speed)  
 **NEXT:** Restart Count: 0
 
 **Download Size: ~800 MB - 1.2 GB**
+
+**Prerequisites Checklist:**
+- [ ] Phase 5 completed successfully
+- [ ] All partitions mounted correctly (`/mnt` and subvolumes)
+- [ ] Internet connection active (for package downloads)
+- [ ] Sufficient disk space available (~2 GB minimum)
+
+**Success Criteria:**
+- [ ] Pacman mirror list updated
+- [ ] Base system packages installed
+- [ ] All essential packages installed (kernel, firmware, tools)
+- [ ] Installation verified (directories exist in `/mnt`)
 
 ### Step 6.1: Update Pacman Mirror List (for faster downloads)
 
@@ -1362,12 +1545,24 @@ ls /mnt/bin /mnt/etc /mnt/usr
 
 **SUCCESS:** Phase 6 Complete: Base Arch Linux system installed to /mnt
 
+**Verification:**
+- [x] Mirror list updated (`head -10 /etc/pacman.d/mirrorlist` shows mirrors)
+- [x] Base packages installed (`ls /mnt/bin /mnt/etc /mnt/usr` shows directories with files)
+- [x] Kernel installed (`ls /mnt/boot/vmlinuz-linux` exists)
+- [x] Firmware installed (`ls /mnt/usr/lib/firmware` shows firmware files)
+
 **NEXT:** Next: Configure system (timezone, locale, hostname) in chroot (Phase 7)
+
+**Troubleshooting:**
+- **If mirror list update fails:** Check internet connection, try different reflector options, manually edit mirrorlist
+- **If package installation fails:** Check disk space (`df -h`), verify internet connection, check pacman keyring (`pacman-key --refresh-keys`)
+- **If installation incomplete:** Re-run `pacstrap` command, verify all packages listed in output
 
 ---
 
 ## Phase 7: System Configuration (Chroot)
 
+**ENVIRONMENT:** [Live USB] → [Chroot]  
 **TIME:** Estimated Time: 10-15 minutes  
 **NEXT:** Restart Count: 0
 
@@ -1375,6 +1570,21 @@ ls /mnt/bin /mnt/etc /mnt/usr
 - Change root into the new system
 - Allows configuration as if you're booted into the installed system
 - All following commands run inside the new Arch installation
+
+**Prerequisites Checklist:**
+- [ ] Phase 6 completed successfully
+- [ ] Base system installed to `/mnt`
+- [ ] Fstab generated (`/mnt/etc/fstab` exists)
+- [ ] Timezone, locale, and hostname information ready
+
+**Success Criteria:**
+- [ ] Fstab generated correctly
+- [ ] Chroot entered successfully (prompt changed)
+- [ ] Timezone configured
+- [ ] Locale generated and set
+- [ ] Hostname configured
+- [ ] Root password set
+- [ ] Pacman configured (multilib enabled, parallel downloads)
 
 ### Step 7.1: Generate Fstab (Filesystem Table)
 
@@ -1549,14 +1759,41 @@ pacman -Sy
 
 **SUCCESS:** Phase 7 Complete: System configured (timezone, locale, hostname, root password)
 
+**Verification:**
+- [x] Fstab generated (`cat /etc/fstab` shows all mount points)
+- [x] Timezone set (`timedatectl status` shows correct timezone)
+- [x] Locale generated (`locale` shows `en_US.UTF-8`)
+- [x] Hostname set (`cat /etc/hostname` shows hostname)
+- [x] Root password set (can verify with `passwd` command)
+- [x] Pacman configured (`grep -E "Color|ParallelDownloads|multilib" /etc/pacman.conf` shows enabled)
+
 **NEXT:** Next: Install and configure GRUB bootloader (Phase 8)
+
+**Troubleshooting:**
+- **If chroot fails:** Verify all partitions are mounted, check `/mnt` contains system files
+- **If timezone not set:** Verify timezone name is correct (`ls /usr/share/zoneinfo/` to list available)
+- **If locale not generated:** Verify `locale.gen` was edited correctly, re-run `locale-gen`
 
 ---
 
 ## Phase 8: Bootloader Installation (GRUB)
 
+**ENVIRONMENT:** [Chroot]  
 **TIME:** Estimated Time: 5-10 minutes  
 **NEXT:** Restart Count: 0
+
+**Prerequisites Checklist:**
+- [ ] Phase 7 completed successfully
+- [ ] Still in chroot environment (prompt shows `[root@archiso /]#`)
+- [ ] EFI partition mounted at `/boot`
+- [ ] UUID of root partition ready (obtained in Step 8.2)
+
+**Success Criteria:**
+- [ ] GRUB installed to EFI partition
+- [ ] Root partition UUID obtained
+- [ ] GRUB configured for LUKS encryption
+- [ ] GRUB configuration generated
+- [ ] Windows detected (if dual-booting)
 
 **[GRUB](https://www.gnu.org/software/grub/)** (GRand Unified Bootloader):
 - Manages boot menu
@@ -1691,19 +1928,32 @@ done
 **If Windows is detected (dual-boot):**
 ```
 Warning: os-prober will be executed to detect other bootable partitions.
-Found Windows Boot Manager on /dev/sdX1@/EFI/Microsoft/Boot/bootmgfw.efi
+Found Windows Boot Manager on /dev/nvme0n1p1@/EFI/Microsoft/Boot/bootmgfw.efi
 Adding boot menu entry for UEFI Firmware Settings ...
 done
 ```
 
 **SUCCESS:** Phase 8 Complete: GRUB bootloader installed and configured
 
+**Verification:**
+- [x] GRUB installed (`ls /boot/EFI/GRUB/` shows GRUB files)
+- [x] UUID obtained (`blkid /dev/nvme0n1p4` shows UUID)
+- [x] GRUB configured (`cat /etc/default/grub` shows `cryptdevice=UUID=...`)
+- [x] GRUB config generated (`ls /boot/grub/grub.cfg` exists)
+- [x] Windows detected (if applicable, `grub-mkconfig` shows Windows entry)
+
 **NEXT:** Next: Setup automatic LUKS decryption with keyfile (Phase 9, optional)
+
+**Troubleshooting:**
+- **If GRUB installation fails:** Verify EFI partition is mounted at `/boot`, check disk space, verify UEFI mode
+- **If UUID not found:** Verify partition exists (`lsblk`), check partition is encrypted (`blkid` shows `crypto_LUKS`)
+- **If Windows not detected:** Verify `os-prober` is installed, check Windows partition exists, verify `GRUB_DISABLE_OS_PROBER=false`
 
 ---
 
 ## Phase 9: Automatic LUKS Decryption Setup (Optional)
 
+**ENVIRONMENT:** [Chroot]  
 **TIME:** Estimated Time: 10-15 minutes  
 **NEXT:** Restart Count: 0
 
@@ -1712,6 +1962,21 @@ done
 - Embeds keyfile in initramfs (boot image)
 - Configures boot to auto-decrypt without password prompt
 - Maintains full encryption security (data encrypted at rest)
+
+**Prerequisites Checklist:**
+- [ ] Phase 8 completed successfully
+- [ ] Still in chroot environment
+- [ ] LUKS passphrase known (to add keyfile)
+- [ ] Decision made: automatic decryption desired (vs. password prompt)
+
+**Success Criteria:**
+- [ ] Keyfile created and secured
+- [ ] Keyfile added to root partition LUKS
+- [ ] Keyfile added to swap partition LUKS
+- [ ] Initramfs configured to include keyfile
+- [ ] GRUB configured for keyfile
+- [ ] Initramfs rebuilt with keyfile
+- [ ] Keyfile verified in initramfs
 
 **Security Note:**
 - Keyfile is in `/boot` (unencrypted partition)
@@ -1869,20 +2134,18 @@ GRUB_CMDLINE_LINUX="cryptkey=rootfs:/etc/cryptsetup.d/root.key cryptdevice=UUID=
 
 ```bash
 # Create /etc/crypttab for swap
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p5 (swap partition)
 cat > /etc/crypttab << EOF
 # <name>       <device>                             <keyfile>                          <options>
-cryptswap      /dev/sdX3                            /etc/cryptsetup.d/root.key         luks
+cryptswap      /dev/nvme0n1p5                      /etc/cryptsetup.d/root.key         luks
 EOF
-```
-
-**Replace `/dev/sdX3` with your actual swap partition**
 
 **Verify crypttab:**
 ```bash
 cat /etc/crypttab
 
 # Should show:
-# cryptswap /dev/sdX3 /etc/cryptsetup.d/root.key luks
+# cryptswap /dev/nvme0n1p5 /etc/cryptsetup.d/root.key luks
 ```
 
 **Update fstab for encrypted swap:**
@@ -1939,14 +2202,40 @@ lsinitcpio /boot/initramfs-linux.img | grep root.key
 
 **SUCCESS:** Phase 9 Complete: Automatic LUKS decryption configured
 
+**Verification:**
+- [x] Keyfile created (`ls -la /etc/cryptsetup.d/root.key` shows file with 600 permissions)
+- [x] Keyfile added to root (`cryptsetup luksDump /dev/nvme0n1p4 | grep "Key Slot"` shows slot 1 enabled)
+- [x] Keyfile added to swap (`cryptsetup luksDump /dev/nvme0n1p5 | grep "Key Slot"` shows slot 1 enabled)
+- [x] Initramfs includes keyfile (`lsinitcpio /boot/initramfs-linux.img | grep root.key` shows file)
+- [x] GRUB configured (`cat /etc/default/grub` shows `cryptkey=rootfs:...`)
+
 **Note:** You can toggle this on/off anytime by modifying `/etc/mkinitcpio.conf` and rebuilding initramfs.
+
+**Troubleshooting:**
+- **If keyfile creation fails:** Verify `/etc/cryptsetup.d` directory exists, check disk space
+- **If keyfile not added:** Verify LUKS passphrase is correct, check partition device name
+- **If keyfile not in initramfs:** Verify `FILES=(...)` in `/etc/mkinitcpio.conf`, re-run `mkinitcpio -P`
 
 ---
 
 ## Phase 10: User Account Creation
 
+**ENVIRONMENT:** [Chroot]  
 **TIME:** Estimated Time: 5 minutes  
 **NEXT:** Restart Count: 0
+
+**Prerequisites Checklist:**
+- [ ] Phase 7 completed successfully (or Phase 9 if using automatic decryption)
+- [ ] Still in chroot environment
+- [ ] Username chosen (replace `<username>` in commands)
+- [ ] User password prepared
+
+**Success Criteria:**
+- [ ] User account created with home directory
+- [ ] User added to required groups (wheel, video, audio, etc.)
+- [ ] User password set
+- [ ] Sudo access configured
+- [ ] User verified (can check with `id` command)
 
 ### Step 10.1: Create User Account
 
@@ -2021,14 +2310,37 @@ id username
 
 **SUCCESS:** Phase 10 Complete: User account created
 
+**Verification:**
+- [x] User created (`id username` shows user with groups)
+- [x] Home directory exists (`ls -la /home/username` shows directory)
+- [x] User in wheel group (`id username` shows `wheel` in groups)
+- [x] Sudo configured (`visudo` shows `%wheel ALL=(ALL:ALL) ALL` uncommented)
+- [x] User password set (can verify by attempting to change password)
+
 **NEXT:** Next: Configure network (Phase 11)
+
+**Troubleshooting:**
+- **If user creation fails:** Verify username doesn't contain special characters, check disk space
+- **If groups not added:** Verify group names are correct, re-run `usermod -aG ... username`
+- **If sudo not working:** Verify `%wheel` line is uncommented in `/etc/sudoers`, check user is in wheel group
 
 ---
 
 ## Phase 11: Network Configuration
 
+**ENVIRONMENT:** [Chroot]  
 **TIME:** Estimated Time: 5 minutes  
 **NEXT:** Restart Count: 0
+
+**Prerequisites Checklist:**
+- [ ] Phase 10 completed successfully
+- [ ] Still in chroot environment
+- [ ] NetworkManager package installed (from Phase 6)
+
+**Success Criteria:**
+- [ ] NetworkManager service enabled
+- [ ] Bluetooth packages installed (if needed)
+- [ ] Bluetooth service enabled (if installed)
 
 ### Step 11.1: Enable NetworkManager Service
 
@@ -2073,7 +2385,16 @@ systemctl enable bluetooth
 
 **SUCCESS:** Phase 11 Complete: NetworkManager (and optionally Bluetooth) enabled
 
+**Verification:**
+- [x] NetworkManager enabled (`systemctl is-enabled NetworkManager` shows "enabled")
+- [x] Bluetooth installed (if needed, `pacman -Q bluez bluez-utils` shows packages)
+- [x] Bluetooth enabled (if installed, `systemctl is-enabled bluetooth` shows "enabled")
+
 **NEXT:** Next: Install window manager and utilities (Phase 12)
+
+**Troubleshooting:**
+- **If NetworkManager not enabled:** Verify package is installed, check service name (`systemctl list-unit-files | grep NetworkManager`)
+- **If Bluetooth not working:** Verify hardware is supported, check `lsmod | grep btusb` for Bluetooth modules
 
 ---
 
