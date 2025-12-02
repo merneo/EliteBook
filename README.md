@@ -734,6 +734,10 @@ sudo timeshift --restore --snapshot 'YYYY-MM-DD_HH-MM-SS'
   - SDDM login screen face recognition setup
   - Testing procedures for all authentication points
   - Reboot and testing plan for login verification
+- `HOWDY_NUMPY_ROUND_FIX.md`: NumPy array round error fix documentation
+  - TypeError resolution in Howdy enrollment error reporting
+  - NumPy array to scalar conversion fix
+  - Diagnostic message display improvements
 
 ### External Resources
 
