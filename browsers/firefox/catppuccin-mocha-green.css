@@ -122,56 +122,72 @@
    ADDRESS BAR (OMNIBOX) STYLING - Matching Chrome Theme Exactly
    ============================================================================= */
 
-/* URL bar container - Crust background (matching Chrome omnibox_background) */
-#urlbar {
-    background-color: var(--catppuccin-crust) !important;
+/* URL bar container - Crust background (#11111b = RGB 17, 17, 27) */
+#urlbar,
+#urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
     border: 1px solid transparent !important;
     border-radius: 8px !important;
     box-shadow: none !important;
 }
 
-/* URL bar when not focused - Crust background, no border */
-#urlbar:not([focused="true"]) {
-    background-color: var(--catppuccin-crust) !important;
+/* URL bar when not focused */
+#urlbar:not([focused="true"]),
+#urlbar:not([focused="true"]) #urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
     border: 1px solid transparent !important;
 }
 
 /* URL bar when focused - Keep Crust background, subtle green border */
-#urlbar[focused="true"] {
-    background-color: var(--catppuccin-crust) !important;
-    border: 1px solid var(--catppuccin-green) !important;
+#urlbar[focused="true"],
+#urlbar[focused="true"] #urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border: 1px solid #a6e3a1 !important;
     box-shadow: 0 0 0 1px rgba(166, 227, 161, 0.2) !important;
 }
 
-/* URL bar text input - Green text (matching Chrome omnibox_text) */
-#urlbar-input {
-    color: var(--catppuccin-green) !important;
+/* URL bar text input - Green text (#a6e3a1 = RGB 166, 227, 161) */
+#urlbar-input,
+.urlbar-input-text {
+    color: #a6e3a1 !important;
 }
 
 /* URL bar text when typing */
-#urlbar-input::placeholder {
-    color: var(--catppuccin-subtext0) !important;
+#urlbar-input::placeholder,
+.urlbar-input-text::placeholder {
+    color: #a6adc8 !important;
     opacity: 0.7 !important;
 }
 
-/* URL bar icon container */
-#urlbar-icons {
-    color: var(--catppuccin-green) !important;
+/* URL bar icon container - Green icons */
+#urlbar-icons,
+.urlbar-icon {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
 }
 
-/* URL bar security indicator */
-#identity-box {
-    color: var(--catppuccin-green) !important;
+/* URL bar security indicator - Green */
+#identity-box,
+#identity-box * {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
 }
 
-#identity-box.verifiedDomain {
-    color: var(--catppuccin-green) !important;
+#identity-box.verifiedDomain,
+#identity-box.verifiedDomain * {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
 }
 
-/* URL bar results dropdown - Crust background matching Chrome */
-.urlbarView {
-    background-color: var(--catppuccin-crust) !important;
-    border: 1px solid var(--catppuccin-surface0) !important;
+/* URL bar results dropdown - Crust background */
+.urlbarView,
+.urlbarView-body {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border: 1px solid #313244 !important;
     border-radius: 8px !important;
     margin-top: 4px !important;
 }
@@ -179,44 +195,45 @@
 /* URL bar result items */
 .urlbarView-row {
     background-color: transparent !important;
-    color: var(--catppuccin-text) !important;
+    color: #cdd6f4 !important;
     border-radius: 4px !important;
 }
 
 .urlbarView-row:hover,
 .urlbarView-row[selected] {
-    background-color: var(--catppuccin-surface0) !important;
-    color: var(--catppuccin-green) !important;
+    background-color: #313244 !important;
+    color: #a6e3a1 !important;
 }
 
 /* URL bar result title */
 .urlbarView-title {
-    color: var(--catppuccin-text) !important;
+    color: #cdd6f4 !important;
 }
 
 .urlbarView-row[selected] .urlbarView-title {
-    color: var(--catppuccin-green) !important;
+    color: #a6e3a1 !important;
 }
 
 /* URL bar result URL */
 .urlbarView-url {
-    color: var(--catppuccin-subtext1) !important;
+    color: #bac2de !important;
 }
 
 .urlbarView-row[selected] .urlbarView-url {
-    color: var(--catppuccin-green) !important;
+    color: #a6e3a1 !important;
 }
 
 /* URL bar one-off search buttons */
 #urlbar-search-mode-indicator {
-    background-color: var(--catppuccin-crust) !important;
-    color: var(--catppuccin-green) !important;
-    border: 1px solid var(--catppuccin-surface0) !important;
+    background-color: #11111b !important;
+    color: #a6e3a1 !important;
+    border: 1px solid #313244 !important;
 }
 
 /* URL bar zoom indicator */
 #urlbar-zoom-button {
-    color: var(--catppuccin-green) !important;
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
 }
 
 /* Navigation buttons - Green icons (matching Chrome toolbar_button_icon) */
