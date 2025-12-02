@@ -9,6 +9,7 @@
 - **`README_COMPLETE.md`** - Complete installation guide combining pre-reboot and post-reboot phases
 - **`AI_ASSISTANT_CONTEXT.md`** - Context file for AI assistants (Cursor CLI, Claude, ChatGPT)
 - **`HOW_TO_ASK_AI.md`** - Guide on how to ask AI assistants for help
+- **`AI_ASSISTANT_CONTEXT_USAGE.md`** - Comprehensive academic documentation on purpose, structure, and usage
 - **`extract-phase-prompt.sh`** - Script to extract AI prompts for specific phases
 - **`BACKUP_TO_GITHUB.md`** - Instructions for backing up documentation
 
