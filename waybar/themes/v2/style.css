@@ -1,0 +1,138 @@
+/* =============================================================================
+ * WAYBAR STYLE CONFIGURATION
+ * Theme: Catppuccin Mocha Green
+ * Goal: Consistent, clear, and themed visual feedback for system status.
+ * ============================================================================= */
+
+/* GLOBAL SETTINGS
+ * Reset default browser-like styling to ensure a clean base for Waybar.
+ * Using 'JetBrainsMono Nerd Font' for consistent terminal-like aesthetics.
+ */
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 12px;
+  min-height: 24px; /* Ensures all modules have a consistent minimum height */
+  margin: 0;
+  padding: 0;
+}
+
+/* WAYBAR WINDOW
+ * Defines the main bar's appearance.
+ */
+window#waybar {
+  /* BACKGROUND: Dark base (#1e1e2e) with 85% opacity, matching Hyprland's 'effects ON' state */
+  background-color: rgba(30, 30, 46, 0.85);
+  color: #cdd6f4; /* TEXT: Catppuccin Text color */
+  
+  /* SEPARATOR: Subtle bottom border for visual distinction */
+  border-bottom: 1px solid rgba(88, 91, 112, 0.3); /* Catppuccin Surface1 with transparency */
+}
+
+/* WORKSPACES MODULE
+ * Styling for the Hyprland workspaces indicator.
+ */
+#workspaces {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+/* WORKSPACE BUTTONS
+ * Clean, minimal workspace indicators showing only the workspace number.
+ */
+#workspaces button {
+  padding: 2px 8px;
+  color: #6c7086; /* INACTIVE: Muted gray color */
+  background-color: transparent;
+  font-weight: normal;
+}
+
+/* ACTIVE WORKSPACE BUTTON
+ * Only the active workspace is bold with green Catppuccin accent.
+ */
+#workspaces button.active {
+  color: #a6e3a1; /* ACTIVE: Catppuccin Mocha Green */
+  font-weight: bold;
+}
+
+/* WEATHER MODULE (CUSTOM)
+ * Styling for the custom weather script output.
+ */
+#custom-weather {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 16px;
+  margin: 0;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+/* PULSEAUDIO MODULE (VOLUME) */
+#pulseaudio {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 12px;
+  margin-right: 0px;
+}
+
+/* PULSEAUDIO MUTED STATE */
+#pulseaudio.muted {
+  color: #6c7086; /* Muted color when sound is off */
+}
+
+/* NETWORK MODULE */
+#network {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 12px;
+  margin-right: 0px;
+  font-family: "JetBrainsMono Nerd Font"; /* Ensures consistent font */
+}
+
+/* NETWORK DISCONNECTED STATE */
+#network.disconnected {
+  color: #f38ba8; /* WARNING: Red accent for disconnection */
+}
+
+/* BATTERY MODULE */
+#battery {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 12px;
+  margin-right: 0px;
+}
+
+/* BATTERY WARNING STATES */
+#battery.warning {
+  color: #f9e2af; /* WARNING: Yellow for low battery */
+}
+
+#battery.critical {
+  color: #f38ba8; /* CRITICAL: Red for critical battery level */
+  animation: blink 1s infinite; /* Visual alert */
+}
+
+/* BLINK ANIMATION FOR CRITICAL BATTERY */
+@keyframes blink {
+  to {
+    color: #f38ba8;
+    opacity: 0.6;
+  }
+}
+
+/* CLOCK MODULE */
+#clock {
+  color: #a6e3a1; /* ACCENT: Green accent for time */
+  padding: 0;
+  padding-right: 15px;
+  font-weight: bold;
+}
+
+/* HOVER EFFECTS FOR ALL MODULES
+ * Provides visual feedback when hovering over any module.
+ */
+#pulseaudio:hover,
+#network:hover,
+#battery:hover,
+#clock:hover {
+  background-color: rgba(205, 214, 244, 0.1); /* Subtle background highlight */
+  border-radius: 4px; /* Softly rounded corners on hover */
+}

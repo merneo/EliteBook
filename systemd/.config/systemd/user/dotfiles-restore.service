@@ -1,0 +1,91 @@
+# =============================================================================
+# DOTFILES RESTORE SERVICE - SYSTEMD USER SERVICE
+# =============================================================================
+# Author: merneo
+# Purpose: Automatically restore dotfiles symlinks on user login using GNU Stow.
+#          This ensures configuration files are always properly linked from the
+#          dotfiles repository to their expected locations in $HOME/.config/
+#
+# Service Type: oneshot
+#   - Runs once at session start (not a daemon)
+#   - Completes quickly (symlink operations)
+#   - Safe to re-run (stow -R is idempotent)
+#
+# Installation:
+#   1. Copy to ~/.config/systemd/user/dotfiles-restore.service
+#   2. Enable: systemctl --user enable dotfiles-restore.service
+#   3. (Optional) Start immediately: systemctl --user start dotfiles-restore.service
+#
+# Dependencies:
+#   - GNU Stow: sudo pacman -S stow
+#   - Dotfiles repository at ~/dotfiles (adjust path if different)
+#
+# When This Runs:
+#   - After graphical-session.target (after Hyprland/GNOME/KDE starts)
+#   - Before user interacts with desktop (symlinks ready for apps)
+# =============================================================================
+
+[Unit]
+# ===========================================================================
+# UNIT DESCRIPTION
+# ===========================================================================
+# Description: Human-readable name shown in systemctl status output.
+# After: Delay execution until graphical session is initialized.
+#        This ensures $HOME and display environment are available.
+# ===========================================================================
+Description=Restore dotfiles symlinks
+After=graphical-session.target
+
+[Service]
+# ===========================================================================
+# SERVICE CONFIGURATION
+# ===========================================================================
+# Type: oneshot
+#   - Service runs to completion and exits
+#   - systemd considers service "active" while running, "inactive" after
+#   - Appropriate for one-time setup tasks
+#
+# ExecStart: Command to execute.
+#   - Uses %h expansion for $HOME directory (portable across users)
+#   - Changes to dotfiles directory before running stow
+#   - stow -R: "Re-stow" mode - removes then recreates symlinks
+#     This handles cases where symlinks were manually deleted or broken
+#
+# Stow Packages (arguments to stow):
+#   - hypr: Hyprland window manager configuration
+#   - waybar: Status bar configuration and styling
+#   - tmux: Terminal multiplexer configuration
+#   - nvim: Neovim editor configuration
+#   - kitty: Terminal emulator configuration
+#   - albert: Application launcher configuration
+#   - neofetch: System information display configuration
+#   - swayosd: On-screen display styling
+#   - scripts: Custom shell scripts (~/.local/bin/)
+#
+# Logging:
+#   - 2>&1: Redirect stderr to stdout
+#   - | logger -t dotfiles-restore: Send output to syslog with tag
+#   - View logs: journalctl --user -t dotfiles-restore
+# ===========================================================================
+Type=oneshot
+ExecStart=/bin/bash -c 'cd %h/dotfiles && /usr/bin/stow -R hypr waybar tmux nvim kitty albert neofetch swayosd scripts 2>&1 | logger -t dotfiles-restore'
+
+[Install]
+# ===========================================================================
+# INSTALL CONFIGURATION
+# ===========================================================================
+# WantedBy: default.target
+#   - Service starts when user logs in (default user session target)
+#   - Does NOT start on system boot (only user login)
+#   - Equivalent to "multi-user.target" for system services
+#
+# To enable:
+#   systemctl --user enable dotfiles-restore.service
+#
+# To disable:
+#   systemctl --user disable dotfiles-restore.service
+#
+# To check status:
+#   systemctl --user status dotfiles-restore.service
+# ===========================================================================
+WantedBy=default.target

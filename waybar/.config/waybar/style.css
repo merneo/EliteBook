@@ -1,0 +1,343 @@
+/* =============================================================================
+ * WAYBAR STYLE CONFIGURATION - Status Bar Visual Styling
+ * =============================================================================
+ * Theme: Catppuccin Mocha Green
+ * Purpose: Defines visual appearance of Waybar status bar, providing consistent,
+ *          themed styling for all status bar modules (workspaces, weather, audio,
+ *          network, battery, clock).
+ *
+ * Operational Context:
+ *   This stylesheet is loaded by Waybar and applied to all status bar elements.
+ *   It ensures visual consistency with the overall desktop theme (Catppuccin Mocha)
+ *   and provides clear visual feedback for system state (active workspaces, network
+ *   status, battery warnings, etc.).
+ *
+ * Color Scheme:
+ *   - Base: #1e1e2e (Catppuccin Mocha base - dark background)
+ *   - Text: #cdd6f4 (Catppuccin Text - primary text color)
+ *   - Accent: #a6e3a1 (Catppuccin Green - active/highlight color)
+ *   - Muted: #bac2de (Catppuccin Subtext1 - secondary text)
+ *   - Surface: #313244 (Catppuccin Surface0 - elevated surfaces)
+ *   - Warning: #f9e2af (Catppuccin Yellow - warnings)
+ *   - Critical: #f38ba8 (Catppuccin Red - critical alerts)
+ *
+ * Typography:
+ *   - Font: JetBrainsMono Nerd Font (monospace, terminal aesthetic)
+ *   - Size: 12px (compact, preserves screen real estate)
+ *   - Weight: Normal (bold only for active states)
+ *
+ * Layout:
+ *   - Height: 24px (compact status bar)
+ *   - Opacity: 85% (transparent background, allows blur effect)
+ *   - Border: 1px bottom border (visual separation from desktop)
+ * ============================================================================= */
+
+/* =============================================================================
+ * GLOBAL RESET & BASE STYLING
+ * =============================================================================
+ * Purpose: Reset default browser-like styling and establish base styles for
+ *          all Waybar elements.
+ *
+ * Universal Selector (*):
+ *   - Applies to all elements within Waybar window
+ *   - Ensures consistent base styling across all modules
+ *   - Prevents browser default styles from interfering
+ *
+ * Key Properties:
+ *   - border: none - Removes default borders (clean appearance)
+ *   - border-radius: 0 - Sharp corners (matches Corner Mode aesthetic)
+ *   - font-family: JetBrainsMono Nerd Font - Terminal-style monospace font
+ *   - font-size: 12px - Compact text size (fits in 24px height)
+ *   - min-height: 24px - Ensures all modules have consistent height
+ *   - margin/padding: 0 - Removes default spacing (controlled per-module)
+ *
+ * Why Global Reset:
+ *   - Waybar uses GTK/CSS rendering (browser-like)
+ *   - Default styles can interfere with custom design
+ *   - Reset ensures predictable styling behavior
+ * ============================================================================= */
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 12px;
+  min-height: 24px; /* Ensures all modules have a consistent minimum height */
+  margin: 0;
+  padding: 0;
+}
+
+/* =============================================================================
+ * WAYBAR WINDOW (Main Container)
+ * =============================================================================
+ * Purpose: Define the main status bar container appearance
+ *
+ * Background:
+ *   - rgba(30, 30, 46, 0.85): Catppuccin Mocha base color with 85% opacity
+ *   - 85% opacity allows background blur to show through (when effects enabled)
+ *   - Matches Hyprland's effects-on state (transparent with blur)
+ *   - Modified by effects-toggle.sh scripts (0.85 with effects, 1.0 without)
+ *
+ * Text Color:
+ *   - #cdd6f4: Catppuccin Text (primary text color)
+ *   - High contrast against dark background (readability)
+ *   - Applied to all text elements unless overridden
+ *
+ * Border:
+ *   - border-bottom: 1px solid rgba(88, 91, 112, 0.3)
+ *   - Catppuccin Surface1 color with 30% opacity
+ *   - Provides subtle visual separation from desktop content
+ *   - Prevents status bar from blending into background
+ * ============================================================================= */
+window#waybar {
+  /* BACKGROUND: Dark base (#1e1e2e) with 85% opacity, matching Hyprland's 'effects ON' state */
+  background-color: rgba(30, 30, 46, 0.85);
+  color: #cdd6f4; /* TEXT: Catppuccin Text color */
+  
+  /* SEPARATOR: Subtle bottom border for visual distinction */
+  border-bottom: 1px solid rgba(88, 91, 112, 0.3); /* Catppuccin Surface1 with transparency */
+}
+
+/* =============================================================================
+ * WORKSPACES MODULE (Hyprland Workspace Indicator)
+ * =============================================================================
+ * Purpose: Style the workspace switcher buttons in the status bar
+ *
+ * Module Container:
+ *   - Transparent background (allows Waybar background to show through)
+ *   - No margin/padding (tight integration with bar)
+ *
+ * Workspace Buttons (Inactive):
+ *   - Color: #6c7086 (Catppuccin Overlay1 - muted gray)
+ *   - Padding: 2px vertical, 8px horizontal (compact but clickable)
+ *   - Transparent background (no visual distraction)
+ *   - Normal font weight (subtle appearance)
+ *
+ * Active Workspace Button:
+ *   - Color: #a6e3a1 (Catppuccin Green - accent color)
+ *   - Bold font weight (clear visual distinction)
+ *   - Provides immediate feedback on current workspace
+ *
+ * Visual Strategy:
+ *   - Inactive: Muted, unobtrusive (doesn't compete for attention)
+ *   - Active: Bold green (clear indication of current workspace)
+ *   - Minimal design (numbers only, no icons or labels)
+ * ============================================================================= */
+#workspaces {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+/* WORKSPACE BUTTONS
+ * Clean, minimal workspace indicators showing only the workspace number.
+ */
+#workspaces button {
+  padding: 2px 8px;
+  color: #6c7086; /* INACTIVE: Muted gray color */
+  background-color: transparent;
+  font-weight: normal;
+}
+
+/* ACTIVE WORKSPACE BUTTON
+ * Only the active workspace is bold with green Catppuccin accent.
+ */
+#workspaces button.active {
+  color: #a6e3a1; /* ACTIVE: Catppuccin Mocha Green */
+  font-weight: bold;
+}
+
+/* =============================================================================
+ * WEATHER MODULE (Custom Script Output)
+ * =============================================================================
+ * Purpose: Style the custom weather information displayed in status bar
+ *
+ * Display Format:
+ *   - Icon + Temperature (e.g., "☀️ 22°C")
+ *   - Tooltip on hover: City, description, humidity
+ *
+ * Styling:
+ *   - Color: #bac2de (Catppuccin Subtext1 - muted accent)
+ *   - Padding: 0 vertical, 16px horizontal (spacing for readability)
+ *   - Normal font weight (doesn't compete with clock for attention)
+ *   - Font size: 12px (matches global setting)
+ * ============================================================================= */
+#custom-weather {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 16px;
+  margin: 0;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+/* =============================================================================
+ * PULSEAUDIO MODULE (Volume Control)
+ * =============================================================================
+ * Purpose: Style audio volume indicator and control
+ *
+ * Normal State:
+ *   - Color: #bac2de (Catppuccin Subtext1 - muted accent)
+ *   - Padding: 0 vertical, 12px horizontal (compact spacing)
+ *   - Displays: "VOL XX%" format (from config.jsonc)
+ *
+ * Muted State:
+ *   - Color: #6c7086 (Catppuccin Overlay1 - more muted)
+ *   - Visual indication that audio is disabled
+ *   - Displays: "MUTE XX%" format (from config.jsonc)
+ *
+ * Interaction:
+ *   - Click: Opens pavucontrol (audio mixer GUI)
+ *   - Scroll: Adjusts volume (±5% per scroll)
+ * ============================================================================= */
+#pulseaudio {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 12px;
+  margin-right: 0px;
+}
+
+/* PULSEAUDIO MUTED STATE */
+#pulseaudio.muted {
+  color: #6c7086; /* Muted color when sound is off */
+}
+
+/* =============================================================================
+ * NETWORK MODULE (Connection Status)
+ * =============================================================================
+ * Purpose: Style network connection status and IP address display
+ *
+ * Normal State (Connected):
+ *   - Color: #bac2de (Catppuccin Subtext1 - muted accent)
+ *   - Padding: 0 vertical, 12px horizontal
+ *   - Displays: "NET X.X.X.X" format (IP address from config.jsonc)
+ *
+ * Disconnected State:
+ *   - Color: #f38ba8 (Catppuccin Red - warning color)
+ *   - Visual alert that network is unavailable
+ *   - Displays: "No Net" format (from config.jsonc)
+ *
+ * Font:
+ *   - Explicitly set to JetBrainsMono Nerd Font (ensures IP addresses display correctly)
+ *   - Monospace font prevents IP address digits from shifting
+ *
+ * Interaction:
+ *   - Click: Opens nmtui (terminal network manager)
+ * ============================================================================= */
+#network {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 12px;
+  margin-right: 0px;
+  font-family: "JetBrainsMono Nerd Font"; /* Ensures consistent font */
+}
+
+/* NETWORK DISCONNECTED STATE */
+#network.disconnected {
+  color: #f38ba8; /* WARNING: Red accent for disconnection */
+}
+
+/* =============================================================================
+ * BATTERY MODULE (Power Status)
+ * =============================================================================
+ * Purpose: Style battery level indicator with warning states
+ *
+ * Normal State (≥30%):
+ *   - Color: #bac2de (Catppuccin Subtext1 - muted accent)
+ *   - Padding: 0 vertical, 12px horizontal
+ *   - Displays: "BAT XX%" format (from config.jsonc)
+ *
+ * Warning State (30-15%):
+ *   - Color: #f9e2af (Catppuccin Yellow - warning)
+ *   - Visual indication that battery is low
+ *   - User should consider charging soon
+ *
+ * Critical State (<15%):
+ *   - Color: #f38ba8 (Catppuccin Red - critical alert)
+ *   - Animation: blink (pulsing visual alert)
+ *   - Urgent action required (connect charger immediately)
+ *
+ * Blink Animation:
+ *   - Duration: 1 second (1s cycle)
+ *   - Infinite: Repeats until battery charged or system shuts down
+ *   - Opacity: 0.6 at peak (creates pulsing effect)
+ *   - Purpose: Draws attention to critical battery level
+ * ============================================================================= */
+#battery {
+  color: #bac2de; /* Muted accent color */
+  padding: 0 12px;
+  margin-right: 0px;
+}
+
+/* BATTERY WARNING STATES */
+#battery.warning {
+  color: #f9e2af; /* WARNING: Yellow for low battery */
+}
+
+#battery.critical {
+  color: #f38ba8; /* CRITICAL: Red for critical battery level */
+  animation: blink 1s infinite; /* Visual alert */
+}
+
+/* BLINK ANIMATION FOR CRITICAL BATTERY */
+@keyframes blink {
+  to {
+    color: #f38ba8;
+    opacity: 0.6;
+  }
+}
+
+/* =============================================================================
+ * CLOCK MODULE (Time Display)
+ * =============================================================================
+ * Purpose: Style the time display in the status bar
+ *
+ * Display Format:
+ *   - Primary: 12-hour format with AM/PM (e.g., "02:30 PM")
+ *   - Tooltip: Full date (e.g., "01-12-2025")
+ *
+ * Styling:
+ *   - Color: #a6e3a1 (Catppuccin Green - accent color)
+ *   - Font weight: Bold (emphasizes time as important information)
+ *   - Padding: 0 left, 15px right (spacing from edge)
+ *   - Position: Rightmost module (standard status bar convention)
+ *
+ * Why Green Accent:
+ *   - Matches overall theme (Catppuccin Mocha Green)
+ *   - Provides visual anchor point (time is frequently referenced)
+ *   - Distinguishes from other modules (information hierarchy)
+ * ============================================================================= */
+#clock {
+  color: #a6e3a1; /* ACCENT: Green accent for time */
+  padding: 0;
+  padding-right: 15px;
+  font-weight: bold;
+}
+
+/* =============================================================================
+ * HOVER EFFECTS (Interactive Feedback)
+ * =============================================================================
+ * Purpose: Provide visual feedback when user hovers over clickable modules
+ *
+ * Affected Modules:
+ *   - pulseaudio: Opens pavucontrol on click
+ *   - network: Opens nmtui on click
+ *   - battery: Shows detailed battery info (if configured)
+ *   - clock: Shows date tooltip (configured in config.jsonc)
+ *
+ * Hover Styling:
+ *   - Background: rgba(205, 214, 244, 0.1) - Subtle highlight (10% opacity)
+ *   - Border radius: 4px - Softly rounded corners (modern appearance)
+ *   - Provides clear indication that element is interactive
+ *
+ * Why Hover Effects:
+ *   - User experience: Clear feedback on interactive elements
+ *   - Discoverability: Helps users identify clickable modules
+ *   - Professional appearance: Polished, modern interface
+ * ============================================================================= */
+/* HOVER EFFECTS FOR ALL MODULES
+ * Provides visual feedback when hovering over any module.
+ */
+#pulseaudio:hover,
+#network:hover,
+#battery:hover,
+#clock:hover {
+  background-color: rgba(205, 214, 244, 0.1); /* Subtle background highlight */
+  border-radius: 4px; /* Softly rounded corners on hover */
+}

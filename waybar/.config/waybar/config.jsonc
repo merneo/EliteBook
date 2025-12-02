@@ -1,0 +1,216 @@
+// =============================================================================
+// WAYBAR CONFIGURATION (Top Status Bar)
+// Author: merneo
+// Purpose: Modular, informative status bar displaying workspace, weather,
+//          audio, network, battery, and time with dynamic updates
+// Theme: Catppuccin Mocha Green
+// =============================================================================
+
+{
+  // =========================================================================
+  // LAYER & POSITIONING
+  // =========================================================================
+  // Layer: 'top' ensures waybar appears above all windows (topmost z-order)
+  // Position: 'top' places bar at top of screen
+  // Height: 24px (compact, preserves screen real estate)
+  // =========================================================================
+
+  "layer": "top",           // Display on top of all windows
+  "position": "top",        // Position at top of screen
+  "height": 24,             // Compact height (standard for status bars)
+
+  // =========================================================================
+  // MODULE POSITIONING
+  // =========================================================================
+  // Waybar displays modules in three sections: left, center, right
+  // This layout strategy:
+  //   - Left: Workspace indicator (primary navigation)
+  //   - Center: Weather (informational, not critical)
+  //   - Right: System status (volume, network, battery, time)
+  // =========================================================================
+
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["custom/weather"],
+  "modules-right": ["pulseaudio", "network", "battery", "clock"],
+
+  // =========================================================================
+  // WORKSPACE MODULE (Hyprland Integration)
+  // =========================================================================
+  // Displays current and available workspaces, allows quick workspace switching
+  //
+  // Configuration:
+  //   - "format": "{id}" = Show workspace number only (1, 2, 3, etc.)
+  //   - "on-click": "activate" = Clicking workspace button switches to it
+  //   - "all-outputs": false = Only show workspaces for current monitor
+  //   - "persistent-workspaces": Ensures workspaces 1-5 always on eDP-1,
+  //     6-10 always on HDMI-A-1 (survives monitor disconnection)
+  // =========================================================================
+
+  "hyprland/workspaces": {
+    "format": "{id}",       // Display workspace ID (1-10)
+    "on-click": "activate", // Click to switch workspace
+    "all-outputs": false,   // Only show current monitor's workspaces
+    "persistent-workspaces": {
+      // ===================================================================
+      // Workspace Assignment Strategy (Per-Monitor)
+      // ===================================================================
+      // Built-in laptop display: Workspaces 1-5 (always available)
+      // External monitor: Workspaces 6-10 (when connected)
+      //
+      // Benefits:
+      //   - Predictable workspace location (muscle memory)
+      //   - Seamless docking/undocking (workspaces persist)
+      //   - Multi-monitor coordination without workspace conflicts
+      // ===================================================================
+
+      "eDP-1": [1, 2, 3, 4, 5],      // Built-in screen: workspaces 1-5
+      "HDMI-A-1": [6, 7, 8, 9, 10]   // External monitor: workspaces 6-10
+    }
+  },
+
+  // =========================================================================
+  // WEATHER MODULE (Custom Script)
+  // =========================================================================
+  // Fetches local weather via external shell script
+  //
+  // Implementation Details:
+  //   - Script: ~/.config/waybar/weather.sh
+  //   - Data source: wttr.in API (Czech Republic weather)
+  //   - Update interval: 300 seconds (5 minutes)
+  //   - Return format: JSON (allows tooltip and text separation)
+  //
+  // Benefits:
+  //   - At-a-glance weather without opening browser
+  //   - Hover tooltip shows detailed forecast
+  //   - Low overhead (updates every 5 minutes, not continuously)
+  //
+  // API Alternative:
+  //   - OpenWeatherMap (requires API key)
+  //   - weather.gov (USA only)
+  //   - Local weather station (requires setup)
+  // =========================================================================
+
+  "custom/weather": {
+    "exec": "~/.config/waybar/weather.sh",      // Custom weather script
+    "restart-interval": 300,                    // Update every 5 minutes
+    "return-type": "json",                      // JSON output format
+    "format": "{text}",                         // Display text field
+    "tooltip": "{tooltip}"                      // Show detailed tooltip on hover
+  },
+
+  // =========================================================================
+  // AUDIO MODULE (PulseAudio Volume Control)
+  // =========================================================================
+  // Displays current volume level and mute status
+  //
+  // Features:
+  //   - Real-time volume percentage
+  //   - Visual distinction between active and muted states
+  //   - Click to open pavucontrol (full audio mixer GUI)
+  //   - Scroll wheel to adjust volume (±5% per scroll)
+  //
+  // Integration:
+  //   - Hardware keys (XF86AudioRaiseVolume, etc.) handled by swayosd
+  //   - This module shows current state without affecting real hardware
+  //   - Keyboard shortcuts: Super+Shift+E toggles effects (affects transparency)
+  // =========================================================================
+
+  "pulseaudio": {
+    "format": "VOL {volume}%",        // Normal state: show percentage
+    "format-muted": "MUTE {volume}%", // Muted state: emphasize with MUTE prefix
+    "on-click": "pavucontrol",        // Left-click to open mixer
+    "scroll-step": 5                  // Scroll wheel: ±5% volume adjustment
+  },
+
+  // =========================================================================
+  // NETWORK MODULE (Connection Status & IP)
+  // =========================================================================
+  // Displays current network connection status and IP address
+  //
+  // Information:
+  //   - WiFi: Connection name (SSID) and IP address
+  //   - Ethernet: IP address
+  //   - Disconnected: Shows "No Net" (critical to know)
+  //
+  // Integration:
+  //   - Update interval: 5 seconds (responsive to network changes)
+  //   - Click to open nmtui (terminal network manager)
+  //   - Allows quick WiFi switching without leaving WM
+  //
+  // Use Cases:
+  //   - Verify IP after connecting to VPN
+  //   - Check DNS/DHCP issues
+  //   - Switch WiFi networks
+  //   - Diagnose connectivity problems
+  // =========================================================================
+
+  "network": {
+    "format-wifi": "NET {ipaddr}",        // WiFi: show IP
+    "format-ethernet": "NET {ipaddr}",    // Ethernet: show IP
+    "format-disconnected": "No Net",      // Disconnected: warning
+    "interval": 5,                        // Update every 5 seconds
+    "on-click": "nmtui"                   // Click to open network manager
+  },
+
+  // =========================================================================
+  // BATTERY MODULE (Power Status & Remaining Capacity)
+  // =========================================================================
+  // Displays battery percentage and charging state
+  //
+  // Visual States:
+  //   - Normal (≥30%): Green (sufficient power)
+  //   - Warning (30-15%): Yellow (low battery warning)
+  //   - Critical (<15%): Red (urgent charging needed, styling in CSS)
+  //
+  // Format Details:
+  //   - Discharging: Shows percentage (e.g., "BAT 85%")
+  //   - Charging: Shows percentage with visual indicator
+  //   - Plugged: Shows percentage (AC connected, not charging)
+  //   - Full: Shows 100% (battery fully charged, AC connected)
+  //
+  // Thresholds:
+  //   - warning: 30% = Yellow highlight (in style.css)
+  //   - critical: 15% = Red highlight (urgent action needed)
+  //
+  // Update Interval: 5 seconds (responsive to AC connect/disconnect)
+  // =========================================================================
+
+  "battery": {
+    "format": "BAT {capacity}%",            // Default format
+    "format-discharging": "BAT {capacity}%", // Running on battery
+    "format-charging": "BAT {capacity}%",    // Plugged in, charging
+    "format-plugged": "BAT {capacity}%",     // AC connected, not charging
+    "format-full": "BAT {capacity}%",        // Fully charged, AC connected
+    "states": {
+      "warning": 30,    // Yellow (low battery)
+      "critical": 15    // Red (very low battery)
+    },
+    "interval": 5       // Update every 5 seconds
+  },
+
+  // =========================================================================
+  // CLOCK MODULE (Current Time & Date)
+  // =========================================================================
+  // Displays current time in 12-hour format with date tooltip
+  //
+  // Time Format:
+  //   - Display: "02:30 PM" (12-hour with AM/PM)
+  //   - Rationale: Readable in laptop contexts, common standard
+  //
+  // Tooltip (Hover):
+  //   - Shows full date: "DD-MM-YYYY" (Day-Month-Year)
+  //   - Example: "01-12-2025" = December 1st, 2025
+  //
+  // Update Interval: Automatic (every second)
+  //
+  // Use Cases:
+  //   - Quick time check without opening calendar
+  //   - Verify system clock accuracy
+  //   - Timezone reference (important for remote work)
+  // =========================================================================
+
+  "clock": {
+    "format": "{:%I:%M %p}",        // Time: 12-hour format (02:30 PM)
+    "tooltip-format": "{:%d-%m-%Y}" // Date on hover: 01-12-2025
+  }
+}

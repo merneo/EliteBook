@@ -1,0 +1,114 @@
+// =============================================================================
+// WAYBAR THEME V2 CONFIGURATION - Feature-Rich Status Bar
+// =============================================================================
+// Author: merneo
+// Theme: Catppuccin Mocha Green
+// Purpose: Modular, information-rich status bar with extended features
+//
+// Operational Context:
+//   This is the enhanced (v2) Waybar configuration, providing more detailed
+//   system information and additional modules compared to v1. Ideal for users
+//   who want comprehensive system monitoring at a glance.
+//
+// Module Layout:
+//   - Left: Workspaces (navigation)
+//   - Center: Weather (informational)
+//   - Right: System status (audio, network, battery, time)
+//
+// Characteristics:
+//   - Extended modules (more information displayed)
+//   - Modular design (easy to customize)
+//   - Weather integration (external script)
+//   - Comprehensive system monitoring
+//   - Slightly higher resource usage than v1
+// =============================================================================
+
+{
+  // =========================================================================
+  // GLOBAL SETTINGS
+  // =========================================================================
+  // layer: Display layer (top = above all windows)
+  // position: Bar position (top = top of screen)
+  // height: Bar height in pixels (24px = compact, standard)
+  // =========================================================================
+  "layer": "top", // Display on top of windows
+  "position": "top",
+  "height": 24, // Compact height for screen real estate
+  
+  // =========================================================================
+  // MODULE POSITIONING
+  // =========================================================================
+  // Three-section layout: left, center, right
+  // Left: Navigation (workspaces)
+  // Center: Information (weather)
+  // Right: System status (audio, network, battery, time)
+  // =========================================================================
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["custom/weather"],
+  "modules-right": ["pulseaudio", "network", "battery", "clock"],
+
+  // WORKSPACES
+  // Shows active and persistent workspaces.
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "all-outputs": false, // Only show workspaces relevant to the specific monitor
+    "persistent-workspaces": {
+      // Pin workspaces 1-5 to the laptop screen
+      "eDP-1": [1, 2, 3, 4, 5],
+      // Pin workspaces 6-10 to the external monitor
+      "HDMI-A-1": [6, 7, 8, 9, 10]
+    }
+  },
+
+  // WEATHER (Custom Script)
+  // Fetches local weather data via a shell script.
+  "custom/weather": {
+    "exec": "~/.config/waybar/weather.sh",
+    "restart-interval": 300, // Update every 5 minutes
+    "return-type": "json",
+    "format": "{text}",
+    "tooltip": "{tooltip}"
+  },
+
+  // AUDIO
+  // Volume control using PulseAudio.
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "MUTE {volume}%",
+    "on-click": "pavucontrol", // Open full mixer on click
+    "scroll-step": 5
+  },
+
+  // NETWORK
+  // Shows connection status and IP.
+  "network": {
+    "format-wifi": "NET {ipaddr}",
+    "format-ethernet": "NET {ipaddr}",
+    "format-disconnected": "No Net",
+    "interval": 5,
+    "on-click": "nmtui" // Open terminal network manager
+  },
+
+  // BATTERY
+  // Battery status with critical level warnings.
+  "battery": {
+    "format": "BAT {capacity}%",
+    "format-discharging": "BAT {capacity}%",
+    "format-charging": "BAT {capacity}%",
+    "format-plugged": "BAT {capacity}%",
+    "format-full": "BAT {capacity}%",
+    "states": {
+      "warning": 30,
+      "critical": 15 // Triggers red styling in CSS
+    },
+    "interval": 5
+  },
+
+  // CLOCK
+  // Simple time format with date tooltip.
+  "clock": {
+    "format": "{:%I:%M %p}", // 12-hour format (e.g., 02:30 PM)
+    "tooltip-format": "{:%d-%m-%Y}" // Day-Month-Year
+  }
+}

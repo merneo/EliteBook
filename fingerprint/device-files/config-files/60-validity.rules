@@ -1,0 +1,83 @@
+# =============================================================================
+# UDEV RULES - Validity Sensors Fingerprint Device Permissions
+# =============================================================================
+# Author: merneo
+# Purpose: Configure udev rules to grant user-level access to Validity Sensors
+#          fingerprint reader (USB device 138a:0092) without requiring root
+#          privileges for normal operations.
+#
+# File Location: /etc/udev/rules.d/60-validity.rules
+# After modifying, reload udev rules:
+#   sudo udevadm control --reload-rules
+#   sudo udevadm trigger
+#
+# Device Information:
+#   - Vendor ID: 138a (Validity Sensors, Inc.)
+#   - Product ID: 0092 (Synaptics VFS7552 fingerprint sensor)
+#   - Device Path: /dev/bus/usb/001/00X (varies based on USB topology)
+#
+# Permission Model:
+#   - MODE="0666": Read/write permissions for all users (owner, group, others)
+#   - Rationale: Fingerprint authentication is user-level operation
+#   - Security: Device access controlled by fprintd service (not raw USB access)
+#
+# Rule Matching:
+#   - SUBSYSTEMS=="usb": Matches USB subsystem devices
+#   - ATTRS{idVendor}=="138a": Matches Validity Sensors vendor ID
+#   - ATTRS{idProduct}=="0092": Specific product ID (optional, more specific)
+#
+# Why Two Rules:
+#   - First rule: Broad match for all Validity Sensors devices (vendor ID only)
+#   - Second rule: Specific match for 0092 product (more precise, takes precedence)
+#   - Redundancy: Ensures device is matched even if one rule fails
+#
+# Security Considerations:
+#   - 0666 permissions allow any user to access device
+#   - Actual authentication is handled by fprintd service (requires enrollment)
+#   - Raw USB access doesn't compromise security (device requires proper protocol)
+# =============================================================================
+
+# =============================================================================
+# RULE 1: BROAD VALIDITY SENSORS MATCH
+# =============================================================================
+# Purpose: Match all Validity Sensors devices by vendor ID
+#
+# Matching Criteria:
+#   - SUBSYSTEMS=="usb": USB subsystem (not USB device, but parent USB controller)
+#   - ATTRS{idVendor}=="138a": Validity Sensors vendor ID
+#
+# Permissions:
+#   - MODE="0666": Read/write for all users (owner, group, others)
+#
+# Why Broad Match:
+#   - Covers all Validity Sensors products (not just 0092)
+#   - Future-proof (works with other Validity Sensors devices)
+#   - Fallback if specific product rule fails
+# =============================================================================
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="138a", MODE="0666"
+
+# =============================================================================
+# RULE 2: SPECIFIC PRODUCT MATCH (HP EliteBook x360 1030 G2)
+# =============================================================================
+# Purpose: Explicitly match the specific fingerprint sensor model in this system
+#
+# Matching Criteria:
+#   - SUBSYSTEMS=="usb": USB subsystem
+#   - ATTRS{idVendor}=="138a": Validity Sensors vendor ID
+#   - ATTRS{idProduct}=="0092": Specific product ID (Synaptics VFS7552)
+#
+# Permissions:
+#   - MODE="0666": Read/write for all users
+#
+# Why Specific Match:
+#   - More precise (only matches this exact device)
+#   - Takes precedence over broad rule (udev rule ordering)
+#   - Documents exact device model in configuration
+#
+# Device Details:
+#   - Model: Synaptics VFS7552
+#   - Interface: USB 2.0
+#   - Driver: python-validity (user-space driver)
+#   - Service: python3-validity.service (systemd user service)
+# =============================================================================
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="138a", ATTRS{idProduct}=="0092", MODE="0666"

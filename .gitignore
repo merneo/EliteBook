@@ -1,0 +1,205 @@
+# =============================================================================
+# GIT IGNORE CONFIGURATION - Repository Exclusion Rules
+# =============================================================================
+# Author: merneo
+# Purpose: Defines files and directories that should be excluded from version
+#          control, preventing sensitive information, temporary files, and
+#          system-specific data from being committed to the repository.
+#
+# Operational Context:
+#   This .gitignore file ensures that sensitive credentials, API keys, temporary
+#   files, and user-specific configurations are not accidentally committed to
+#   the public GitHub repository. Critical for maintaining security and keeping
+#   the repository clean and portable.
+#
+# Security Focus:
+#   - API keys and authentication tokens (never commit these)
+#   - User credentials and passwords (sensitive data)
+#   - Environment-specific configurations (may contain secrets)
+#   - Shell configuration files (may contain API keys or tokens)
+#
+# File Types Excluded:
+#   - Log files (*.log) - Temporary, can be regenerated
+#   - Editor swap files (*.swp, *.swo) - Temporary editor state
+#   - IDE configuration (.vscode/, .idea/) - User-specific, not portable
+#   - OS-specific files (.DS_Store) - macOS metadata
+# =============================================================================
+
+# =============================================================================
+# API KEYS & SECRETS - NEVER SHARE!
+# =============================================================================
+# Purpose: Exclude all files containing sensitive authentication information
+#
+# Security Rationale:
+#   - API keys, tokens, and passwords must never be committed to version control
+#   - Public repositories are scanned for secrets (GitHub secret scanning)
+#   - Exposed credentials can lead to unauthorized access and security breaches
+#
+# Shell Configuration Files:
+#   - .bashrc, .zshrc, .bash_profile: May contain API keys or tokens
+#   - .bash_logout, .profile: May contain sensitive environment variables
+#   - Note: Shell scripts (*.sh) are NOT ignored (scripts are OK, configs are not)
+#
+# Environment Files:
+#   - .env, .env.local: Common location for API keys and secrets
+#   - *.envrc: direnv configuration (may contain secrets)
+#   - Pattern: *.env* matches all environment file variants
+# =============================================================================
+# Shell konfigurační soubory s API klíči
+.bashrc
+.zshrc
+.bash_profile
+.bash_logout
+.profile
+# Pozor: NEBLOKUJEME *.sh - skripty jsou OK, jen konfigurační soubory!
+
+# Environment soubory
+.env
+.env.local
+.env.*.local
+*.env
+*.envrc
+
+# =============================================================================
+# SENSITIVE DATA PATTERNS
+# =============================================================================
+# Purpose: Exclude files matching common secret naming patterns
+#
+# Pattern Matching:
+#   - Case-insensitive matching (covers both uppercase and lowercase)
+#   - Wildcard patterns (*) match anywhere in filename
+#   - Examples: api_key.txt, SECRET_TOKEN.env, my_password.conf
+#
+# Covered Patterns:
+#   - API keys: *api*key*, *API*KEY*, *api_key*, *API_KEY*
+#   - Secrets: *secret*, *SECRET*
+#   - Tokens: *token*, *TOKEN*
+#   - Passwords: *password*, *PASSWORD*
+#   - Credentials: *credential*, *CREDENTIAL*
+#
+# Why Pattern Matching:
+#   - Catches files with various naming conventions
+#   - Prevents accidental commits of renamed secret files
+#   - Comprehensive coverage (better safe than sorry)
+# =============================================================================
+*api*key*
+*API*KEY*
+*api_key*
+*API_KEY*
+*secret*
+*SECRET*
+*token*
+*TOKEN*
+*password*
+*PASSWORD*
+*credential*
+*CREDENTIAL*
+
+# =============================================================================
+# CLI TOOL CONFIGURATION FILES
+# =============================================================================
+# Purpose: Exclude configuration files from CLI tools that may contain API keys
+#
+# Tools Covered:
+#   - GitHub CLI: .config/gh/hosts.yml (may contain tokens)
+#   - Google Cloud CLI: .config/gcloud/ (contains authentication)
+#   - Cursor IDE: .config/cursor/auth.json (contains API keys)
+#   - Claude CLI: .claude.json, .claude/ (may contain API keys)
+#   - Gemini CLI: .gemini/ (may contain API keys)
+#
+# Certificate Files:
+#   - *.key: Private key files (never commit)
+#   - *.pem, *.p12, *.pfx: Certificate files (may contain private keys)
+#   - *.credentials.json: Service account credentials
+# =============================================================================
+.claude.json
+.claude/
+.gemini/
+.config/gh/hosts.yml
+.config/gcloud/
+.config/cursor/auth.json
+*.credentials.json
+*.key
+*.pem
+*.p12
+*.pfx
+
+# =============================================================================
+# AI SERVICE CONFIGURATION
+# =============================================================================
+# Purpose: Exclude configuration files from AI service CLI tools
+#
+# Services Covered:
+#   - OpenAI: openai* (API key configuration)
+#   - Anthropic: anthropic* (Claude API keys)
+#   - Gemini: gemini* (Google AI API keys)
+#   - Claude: claude* (Anthropic API keys)
+#
+# Why Exclude:
+#   - These tools store API keys in configuration files
+#   - API keys provide access to paid services (cost risk)
+#   - Exposed keys can be used by unauthorized users
+# =============================================================================
+openai*
+anthropic*
+gemini*
+claude*
+
+# =============================================================================
+# SECRETS DIRECTORIES
+# =============================================================================
+# Purpose: Exclude entire directories commonly used for storing secrets
+#
+# Directory Patterns:
+#   - secrets/, .secrets/: Common secret storage locations
+#   - credentials/, .credentials/: Credential storage directories
+#   - *.secret, *.secrets: Files with secret extensions
+#
+# Why Exclude Directories:
+#   - Comprehensive coverage (excludes all files in these directories)
+#   - Prevents accidental commits of entire secret directories
+#   - Common convention (developers often use these directory names)
+# =============================================================================
+secrets/
+.secrets/
+*.secret
+*.secrets
+credentials/
+.credentials/
+
+# =============================================================================
+# TEMPORARY & SYSTEM FILES
+# =============================================================================
+# Purpose: Exclude temporary files, editor state, and system-specific files
+#
+# Log Files:
+#   - *.log: Application log files (temporary, can be regenerated)
+#   - May contain sensitive information (user data, paths, etc.)
+#
+# Editor Swap Files:
+#   - *.swp, *.swo: Vim/Neovim swap files (temporary editor state)
+#   - *~: Backup files created by some editors
+#   - These are temporary and should not be versioned
+#
+# IDE Configuration:
+#   - .vscode/: Visual Studio Code workspace settings (user-specific)
+#   - .idea/: IntelliJ IDEA/CLion project settings (user-specific)
+#   - These are IDE-specific and not portable across different editors
+#
+# OS-Specific Files:
+#   - .DS_Store: macOS Finder metadata (not relevant for Linux repository)
+#   - tmp/: Temporary directory (should never be versioned)
+#
+# Why Exclude:
+#   - Temporary files clutter repository (no value in versioning)
+#   - Editor/IDE configs are user-specific (not portable)
+#   - System files are OS-specific (not relevant for Linux)
+# =============================================================================
+*.log
+.DS_Store
+.vscode/
+.idea/
+tmp/
+*.swp
+*.swo
+*~

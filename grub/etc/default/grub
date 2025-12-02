@@ -1,0 +1,223 @@
+# =============================================================================
+# GRUB BOOTLOADER CONFIGURATION
+# =============================================================================
+# Author: merneo
+# System: HP EliteBook x360 1030 G2 (Intel i5-7300U)
+# Purpose: GRUB2 bootloader configuration for encrypted Arch Linux with Plymouth
+#          boot splash and Windows 11 dual-boot support.
+#
+# File Location: /etc/default/grub
+# After modifying, regenerate GRUB configuration:
+#   sudo grub-mkconfig -o /boot/grub/grub.cfg
+#
+# Boot Process Overview:
+#   1. UEFI firmware loads GRUB from /boot/efi/EFI/GRUB/grubx64.efi
+#   2. GRUB presents menu (5-second timeout) or boots default entry
+#   3. Kernel loaded with CMDLINE parameters below
+#   4. Initramfs decrypts LUKS partition using keyfile (passwordless)
+#   5. Plymouth splash displayed during initialization
+#   6. Root filesystem mounted, system continues to SDDM login
+# =============================================================================
+
+# ===========================================================================
+# DEFAULT BOOT ENTRY
+# ===========================================================================
+# GRUB_DEFAULT: Which menu entry to boot by default.
+#   - 0: First entry (typically Arch Linux)
+#   - "saved": Remember last selected entry (requires GRUB_SAVEDEFAULT=true)
+#   - "Arch Linux": Boot entry by name (exact match required)
+#
+# Windows 11 is typically entry 2 or higher (after Arch + fallback entries).
+# ===========================================================================
+GRUB_DEFAULT=0
+
+# ===========================================================================
+# BOOT TIMEOUT
+# ===========================================================================
+# GRUB_TIMEOUT: Seconds to wait before auto-booting default entry.
+#   - 0: Boot immediately (no menu displayed unless Shift held)
+#   - 5: Standard timeout for dual-boot scenarios (allows selection)
+#   - -1: Wait indefinitely (manual selection required)
+#
+# GRUB_TIMEOUT_STYLE: How timeout is displayed.
+#   - "menu": Always show menu with countdown
+#   - "countdown": Show countdown, press key to reveal menu
+#   - "hidden": No visual, press Escape to reveal menu
+# ===========================================================================
+GRUB_TIMEOUT=5
+GRUB_TIMEOUT_STYLE=menu
+
+# ===========================================================================
+# DISTRIBUTOR NAME
+# ===========================================================================
+# GRUB_DISTRIBUTOR: Name shown in GRUB menu entries.
+# Used in menu entry titles: "Arch Linux" instead of generic "Linux".
+# ===========================================================================
+GRUB_DISTRIBUTOR="Arch"
+
+# ===========================================================================
+# KERNEL COMMAND LINE - DEFAULT PARAMETERS
+# ===========================================================================
+# GRUB_CMDLINE_LINUX_DEFAULT: Parameters for normal (non-recovery) boots.
+# These parameters control kernel behavior during boot and at runtime.
+#
+# Current Parameters:
+#   - loglevel=3: Reduce kernel log verbosity (3 = errors only)
+#   - quiet: Suppress most boot messages (cleaner splash screen)
+#   - splash: Enable framebuffer splash (Plymouth requirement)
+#   - vt.handoff=7: Hand off virtual terminal 7 to display manager
+#   - plymouth.enable=1: Explicitly enable Plymouth boot splash
+#
+# Power Management Parameters:
+#   - mem_sleep_default=deep: Use S3 deep sleep instead of s2idle
+#     S3 provides better battery life during suspend (true sleep state)
+#     s2idle is a lighter sleep that drains battery faster
+#
+# USB Stability Parameters (HP EliteBook specific):
+#   - usbcore.autosuspend=-1: Disable USB autosuspend (prevents USB disconnects)
+#   - usbcore.initial_descriptor_timeout=5000: 5-second USB descriptor timeout
+#     (fixes detection issues with some USB devices on EliteBook x360)
+#
+# Note: These USB parameters address known issues with Intel USB controllers
+# on 7th-gen EliteBook models where USB devices would randomly disconnect.
+# ===========================================================================
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet splash vt.handoff=7 plymouth.enable=1 mem_sleep_default=deep usbcore.autosuspend=-1 usbcore.initial_descriptor_timeout=5000"
+
+# ===========================================================================
+# KERNEL COMMAND LINE - LUKS ENCRYPTION PARAMETERS
+# ===========================================================================
+# GRUB_CMDLINE_LINUX: Parameters for ALL boots (including recovery).
+# Critical for encrypted root filesystem setup.
+#
+# LUKS Decryption Parameters:
+#   - cryptkey=rootfs:/etc/cryptsetup.d/root.key
+#     Location of keyfile for automatic LUKS decryption (passwordless boot).
+#     Keyfile is embedded in initramfs during mkinitcpio build.
+#
+#   - cryptdevice=UUID=<uuid>:cryptroot
+#     UUID of the encrypted LUKS partition to decrypt.
+#     'cryptroot' is the dm-crypt device mapper name after decryption.
+#     Find UUID with: sudo blkid /dev/nvme0n1pX | grep UUID
+#
+#   - root=/dev/mapper/cryptroot
+#     Root filesystem location (decrypted LUKS device via device mapper).
+#
+#   - rootflags=subvol=@
+#     Btrfs subvolume to mount as root filesystem.
+#     '@' is the conventional name for the root subvolume.
+#
+# Security Note:
+#   The keyfile allows passwordless boot but is stored in /boot (unencrypted).
+#   Physical access to /boot partition could extract the keyfile.
+#   This trade-off is acceptable for laptop convenience with full disk encryption.
+# ===========================================================================
+GRUB_CMDLINE_LINUX="cryptkey=rootfs:/etc/cryptsetup.d/root.key cryptdevice=UUID=<YOUR_LUKS_PARTITION_UUID>:cryptroot root=/dev/mapper/cryptroot rootflags=subvol=@"
+
+# ===========================================================================
+# PARTITION TABLE SUPPORT
+# ===========================================================================
+# GRUB_PRELOAD_MODULES: Modules loaded before any configuration processing.
+# Ensures both GPT and MBR partition tables are supported during boot.
+#   - part_gpt: GUID Partition Table (modern UEFI systems)
+#   - part_msdos: Master Boot Record (legacy BIOS compatibility)
+# ===========================================================================
+GRUB_PRELOAD_MODULES="part_gpt part_msdos"
+
+# ===========================================================================
+# LUKS ENCRYPTED DISK SUPPORT (GRUB)
+# ===========================================================================
+# GRUB_ENABLE_CRYPTODISK: Allow GRUB to decrypt LUKS partitions.
+# Currently disabled because kernel handles decryption via initramfs.
+# Enable if /boot is on an encrypted partition (not common).
+# ===========================================================================
+#GRUB_ENABLE_CRYPTODISK=y
+
+# ===========================================================================
+# CONSOLE/TERMINAL OPTIONS
+# ===========================================================================
+# GRUB_TERMINAL_INPUT: Input device for GRUB menu.
+# GRUB_TERMINAL_OUTPUT: Output device for GRUB menu.
+# Default: Use graphical terminal (gfxterm) with framebuffer.
+# Uncomment for serial console or basic text mode.
+# ===========================================================================
+#GRUB_TERMINAL_INPUT=console
+#GRUB_TERMINAL_OUTPUT=console
+
+# ===========================================================================
+# GRAPHICS MODE CONFIGURATION
+# ===========================================================================
+# GRUB_GFXMODE: Resolution for GRUB menu and boot splash.
+#   - "auto": Detect best resolution from UEFI GOP/VBE
+#   - "1920x1080": Explicit resolution (must be supported by GPU)
+#   - "1920x1080,1280x1024,auto": Fallback chain
+#
+# GRUB_GFXPAYLOAD_LINUX: Resolution handed to Linux kernel.
+#   - "keep": Maintain GRUB's resolution (recommended for Plymouth)
+#   - "text": Force text mode (disables graphical splash)
+#
+# Use 'videoinfo' command in GRUB shell to list supported modes.
+# ===========================================================================
+GRUB_GFXMODE=auto
+GRUB_GFXPAYLOAD_LINUX=keep
+
+# ===========================================================================
+# RECOVERY MODE
+# ===========================================================================
+# GRUB_DISABLE_RECOVERY: Disable generation of recovery menu entries.
+#   - "true": No recovery entries (cleaner menu, use live USB for recovery)
+#   - "false": Generate recovery entries (boots with 'single' runlevel)
+# ===========================================================================
+GRUB_DISABLE_RECOVERY=true
+
+# ===========================================================================
+# OS DETECTION (DUAL-BOOT)
+# ===========================================================================
+# GRUB_DISABLE_OS_PROBER: Control automatic detection of other operating systems.
+#   - "true": Only show Linux entries (faster grub-mkconfig)
+#   - "false": Scan for Windows/macOS/other Linux (enables dual-boot menu)
+#
+# Requires os-prober package: sudo pacman -S os-prober
+# Windows 11 on this system is detected on separate NTFS partition.
+# ===========================================================================
+GRUB_DISABLE_OS_PROBER=false
+
+# ===========================================================================
+# THEMING (OPTIONAL)
+# ===========================================================================
+# Uncomment to customize GRUB menu appearance.
+# GRUB_BACKGROUND: Path to background image (PNG, JPG, TGA)
+# GRUB_THEME: Path to GRUB theme directory
+# GRUB_COLOR_NORMAL: Text color (foreground/background)
+# GRUB_COLOR_HIGHLIGHT: Selected entry color
+# ===========================================================================
+#GRUB_BACKGROUND="/path/to/wallpaper"
+#GRUB_THEME="/path/to/gfxtheme"
+#GRUB_COLOR_NORMAL="light-blue/black"
+#GRUB_COLOR_HIGHLIGHT="light-cyan/blue"
+
+# ===========================================================================
+# BOOT SOUND (OPTIONAL)
+# ===========================================================================
+# GRUB_INIT_TUNE: Play a beep/tune at GRUB start.
+# Format: "tempo [pitch1 duration1 [pitch2 duration2 ...]]"
+# Example: "480 440 1" = 480ms tempo, 440Hz (A4 note), 1 beat
+# ===========================================================================
+#GRUB_INIT_TUNE="480 440 1"
+
+# ===========================================================================
+# SAVED DEFAULT (OPTIONAL)
+# ===========================================================================
+# GRUB_SAVEDEFAULT: Remember last booted entry for next boot.
+# Requires GRUB_DEFAULT="saved" to be effective.
+# Useful for frequent dual-booters who want persistent selection.
+# ===========================================================================
+#GRUB_SAVEDEFAULT=true
+
+# ===========================================================================
+# SUBMENU BEHAVIOR (OPTIONAL)
+# ===========================================================================
+# GRUB_DISABLE_SUBMENU: Flatten advanced options into main menu.
+#   - "y": All entries in single flat menu (easier navigation)
+#   - Unset: Fallback/recovery entries in "Advanced options" submenu
+# ===========================================================================
+#GRUB_DISABLE_SUBMENU=y

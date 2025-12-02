@@ -1,0 +1,157 @@
+/* =============================================================================
+ * ALBERT LAUNCHER THEME - Catppuccin Mocha Green (Sharp Corners)
+ * =============================================================================
+ * Author: merneo
+ * Theme: Catppuccin Mocha Green
+ * Style: Dark theme with green accent, sharp corners (0px border-radius)
+ * Purpose: Application launcher styling matching desktop theme (Corner Mode)
+ *
+ * Operational Context:
+ *   Albert is a keyboard-driven application launcher that provides quick
+ *   access to applications, files, and system functions. This stylesheet
+ *   ensures the launcher matches the overall desktop aesthetic (Catppuccin
+ *   Mocha Green) and provides consistent visual experience.
+ *
+ * Visual Characteristics:
+ *   - Background: rgba(30, 30, 46, 0.9) - Catppuccin Mocha base, 90% opacity
+ *   - Border: 2px solid #a6e3a1 - Catppuccin Green accent
+ *   - Border radius: 0px - Sharp corners (matches Corner Mode)
+ *   - Text: #cdd6f4 - Catppuccin Text (primary text color)
+ *   - Selection: #a6e3a1 - Catppuccin Green (highlight color)
+ *
+ * File Location:
+ *   - ~/albert-theme/Catppuccin Mocha.qss (alternative theme location)
+ *   - Can be symlinked to ~/.local/share/albert/widgetsboxmodel/themes/
+ *
+ * Usage:
+ *   - Selected in Albert settings: Settings → Appearance → Theme
+ *   - Applied immediately on theme selection
+ *   - No restart required (Albert reloads theme dynamically)
+ * ============================================================================= */
+
+/* GLOBAL RESET
+ * Remove default borders and backgrounds from all widgets to ensure consistent styling.
+ * Text color set to Catppuccin 'Text' (#cdd6f4).
+ */
+* {
+    border: none;
+    color: #cdd6f4;
+    background-color: transparent;
+}
+
+/* MAIN CONTAINER 
+ * The primary window frame.
+ */
+#frame {
+    padding: 10px;
+    
+    /* VISIBILITY: 2px Green border (#a6e3a1) to stand out against dark wallpapers */
+    border: 2px solid #a6e3a1;
+    
+    /* AESTHETIC: Sharp corners (0px) to match the system's 'Corner Mode' */
+    border-radius: 0px;
+    
+    /* BACKGROUND: Dark base (#1e1e2e) with 90% opacity.
+     * Matches the transparency level of Kitty and Waybar for visual consistency. 
+     */
+    background-color: rgba(30, 30, 46, 0.9);
+    
+    /* LAYOUT: Fixed width prevents the window from resizing/jumping as results appear */
+    min-width: 640px;
+    max-width: 640px;
+}
+
+/* INPUT FIELD
+ * Where the user types queries.
+ */
+#inputLine {
+    padding: 8px;
+    font-size: 24px; /* Large text for better readability */
+    
+    /* SELECTION: Text selection matches the green accent color */
+    selection-color: #1e1e2e; /* Dark text on selection */
+    selection-background-color: #a6e3a1; /* Green background */
+    background-color: transparent;
+}
+
+/* SETTINGS BUTTON
+ * Small gear icon usually located top-right.
+ * Kept subtle until interacted with.
+ */
+#settingsButton {
+    margin: 6px 6px 0px 0px;
+    color: #6c7086; /* Muted text color */
+    background-color: transparent;
+    padding: 2px;
+    min-width: 14px;
+    min-height: 14px;
+    max-width: 14px;
+    max-height: 14px;
+}
+
+/********** ListViews (Results) ************/
+
+/* GENERAL LIST STYLING */
+QListView {
+    background: transparent;
+    selection-color: #1e1e2e;
+}
+
+/* INDIVIDUAL RESULT ITEMS */
+QListView::item {
+    padding: 8px;
+    /* SHAPE: Sharp corners for list items to match the main frame */
+    border-radius: 0px;
+}
+
+/* SELECTED ITEM STATE
+ * Highlights the currently active result with the Green accent.
+ */
+QListView::item:selected {
+    background: #a6e3a1;
+}
+
+/* SCROLLBAR STYLING
+ * Minimalist scrollbar design to avoid visual clutter.
+ */
+QListView QScrollBar:vertical  {
+    width: 4px;
+    background: transparent;
+}
+
+/* SCROLLBAR HANDLE */
+QListView QScrollBar::handle:vertical  {
+    background: #45475a; /* Surface1 color */
+    border-radius: 0px;  /* Sharp corners */
+    min-height: 24px;
+}
+
+/* HIDDEN SCROLLBAR BUTTONS
+ * Arrows and page areas are hidden (size 0) for a cleaner look.
+ */
+QListView QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+QListView QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical,
+QListView QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    border: 0px;
+    width: 0px;
+    height: 0px;
+    background: transparent;
+}
+
+/********** Specific Lists **********/
+
+/* MAIN RESULTS LIST */
+QListView#resultsList {
+    icon-size: 36px;
+    font-size: 20px;
+}
+
+QListView#resultsList::item {
+    padding: 4px;
+    height: 48px;
+}
+
+/* ACTIONS LIST (Alt menu) */
+QListView#actionList {
+    font-size: 18px;
+}
