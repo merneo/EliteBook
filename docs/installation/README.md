@@ -2,6 +2,11 @@
 
 **Purpose:** Complete installation and configuration documentation for Arch Linux on HP EliteBook x360 1030 G2.
 
+**Usage Modes:** This documentation can be used in three ways:
+1. **AI Knowledge Base** - For AI assistants (Cursor CLI, Claude, ChatGPT) to automatically access system context
+2. **AI Instructions** - Direct instructions for AI assistants on how to help with tasks
+3. **Manual Guide** - Step-by-step command-by-command instructions for manual execution
+
 ---
 
 ## Files in This Directory
@@ -57,6 +62,42 @@ The AI assistant should automatically:
 4. Know that this is HP EliteBook x360 1030 G2
 
 **See `HOW_TO_ASK_AI.md` for more examples.**
+
+---
+
+## Usage Modes
+
+### 1. AI Knowledge Base
+
+The documentation serves as a knowledge base for AI assistants. When users interact with AI assistants, the AI can automatically:
+
+- Access `AI_ASSISTANT_CONTEXT.md` for hardware and system context
+- Reference `README_COMPLETE.md` for detailed procedures
+- Provide hardware-specific instructions based on documented procedures
+
+**Example:** User asks "I need to setup fingerprint on HP notebook" → AI automatically checks context file and provides instructions.
+
+### 2. AI Instructions
+
+The documentation provides explicit instructions for AI assistants on:
+
+- How to respond to user queries
+- What information to extract from context files
+- Which documentation sections to reference
+- How to provide step-by-step guidance
+
+**See:** `AI_ASSISTANT_CONTEXT.md` contains "Your response should:" sections with specific instructions for AI assistants.
+
+### 3. Manual Guide
+
+All documentation can be used manually, command-by-command:
+
+- `README_COMPLETE.md` provides complete step-by-step procedures
+- Each phase includes exact commands to execute
+- Commands can be copied and pasted directly into terminal
+- No AI assistant required - follow instructions manually
+
+**Example:** Open `README_COMPLETE.md` Phase 15, follow each command sequentially.
 
 ---
 

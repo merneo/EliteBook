@@ -35,13 +35,17 @@ When users interact with AI assistants for system administration tasks, several 
 
 The AI Assistant Context system provides:
 
-- **Structured Knowledge Base**: A markdown file (`AI_ASSISTANT_CONTEXT.md`) containing hardware information, installation status, and quick reference guides for common tasks.
+- **Structured Knowledge Base**: A markdown file (`AI_ASSISTANT_CONTEXT.md`) containing hardware information, installation status, and quick reference guides for common tasks. This knowledge base can be used by AI assistants automatically or accessed manually by users.
 
-- **Automatic Context Loading**: Instructions for AI assistants to automatically check this file when users mention specific hardware or tasks.
+- **Automatic Context Loading**: Instructions for AI assistants to automatically check this file when users mention specific hardware or tasks. AI assistants can use this as a knowledge base to provide context-aware assistance.
 
-- **Cross-Reference System**: Links between context entries and detailed documentation in `README_COMPLETE.md`, enabling AI assistants to provide both quick answers and detailed step-by-step instructions.
+- **AI Instructions**: Explicit instructions for AI assistants on how to respond to user queries, what information to extract, and which documentation sections to reference.
 
-- **Repository Integration**: The context file is stored in the repository, making it accessible to AI assistants that can read repository contents.
+- **Manual Guide**: All documentation can be used manually without AI assistance. Users can follow step-by-step procedures command-by-command, copying and pasting commands directly into terminal.
+
+- **Cross-Reference System**: Links between context entries and detailed documentation in `README_COMPLETE.md`, enabling both AI assistants and manual users to access quick references and detailed step-by-step instructions.
+
+- **Repository Integration**: The context file is stored in the repository, making it accessible to AI assistants that can read repository contents, and available for manual reference by users.
 
 ---
 
@@ -222,7 +226,38 @@ The context file is stored in the repository at `docs/installation/AI_ASSISTANT_
 
 ## 5. Usage Guidelines
 
-### 5.1 For AI Assistants
+### 5.1 Usage Modes
+
+The documentation system supports three distinct usage modes:
+
+#### 5.1.1 AI Knowledge Base
+
+The documentation serves as a knowledge base that AI assistants can automatically access:
+
+- **Automatic Access**: AI assistants can read `AI_ASSISTANT_CONTEXT.md` and `README_COMPLETE.md` from the repository
+- **Context Retrieval**: When users mention hardware or tasks, AI assistants automatically check the knowledge base
+- **Information Synthesis**: AI assistants combine information from context files with user queries to provide accurate responses
+- **No Manual Intervention**: Users do not need to manually provide context - AI assistants access it automatically
+
+#### 5.1.2 AI Instructions
+
+The documentation provides explicit instructions for AI assistants:
+
+- **Response Guidelines**: Each task section includes "Your response should:" instructions for AI assistants
+- **Workflow Guidance**: AI assistants are instructed on how to process user queries and provide responses
+- **Documentation References**: AI assistants are directed to specific documentation sections for detailed procedures
+- **Hardware Awareness**: Instructions ensure AI assistants reference correct hardware specifications
+
+#### 5.1.3 Manual Guide
+
+All documentation can be used manually without any AI assistant:
+
+- **Command-by-Command**: Users can follow procedures step-by-step, executing commands sequentially
+- **Copy-Paste Ready**: All commands are provided in code blocks and can be copied directly into terminal
+- **No AI Required**: Complete installation and configuration can be performed manually
+- **Self-Contained**: All necessary information is in the documentation - no external AI assistance needed
+
+### 5.2 For AI Assistants
 
 AI assistants should follow these guidelines when using the context file:
 
@@ -236,7 +271,11 @@ AI assistants should follow these guidelines when using the context file:
 
 5. **Previous Completion**: Acknowledge when tasks have been completed before, referencing the documentation.
 
-### 5.2 For Users
+### 5.3 For Users
+
+Users have two options for using the documentation:
+
+#### 5.3.1 With AI Assistant
 
 Users can interact with AI assistants using simple queries:
 
@@ -245,6 +284,28 @@ Users can interact with AI assistants using simple queries:
 - **Complete**: "I need to setup fingerprint on HP EliteBook x360 1030 G2. Use AI_ASSISTANT_CONTEXT.md and README_COMPLETE.md Phase 15."
 
 The AI assistant should automatically handle context loading for simple queries.
+
+#### 5.3.2 Manual Execution
+
+Users can follow the documentation manually without any AI assistant:
+
+1. **Open Documentation**: Open `README_COMPLETE.md` in a text editor or browser
+2. **Navigate to Phase**: Find the relevant phase (e.g., Phase 15 for fingerprint setup)
+3. **Follow Instructions**: Read each step carefully
+4. **Execute Commands**: Copy commands from code blocks and execute in terminal
+5. **Verify Results**: Check success messages and verify each step before proceeding
+
+**Example Manual Workflow:**
+```
+1. Open README_COMPLETE.md
+2. Navigate to "Phase 15: Fingerprint Authentication Setup"
+3. Read Step 15.1: "Install python-validity-git"
+4. Copy command: yay -S python-validity-git
+5. Execute in terminal
+6. Verify installation success
+7. Proceed to Step 15.2
+8. Repeat for all steps in phase
+```
 
 ### 5.3 Maintenance
 

@@ -9,6 +9,30 @@ This document combines [INSTALL_PRE_REBOOT.md](INSTALL_PRE_REBOOT.md) and [INSTA
 
 ---
 
+## Usage Modes
+
+This documentation can be used in three ways:
+
+### 1. AI Knowledge Base
+- **For AI Assistants**: AI assistants (Cursor CLI, Claude, ChatGPT) can automatically access this documentation to provide context-aware assistance
+- **Context File**: AI assistants should first check `AI_ASSISTANT_CONTEXT.md` for hardware and system context
+- **Reference**: AI assistants can reference specific phases in this document when helping users
+
+### 2. AI Instructions
+- **For AI Assistants**: This document provides detailed procedures that AI assistants can follow when helping users
+- **Step-by-Step**: Each phase contains complete step-by-step instructions that AI assistants can provide to users
+- **Hardware-Specific**: All procedures are documented for HP EliteBook x360 1030 G2 hardware
+
+### 3. Manual Guide
+- **For Manual Execution**: This document can be followed manually, command-by-command, without any AI assistant
+- **Copy-Paste Ready**: All commands are provided in code blocks and can be copied directly into terminal
+- **Sequential Execution**: Follow each phase sequentially, executing commands one by one
+- **No AI Required**: Complete installation can be performed manually by following instructions
+
+**Note:** All commands are provided in executable format. Simply copy commands from code blocks and execute them in your terminal.
+
+---
+
 # Part 1: Pre-Reboot Installation
 
 

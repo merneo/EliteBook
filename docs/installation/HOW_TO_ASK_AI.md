@@ -2,6 +2,18 @@
 
 **Purpose:** Examples of how to ask AI assistant (Cursor CLI, Claude, ChatGPT) for help with HP EliteBook x360 1030 G2 installation and configuration.
 
+**Note:** This documentation can also be used manually without AI assistance. See "Manual Usage" section below.
+
+---
+
+## Usage Modes
+
+This documentation supports three usage modes:
+
+1. **AI Knowledge Base** - AI assistants automatically access context files when you mention hardware or tasks
+2. **AI Instructions** - You can ask AI assistants for help, and they will use this documentation to provide guidance
+3. **Manual Guide** - You can follow the documentation manually, command-by-command, without any AI assistant
+
 ---
 
 ## Basic Principle
@@ -215,5 +227,61 @@ Use AI_ASSISTANT_CONTEXT.md and README_COMPLETE.md Phase [number].
 
 ---
 
+---
+
+## Manual Usage (Without AI Assistant)
+
+You can use this documentation manually without any AI assistant:
+
+### Manual Workflow
+
+1. **Open Documentation**: Open `docs/installation/README_COMPLETE.md`
+2. **Find Relevant Phase**: Navigate to the phase you need (e.g., Phase 15 for fingerprint)
+3. **Read Instructions**: Read each step carefully
+4. **Copy Commands**: Copy commands from code blocks
+5. **Execute in Terminal**: Paste and execute commands in your terminal
+6. **Verify Success**: Check success messages before proceeding
+7. **Continue to Next Step**: Repeat for all steps in the phase
+
+### Example: Manual Fingerprint Setup
+
+```
+1. Open README_COMPLETE.md
+2. Navigate to "Phase 15: Fingerprint Authentication Setup"
+3. Step 15.1: Install python-validity-git
+   → Copy: yay -S python-validity-git
+   → Execute in terminal
+   → Wait for installation to complete
+4. Step 15.2: Clone device/0092 branch
+   → Copy: git clone -b device/0092 https://github.com/uunicorn/python-validity.git
+   → Execute in terminal
+   → Continue with next steps...
+```
+
+### Advantages of Manual Usage
+
+- **No AI Required**: Complete installation without any AI assistant
+- **Full Control**: Execute commands at your own pace
+- **Learning**: Understand each step by reading and executing manually
+- **Troubleshooting**: Easier to identify issues when executing commands manually
+- **Offline**: Can be used without internet connection (after downloading documentation)
+
+### When to Use Manual vs AI-Assisted
+
+**Use Manual:**
+- When you prefer to follow instructions step-by-step yourself
+- When you want to understand each command before executing
+- When AI assistant is not available
+- When you need to troubleshoot specific steps
+
+**Use AI-Assisted:**
+- When you want quick answers to specific questions
+- When you need context-aware guidance
+- When you want AI to reference hardware-specific information automatically
+- When you prefer conversational interaction
+
+---
+
 **File:** `docs/installation/HOW_TO_ASK_AI.md`  
-**Created:** 2025-12-02
+**Created:** 2025-12-02  
+**Updated:** 2025-12-02 (Added manual usage section)
