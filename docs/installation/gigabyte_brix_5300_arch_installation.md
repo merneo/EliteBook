@@ -199,6 +199,31 @@ Throughout this guide, you will see environment indicators:
 - Chroot: `[root@archiso /]#`
 - First Boot: `username@hostname ~ $`
 
+### AI Helper Usage Notes
+
+**For AI Assistants and Automated Scripts:**
+
+This guide is optimized for AI helper usage with:
+- **Structured placeholders:** All variables clearly defined in tables above
+- **Explicit success criteria:** Each phase has verifiable completion criteria
+- **Error handling:** Common errors and solutions provided inline
+- **Context indicators:** Environment clearly marked for each phase
+- **Checklists:** Prerequisites and verification steps for each phase
+
+**Key Patterns for AI Parsing:**
+- **Placeholders:** Always in format `<PLACEHOLDER>` or clearly marked as variables
+- **Commands:** All commands in code blocks with `bash` syntax highlighting
+- **Success indicators:** `**SUCCESS:**` markers for completed steps
+- **Warnings:** `**WARNING:**` markers for critical information
+- **Verification:** `**Verification:**` sections with checklists
+
+**Recommended AI Helper Workflow:**
+1. Read "Placeholders and Variables" section to understand all variables
+2. Follow phases sequentially, checking prerequisites before each phase
+3. Verify success criteria after each phase before proceeding
+4. Use troubleshooting sections if errors occur
+5. Reference Quick Reference section for command syntax
+
 ---
 
 ## Disk Partitioning Strategy
@@ -3482,6 +3507,46 @@ systemctl is-enabled NetworkManager
 - System logs: `journalctl -xe`
 - Hyprland logs: `~/.local/share/hyprland/hyprland.log`
 - PipeWire logs: `journalctl --user -u pipewire`
+
+### Verification Checklist After First Boot
+
+**After first boot, verify the following:**
+
+**System Boot:**
+- [ ] GRUB menu appears with Arch Linux and Windows 11 options
+- [ ] System boots to SDDM login screen (if automatic decryption enabled)
+- [ ] OR system prompts for LUKS passphrase (if automatic decryption disabled)
+- [ ] System completes boot successfully
+
+**Network:**
+- [ ] NetworkManager service is running (`systemctl status NetworkManager`)
+- [ ] Internet connection works (`ping -c 3 archlinux.org`)
+- [ ] WiFi connects automatically (if configured)
+- [ ] Bluetooth works (if needed, `bluetoothctl`)
+
+**Graphics:**
+- [ ] Display output works (no black screen)
+- [ ] Resolution is correct (`xrandr` or `hyprctl monitors`)
+- [ ] Graphics acceleration works (`glxinfo | grep "OpenGL renderer"`)
+
+**Audio:**
+- [ ] Audio codec detected (`cat /proc/asound/cards` shows Realtek ALC897)
+- [ ] PipeWire running (`systemctl --user status pipewire`)
+- [ ] Audio output works (`pactl list short sinks` shows devices)
+
+**Desktop Environment:**
+- [ ] Hyprland starts successfully (select from SDDM)
+- [ ] Waybar appears at top of screen
+- [ ] Terminal (Kitty) launches with `Super+Q`
+- [ ] File manager (Dolphin) launches with `Super+E`
+- [ ] Application launcher (wofi) works with `Super+R`
+
+**System Services:**
+- [ ] SSH service running (if enabled, `systemctl status sshd`)
+- [ ] NetworkManager managing network
+- [ ] All essential services active
+
+**If any item fails, refer to Troubleshooting Guide above.**
 
 ---
 
