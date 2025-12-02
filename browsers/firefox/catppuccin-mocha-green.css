@@ -1,0 +1,248 @@
+/* =============================================================================
+   CATPPUCCIN MOCHA GREEN THEME FOR FIREFOX
+   =============================================================================
+   Purpose: Complete Catppuccin Mocha Green color scheme implementation for
+            Firefox browser, matching the system-wide theme used in Hyprland,
+            Waybar, and other desktop components.
+   
+   Academic Context:
+     This theme implements the Catppuccin color palette, a community-driven
+     pastel color scheme designed for eye comfort and aesthetic consistency
+     across applications. The Mocha variant uses darker base colors, while the
+     Green accent provides visual consistency with the system theme.
+   
+   Color Palette Reference:
+     Base:      #1e1e2e (Base) - Dark background
+     Surface:   #313244 (Surface0) - Elevated surfaces
+     Overlay:    #45475a (Surface1) - Hover states
+     Text:      #cdd6f4 (Text) - Primary text
+     Subtext:   #bac2de (Subtext1) - Secondary text
+     Accent:    #a6e3a1 (Green) - Primary accent color
+   
+   Deployment:
+     1. Enable userChrome.css: Set toolkit.legacyUserProfileCustomizations.stylesheets = true
+     2. Copy this file to: ~/.mozilla/firefox/*.default-release/chrome/catppuccin-mocha-green.css
+     3. Import in userChrome.css: @import "catppuccin-mocha-green.css";
+   
+   References:
+     - Catppuccin: https://github.com/catppuccin/catppuccin
+     - Firefox Theming: https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Themes
+   ============================================================================= */
+
+/* =============================================================================
+   CATPPUCCIN MOCHA GREEN COLOR VARIABLES
+   ============================================================================= */
+:root {
+    /* Base Colors */
+    --catppuccin-base: #1e1e2e;
+    --catppuccin-mantle: #181825;
+    --catppuccin-crust: #11111b;
+    
+    /* Surface Colors */
+    --catppuccin-surface0: #313244;
+    --catppuccin-surface1: #45475a;
+    --catppuccin-surface2: #585b70;
+    
+    /* Text Colors */
+    --catppuccin-text: #cdd6f4;
+    --catppuccin-subtext1: #bac2de;
+    --catppuccin-subtext0: #a6adc8;
+    
+    /* Accent Colors (Green) */
+    --catppuccin-green: #a6e3a1;
+    --catppuccin-green-dark: #89d181;
+    --catppuccin-green-light: #b4f0b4;
+    
+    /* Semantic Colors */
+    --catppuccin-red: #f38ba8;
+    --catppuccin-yellow: #f9e2af;
+    --catppuccin-blue: #89b4fa;
+    --catppuccin-mauve: #cba6f7;
+}
+
+/* =============================================================================
+   TAB BAR STYLING
+   ============================================================================= */
+
+/* Tab bar background */
+#TabsToolbar {
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 1px solid var(--catppuccin-surface0) !important;
+}
+
+/* Individual tabs */
+.tab-background {
+    background-color: var(--catppuccin-surface0) !important;
+    border-radius: 8px 8px 0 0 !important;
+    margin: 2px 4px 0 4px !important;
+    border: none !important;
+}
+
+/* Selected tab */
+.tab-background[selected="true"] {
+    background-color: var(--catppuccin-surface1) !important;
+    border-bottom: 2px solid var(--catppuccin-green) !important;
+}
+
+/* Tab text */
+.tab-label {
+    color: var(--catppuccin-text) !important;
+}
+
+.tab-label[selected="true"] {
+    color: var(--catppuccin-green) !important;
+    font-weight: 500 !important;
+}
+
+/* Tab close button */
+.tab-close-button {
+    color: var(--catppuccin-subtext0) !important;
+}
+
+.tab-close-button:hover {
+    background-color: var(--catppuccin-red) !important;
+    color: var(--catppuccin-base) !important;
+    border-radius: 4px !important;
+}
+
+/* =============================================================================
+   NAVIGATION BAR STYLING
+   ============================================================================= */
+
+/* Navigation bar background */
+#nav-bar {
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 1px solid var(--catppuccin-surface0) !important;
+}
+
+/* URL bar */
+#urlbar {
+    background-color: var(--catppuccin-surface0) !important;
+    border: 1px solid var(--catppuccin-surface1) !important;
+    border-radius: 8px !important;
+    color: var(--catppuccin-text) !important;
+}
+
+#urlbar[focused="true"] {
+    border-color: var(--catppuccin-green) !important;
+    box-shadow: 0 0 0 2px rgba(166, 227, 161, 0.2) !important;
+}
+
+/* URL bar text */
+#urlbar-input {
+    color: var(--catppuccin-text) !important;
+}
+
+/* Navigation buttons */
+#back-button,
+#forward-button,
+#reload-button,
+#stop-button,
+#home-button {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
+    color: var(--catppuccin-text) !important;
+}
+
+#back-button:hover,
+#forward-button:hover,
+#reload-button:hover,
+#stop-button:hover,
+#home-button:hover {
+    background-color: var(--catppuccin-surface0) !important;
+    color: var(--catppuccin-green) !important;
+}
+
+/* =============================================================================
+   SIDEBAR STYLING
+   ============================================================================= */
+
+/* Sidebar background */
+#sidebar-box {
+    background-color: var(--catppuccin-base) !important;
+}
+
+/* Sidebar header */
+#sidebar-header {
+    background-color: var(--catppuccin-surface0) !important;
+    border-bottom: 1px solid var(--catppuccin-surface1) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+/* Sidebar items */
+.sidebar-placesTree {
+    background-color: var(--catppuccin-base) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+.sidebar-placesTree > treechildren::-moz-tree-row(selected) {
+    background-color: var(--catppuccin-surface0) !important;
+}
+
+.sidebar-placesTree > treechildren::-moz-tree-row(hover) {
+    background-color: var(--catppuccin-surface1) !important;
+}
+
+/* =============================================================================
+   MENU STYLING
+   ============================================================================= */
+
+/* Menu bar */
+#toolbar-menubar {
+    background-color: var(--catppuccin-base) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+/* Menu items */
+menupopup {
+    background-color: var(--catppuccin-surface0) !important;
+    border: 1px solid var(--catppuccin-surface1) !important;
+    border-radius: 8px !important;
+    padding: 4px !important;
+}
+
+menuitem {
+    color: var(--catppuccin-text) !important;
+    border-radius: 4px !important;
+    padding: 6px 8px !important;
+}
+
+menuitem:hover {
+    background-color: var(--catppuccin-surface1) !important;
+    color: var(--catppuccin-green) !important;
+}
+
+/* =============================================================================
+   SCROLLBAR STYLING
+   ============================================================================= */
+
+/* Scrollbar track */
+* {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--catppuccin-surface1) var(--catppuccin-base) !important;
+}
+
+/* =============================================================================
+   WINDOW DECORATIONS (Wayland)
+   ============================================================================= */
+
+/* Title bar (hidden in Wayland, but style for compatibility) */
+#titlebar {
+    background-color: var(--catppuccin-base) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+/* =============================================================================
+   STATUS BAR STYLING
+   ============================================================================= */
+
+#statusbar {
+    background-color: var(--catppuccin-base) !important;
+    border-top: 1px solid var(--catppuccin-surface0) !important;
+    color: var(--catppuccin-subtext0) !important;
+}
+
+/* =============================================================================
+   END OF THEME
+   ============================================================================= */
