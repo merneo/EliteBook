@@ -44,7 +44,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Graphics:** AMD Radeon™ RX Vega (integrated, 6 compute units)
 - **Memory:** DDR4 SO-DIMM (user-installed, typically 8-32 GB)
 - **Storage:** M.2 NVMe SSD (user-installed)
-- **Network:** Gigabit Ethernet, WiFi 6 (802.11ax), Bluetooth 5.0
+- **Network:** Gigabit Ethernet, AMD RZ608 WiFi 6 (802.11ax), Bluetooth 5.2
 - **Video Output:** HDMI 2.0, DisplayPort 1.4, USB-C (DisplayPort Alt Mode)
 
 **Prerequisites:**
@@ -100,8 +100,8 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 **Network Options:**
 - **Ethernet:** Gigabit Ethernet port (recommended for fastest installation)
-- **WiFi:** WiFi 6 (802.11ax) - requires driver configuration during installation
-- **Bluetooth:** Bluetooth 5.0 (optional, for peripherals)
+- **WiFi:** AMD RZ608 WiFi 6 (802.11ax) - requires driver configuration during installation
+- **Bluetooth:** Bluetooth 5.2 (integrated with AMD RZ608 WiFi module)
 
 ### Software Prerequisites
 
@@ -1949,15 +1949,17 @@ systemctl enable NetworkManager
 
 **SUCCESS:** NetworkManager will start automatically on boot
 
-### Step 11.2: Install Bluetooth Packages (Optional)
+### Step 11.2: Install Bluetooth Packages (Bluetooth 5.2)
 
 ```bash
-# Install Bluetooth stack (if you have Bluetooth hardware)
+# Install Bluetooth stack (Bluetooth 5.2 on GIGABYTE Brix 5300)
 pacman -S bluez bluez-utils
 
 # bluez: Bluetooth protocol stack
 # bluez-utils: bluetoothctl and other tools
 ```
+
+**Note:** GIGABYTE Brix 5300 includes Bluetooth 5.2. The Bluetooth adapter is typically integrated with the AMD RZ608 WiFi 6 module.
 
 **Prompt:**
 ```
