@@ -66,21 +66,23 @@ This installation guide documents the complete procedure for installing Arch Lin
 ## Table of Contents
 
 1. [Pre-Installation Requirements](#pre-installation-requirements)
-2. [Disk Partitioning Strategy](#disk-partitioning-strategy)
-3. [Phase 1: Arch Linux Live USB Preparation](#phase-1-arch-linux-live-usb-preparation)
-4. [Phase 2: Remote Installation via SSH (Optional)](#phase-2-remote-installation-via-ssh-optional)
-5. [Phase 3: Disk Partitioning](#phase-3-disk-partitioning)
-6. [Phase 4: LUKS2 Encryption Setup](#phase-4-luks2-encryption-setup)
-7. [Phase 5: Btrfs Filesystem Creation](#phase-5-btrfs-filesystem-creation)
-8. [Phase 6: Base System Installation](#phase-6-base-system-installation)
-9. [Phase 7: System Configuration (Chroot)](#phase-7-system-configuration-chroot)
-10. [Phase 8: Bootloader Installation (GRUB)](#phase-8-bootloader-installation-grub)
-11. [Phase 9: Automatic LUKS Decryption Setup (Optional)](#phase-9-automatic-luks-decryption-setup-optional)
-12. [Phase 10: User Account Creation](#phase-10-user-account-creation)
-13. [Phase 11: Network Configuration](#phase-11-network-configuration)
-14. [Phase 12: Window Manager Setup](#phase-12-window-manager-setup)
-15. [Phase 13: Exit Chroot and System Reboot](#phase-13-exit-chroot-and-system-reboot)
-16. [References](#references)
+2. [Placeholders and Variables](#placeholders-and-variables)
+3. [Disk Partitioning Strategy](#disk-partitioning-strategy)
+4. [Phase 1: Arch Linux Live USB Preparation](#phase-1-arch-linux-live-usb-preparation)
+5. [Phase 2: Remote Installation via SSH (Optional)](#phase-2-remote-installation-via-ssh-optional)
+6. [Phase 3: Disk Partitioning](#phase-3-disk-partitioning)
+7. [Phase 4: LUKS2 Encryption Setup](#phase-4-luks2-encryption-setup)
+8. [Phase 5: Btrfs Filesystem Creation](#phase-5-btrfs-filesystem-creation)
+9. [Phase 6: Base System Installation](#phase-6-base-system-installation)
+10. [Phase 7: System Configuration (Chroot)](#phase-7-system-configuration-chroot)
+11. [Phase 8: Bootloader Installation (GRUB)](#phase-8-bootloader-installation-grub)
+12. [Phase 9: Automatic LUKS Decryption Setup (Optional)](#phase-9-automatic-luks-decryption-setup-optional)
+13. [Phase 10: User Account Creation](#phase-10-user-account-creation)
+14. [Phase 11: Network Configuration](#phase-11-network-configuration)
+15. [Phase 12: Window Manager Setup](#phase-12-window-manager-setup)
+16. [Phase 13: Exit Chroot and System Reboot](#phase-13-exit-chroot-and-system-reboot)
+17. [Troubleshooting Guide](#troubleshooting-guide)
+18. [References](#references)
 
 ---
 
@@ -970,6 +972,11 @@ Verify passphrase:
 
 **Should show:** `Command successful.`
 
+**If error occurs:**
+- **"Device already in use":** Close any existing mappings (`cryptsetup close cryptroot`), verify partition is not mounted
+- **"Operation not permitted":** Verify you have root privileges, check partition is not in use
+- **"No space left on device":** Check available space (`df -h`), verify partition size is correct
+
 ### Step 4.2: Open Encrypted Root Partition
 
 ```bash
@@ -986,6 +993,11 @@ Enter passphrase for /dev/nvme0n1p4:
 **Enter the passphrase** you just created and press **Enter**
 
 **Should show:** (no output = success)
+
+**If error occurs:**
+- **"No key available":** Verify passphrase is correct, check for typos, verify keyboard layout
+- **"Device already in use":** Close any existing mappings, verify partition is not mounted elsewhere
+- **"Operation not permitted":** Verify root privileges, check partition permissions
 
 ### Step 4.3: Verify Encrypted Root Volume
 
@@ -1029,6 +1041,11 @@ Are you sure? (Type 'yes' in capital letters):
 
 **Wait for completion** (30-60 seconds)
 
+**If error occurs:**
+- **"Device already in use":** Close any existing mappings, verify swap partition is not in use
+- **"Operation not permitted":** Verify root privileges, check partition permissions
+- **"No key available":** Verify passphrase is correct, check for typos
+
 ### Step 4.5: Open Encrypted Swap Partition
 
 ```bash
@@ -1038,6 +1055,10 @@ cryptsetup open /dev/nvme0n1p5 cryptswap
 ```
 
 **Enter the SAME passphrase** as before.
+
+**If error occurs:**
+- **"No key available":** Verify passphrase matches root partition passphrase, check for typos
+- **"Device already in use":** Close any existing mappings, verify swap is not already unlocked
 
 ### Step 4.6: Verify Both Encrypted Volumes
 
@@ -1176,6 +1197,11 @@ Sector size:        4096
 
 **Completion time:** 5-10 seconds
 
+**If error occurs:**
+- **"No such file or directory":** Verify `cryptroot` is mapped (`ls /dev/mapper/`), unlock partition if needed
+- **"Device or resource busy":** Verify partition is not already mounted, check with `mount`
+- **"Invalid argument":** Verify device mapping exists, check Btrfs filesystem was created successfully
+
 ### Step 5.2: Mount Btrfs Root Temporarily
 
 ```bash
@@ -1210,6 +1236,11 @@ Create subvolume '/mnt/@'
 Create subvolume '/mnt/@home'
 ...
 ```
+
+**If error occurs:**
+- **"No such file or directory":** Verify Btrfs filesystem is mounted at `/mnt`, check mount point exists
+- **"File exists":** Subvolume may already exist, verify with `btrfs subvolume list /mnt`
+- **"Operation not permitted":** Verify root privileges, check filesystem permissions
 
 ### Step 5.4: Verify Subvolumes Were Created
 
@@ -1382,6 +1413,10 @@ reflector --country US,Germany,France \
 head -10 /etc/pacman.d/mirrorlist
 ```
 
+**If error occurs:**
+- **"Failed to retrieve mirror list":** Check internet connection, try different reflector options, manually edit mirrorlist
+- **"No mirrors found":** Verify internet connection, check reflector options, use default mirrorlist as fallback
+
 ### Step 6.2: Install Base System and Essential Packages
 
 **WARNING:** This is a LARGE command - copy entire block carefully
@@ -1532,6 +1567,12 @@ installing linux...
 (XXX/XXX) installing ...
 ```
 
+**If error occurs:**
+- **"Failed to synchronize database":** Check internet connection, update keyring (`pacman-key --refresh-keys`), verify mirrorlist
+- **"Out of disk space":** Check available space (`df -h`), verify partition sizes, clean package cache
+- **"Package not found":** Verify package name is correct, check repository is enabled, update package database
+- **"Signature verification failed":** Update keyring (`pacman-key --refresh-keys`), verify package signatures
+
 **SUCCESS:** Base system installation complete
 
 ### Step 6.3: Verify Installation
@@ -1625,6 +1666,11 @@ arch-chroot /mnt
 **SUCCESS:** You are now INSIDE the new Arch system
 
 **WARNING:** ALL REMAINING COMMANDS RUN INSIDE CHROOT (until we exit later)
+
+**If error occurs:**
+- **"chroot: failed to run command":** Verify all partitions are mounted, check `/mnt` contains system files
+- **"No such file or directory":** Verify base system is installed, check mount points are correct
+- **Prompt doesn't change:** Verify chroot command succeeded, check for error messages
 
 ### Step 7.3: Set Timezone
 
@@ -1859,6 +1905,11 @@ blkid -s UUID -o value /dev/nvme0n1p4
 
 **Tip:** Write down the UUID or keep this terminal window open for reference.
 
+**If error occurs:**
+- **"No such file or directory":** Verify partition exists (`lsblk`), check device name is correct
+- **No UUID shown:** Verify partition is encrypted (`TYPE="crypto_LUKS"`), check partition was encrypted in Phase 4
+- **Multiple UUIDs shown:** Use the UUID from the root partition (`/dev/nvme0n1p4`), ignore other partitions
+
 ### Step 8.3: Configure GRUB for LUKS Encryption
 
 ```bash
@@ -2036,6 +2087,11 @@ Enter any existing passphrase:
 **Enter the LUKS passphrase** you created earlier during encryption.
 
 **Should show:** (no output = success)
+
+**If error occurs:**
+- **"No key available":** Verify LUKS passphrase is correct, check for typos
+- **"Key slot is full":** Use different key slot (`--key-slot 2`), or remove existing key from slot
+- **"Operation not permitted":** Verify root privileges, check keyfile permissions
 
 **Verify keyfile was added:**
 ```bash
@@ -2400,10 +2456,29 @@ systemctl enable bluetooth
 
 ## Phase 12: Window Manager Setup
 
+**ENVIRONMENT:** [Chroot]  
 **TIME:** Estimated Time: 20-40 minutes (depends on internet speed)  
 **NEXT:** Restart Count: 0
 
 **Download Size: ~1.5 GB - 2 GB**
+
+**Prerequisites Checklist:**
+- [ ] Phase 11 completed successfully
+- [ ] Still in chroot environment
+- [ ] Internet connection available (for package downloads)
+- [ ] Username known (for configuration file creation)
+- [ ] Sufficient disk space (~2-3 GB for packages)
+
+**Success Criteria:**
+- [ ] Hyprland installed
+- [ ] All Wayland utilities installed
+- [ ] AMD graphics drivers installed
+- [ ] PipeWire audio server installed
+- [ ] SDDM display manager installed
+- [ ] Hyprland configuration created
+- [ ] Waybar configuration created
+- [ ] SSH service enabled
+- [ ] All configuration files have correct ownership
 
 **Note:** This phase installs AMD graphics drivers. For other hardware configurations, refer to:
 - `blank_arch.md` for vendor-neutral installation (no graphics drivers)
@@ -3058,14 +3133,42 @@ chown -R username:username /home/username/.config
 
 **SUCCESS:** Phase 12 Complete: Hyprland Wayland compositor, AMD graphics drivers, and complete desktop environment installed
 
+**Verification:**
+- [x] Hyprland installed (`pacman -Q hyprland` shows package)
+- [x] Graphics drivers installed (`pacman -Q mesa vulkan-radeon` shows packages)
+- [x] PipeWire installed (`pacman -Q pipewire wireplumber` shows packages)
+- [x] SDDM installed (`pacman -Q sddm` shows package)
+- [x] Hyprland config exists (`ls /home/username/.config/hypr/hyprland.conf` shows file)
+- [x] Waybar config exists (`ls /home/username/.config/waybar/config.jsonc` shows file)
+- [x] SSH enabled (`systemctl is-enabled sshd` shows "enabled")
+- [x] File ownership correct (`ls -la /home/username/.config` shows correct user:group)
+
 **NEXT:** Next: Exit chroot and prepare for first boot (Phase 13)
+
+**Troubleshooting:**
+- **If package installation fails:** Check internet connection, verify disk space, check pacman keyring
+- **If configuration files not created:** Verify username is correct, check directory permissions
+- **If ownership incorrect:** Re-run `chown -R username:username /home/username/.config`
 
 ---
 
 ## Phase 13: Exit Chroot and System Reboot
 
+**ENVIRONMENT:** [Chroot] → [Live USB] → [System Reboot]  
 **TIME:** Estimated Time: 10 minutes  
 **NEXT:** Restart Count: 1 (FIRST SYSTEM RESTART)
+
+**Prerequisites Checklist:**
+- [ ] Phase 12 completed successfully
+- [ ] All configuration complete
+- [ ] USB drive ready to remove (after shutdown)
+
+**Success Criteria:**
+- [ ] Exited chroot successfully
+- [ ] All partitions unmounted
+- [ ] Encrypted volumes closed
+- [ ] System rebooted
+- [ ] USB drive removed before boot
 
 ### Step 13.1: Exit Chroot Environment
 
@@ -3123,7 +3226,257 @@ reboot
 
 **SUCCESS:** Phase 13 Complete: System ready for first boot
 
+**Verification:**
+- [x] Exited chroot (prompt changed back to `root@archiso ~ #`)
+- [x] All partitions unmounted (`lsblk` shows no mount points)
+- [x] Encrypted volumes closed (`ls /dev/mapper/` shows only `control`)
+- [x] System rebooted (or ready to reboot)
+
 **NEXT:** After reboot, log in and verify system functionality
+
+**Troubleshooting:**
+- **If "target is busy" error:** Check for open files (`lsof /mnt`), close any processes, use `umount -lR /mnt` for lazy unmount
+- **If encrypted volumes won't close:** Verify no processes are using them, check `lsblk` for active mounts
+- **If system won't boot:** Verify GRUB is installed, check UEFI boot order, verify USB drive is removed
+
+---
+
+## Quick Reference
+
+### Critical Commands Reference
+
+**Disk and Partition Management:**
+```bash
+# List block devices
+lsblk
+
+# List partitions with filesystems
+lsblk -f
+
+# Open partition editor
+cfdisk /dev/nvme0n1
+
+# Re-read partition table
+partprobe /dev/nvme0n1
+```
+
+**Encryption Management:**
+```bash
+# Encrypt partition
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --key-size 512 --pbkdf argon2id --iter-time 5000 /dev/nvme0n1p4
+
+# Unlock encrypted partition
+cryptsetup open /dev/nvme0n1p4 cryptroot
+
+# View LUKS information
+cryptsetup luksDump /dev/nvme0n1p4
+
+# Close encrypted volume
+cryptsetup close cryptroot
+```
+
+**Btrfs Management:**
+```bash
+# Create Btrfs filesystem
+mkfs.btrfs -L "Arch Linux" /dev/mapper/cryptroot
+
+# Create subvolume
+btrfs subvolume create /mnt/@
+
+# List subvolumes
+btrfs subvolume list /mnt
+
+# Mount subvolume
+mount -o subvol=@,compress=zstd,noatime /dev/mapper/cryptroot /mnt
+```
+
+**System Installation:**
+```bash
+# Install base system
+pacstrap /mnt base base-devel linux linux-firmware ...
+
+# Generate fstab
+genfstab -U /mnt > /mnt/etc/fstab
+
+# Enter chroot
+arch-chroot /mnt
+
+# Install GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+
+# Generate GRUB config
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+**Service Management:**
+```bash
+# Enable service
+systemctl enable NetworkManager
+
+# Check service status
+systemctl status NetworkManager
+
+# Check if service is enabled
+systemctl is-enabled NetworkManager
+```
+
+### Partition Layout Quick Reference
+
+**GIGABYTE Brix 5300 (500 GB SSD):**
+- `/dev/nvme0n1p1` - EFI System Partition (512 MB, FAT32, `/boot`)
+- `/dev/nvme0n1p2` - Windows 11 System (250 GB, NTFS)
+- `/dev/nvme0n1p3` - Windows Recovery (1 GB, NTFS)
+- `/dev/nvme0n1p4` - Arch Linux Root (225 GB, Btrfs, encrypted, `/`)
+- `/dev/nvme0n1p5` - Swap (8 GB, encrypted, `[SWAP]`)
+
+### Key File Locations
+
+**Configuration Files:**
+- `/etc/fstab` - Filesystem mount table
+- `/etc/default/grub` - GRUB configuration
+- `/etc/mkinitcpio.conf` - Initramfs configuration
+- `/etc/crypttab` - Encrypted device configuration
+- `/etc/locale.conf` - System locale
+- `/etc/hostname` - System hostname
+- `/home/username/.config/hypr/hyprland.conf` - Hyprland configuration
+- `/home/username/.config/waybar/config.jsonc` - Waybar configuration
+
+**Important Directories:**
+- `/boot` - Boot files (EFI partition)
+- `/mnt` - Installation mount point (live USB)
+- `/dev/mapper/` - Encrypted device mappings
+- `/etc/cryptsetup.d/` - LUKS keyfiles
+
+### Environment Quick Reference
+
+**Live USB Environment:**
+- Prompt: `root@archiso ~ #`
+- Mount point: `/mnt` (for installed system)
+- Commands: Disk operations, installation
+
+**Chroot Environment:**
+- Prompt: `[root@archiso /]#`
+- Root: `/` (installed system root)
+- Commands: System configuration, package installation
+
+**First Boot Environment:**
+- Prompt: `username@hostname ~ $`
+- Root: `/` (running system)
+- Commands: Post-installation configuration
+
+---
+
+## Troubleshooting Guide
+
+### Common Issues and Solutions
+
+#### Boot Issues
+
+**Problem: System won't boot / GRUB menu doesn't appear**
+- **Check:** UEFI boot order (GRUB should be first)
+- **Check:** EFI partition exists and is mounted correctly
+- **Check:** GRUB installed correctly (`ls /boot/EFI/GRUB/`)
+- **Solution:** Reinstall GRUB from live USB, verify UEFI mode
+
+**Problem: LUKS password prompt appears but password doesn't work**
+- **Check:** Keyboard layout (may be different during boot)
+- **Check:** Caps Lock state
+- **Check:** Passphrase is correct (copy-paste may have issues)
+- **Solution:** Try typing passphrase manually, verify keyboard layout
+
+**Problem: System boots but shows "cannot open root device"**
+- **Check:** UUID in GRUB config matches actual partition UUID
+- **Check:** `cryptdevice=UUID=...` parameter is correct
+- **Check:** Initramfs includes encryption hooks
+- **Solution:** Verify UUID with `blkid`, update GRUB config, rebuild initramfs
+
+#### Partition and Encryption Issues
+
+**Problem: Partition not found / "No such device"**
+- **Check:** Partition exists (`lsblk` shows partition)
+- **Check:** Device name is correct (`/dev/nvme0n1p4` for root)
+- **Check:** Partition table written (`partprobe` executed)
+- **Solution:** Re-read partition table, verify device name
+
+**Problem: Encryption fails / "Device already in use"**
+- **Check:** Partition is not mounted
+- **Check:** No existing LUKS mapping (`ls /dev/mapper/`)
+- **Check:** Partition is not in use by another process
+- **Solution:** Close any mappings, unmount partition, verify with `lsof`
+
+**Problem: Cannot unlock encrypted volume**
+- **Check:** Passphrase is correct
+- **Check:** Partition device name is correct
+- **Check:** LUKS header is intact (`cryptsetup luksDump`)
+- **Solution:** Verify passphrase, check for typos, verify partition
+
+#### Network Issues
+
+**Problem: No internet connection after first boot**
+- **Check:** NetworkManager service is running (`systemctl status NetworkManager`)
+- **Check:** Network interface is up (`ip link show`)
+- **Check:** WiFi credentials are correct (if using WiFi)
+- **Solution:** Start NetworkManager, connect to network manually, check WiFi driver
+
+**Problem: WiFi not working (AMD RZ608)**
+- **Check:** Driver is loaded (`lsmod | grep mt7921e`)
+- **Check:** Firmware is installed (`ls /usr/lib/firmware/mediatek/`)
+- **Check:** NetworkManager sees interface (`nmcli device status`)
+- **Solution:** Load driver manually (`modprobe mt7921e`), verify firmware files exist
+
+#### Graphics and Display Issues
+
+**Problem: No display output / black screen**
+- **Check:** Graphics drivers installed (`pacman -Q mesa vulkan-radeon`)
+- **Check:** Early KMS configured (`cat /etc/mkinitcpio.conf | grep MODULES`)
+- **Check:** Monitor is connected and powered
+- **Solution:** Verify `amdgpu` in MODULES, rebuild initramfs, check monitor connection
+
+**Problem: Hyprland doesn't start**
+- **Check:** Hyprland is installed (`pacman -Q hyprland`)
+- **Check:** Configuration file exists and is valid (`hyprctl reload`)
+- **Check:** User has correct permissions
+- **Solution:** Verify config syntax, check file ownership, review Hyprland logs
+
+#### Audio Issues
+
+**Problem: No audio output**
+- **Check:** Audio codec detected (`cat /proc/asound/cards`)
+- **Check:** PipeWire is running (`systemctl --user status pipewire`)
+- **Check:** Audio device selected (`pactl list short sinks`)
+- **Solution:** Start PipeWire, select correct audio device, verify Realtek ALC897 is detected
+
+#### Package Installation Issues
+
+**Problem: Package installation fails / "failed to synchronize database"**
+- **Check:** Internet connection is active
+- **Check:** Pacman keyring is updated (`pacman-key --refresh-keys`)
+- **Check:** Mirror list is valid
+- **Solution:** Update keyring, refresh mirror list, check internet connection
+
+**Problem: "Out of disk space" during installation**
+- **Check:** Available disk space (`df -h`)
+- **Check:** Partition sizes are correct
+- **Check:** No unnecessary packages installed
+- **Solution:** Free up space, verify partition sizes, clean package cache
+
+### Getting Help
+
+**Official Resources:**
+- [Arch Linux Forums](https://bbs.archlinux.org/)
+- [Arch Linux Wiki](https://wiki.archlinux.org/)
+- [Arch Linux IRC](irc://irc.libera.chat/archlinux)
+- [Arch Linux Reddit](https://www.reddit.com/r/archlinux/)
+
+**GIGABYTE Brix Specific:**
+- [ArchWiki GIGABYTE Brix](https://wiki.archlinux.org/title/GIGABYTE_Brix)
+- [GIGABYTE Support](https://www.gigabyte.com/Support)
+
+**Log Files for Debugging:**
+- Boot logs: `journalctl -b` (after first boot)
+- System logs: `journalctl -xe`
+- Hyprland logs: `~/.local/share/hyprland/hyprland.log`
+- PipeWire logs: `journalctl --user -u pipewire`
 
 ---
 
