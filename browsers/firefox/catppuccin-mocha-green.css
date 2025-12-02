@@ -2,8 +2,9 @@
    CATPPUCCIN MOCHA GREEN THEME FOR FIREFOX
    =============================================================================
    Purpose: Complete Catppuccin Mocha Green color scheme implementation for
-            Firefox browser, matching the system-wide theme used in Hyprland,
-            Waybar, and other desktop components.
+            Firefox browser, based on Google Chrome theme configuration.
+            Matches the system-wide theme used in Hyprland, Waybar, and other
+            desktop components.
    
    Academic Context:
      This theme implements the Catppuccin color palette, a community-driven
@@ -11,13 +12,13 @@
      across applications. The Mocha variant uses darker base colors, while the
      Green accent provides visual consistency with the system theme.
    
-   Color Palette Reference:
-     Base:      #1e1e2e (Base) - Dark background
-     Surface:   #313244 (Surface0) - Elevated surfaces
-     Overlay:    #45475a (Surface1) - Hover states
-     Text:      #cdd6f4 (Text) - Primary text
-     Subtext:   #bac2de (Subtext1) - Secondary text
-     Accent:    #a6e3a1 (Green) - Primary accent color
+   Color Palette Reference (from Chrome theme):
+     Frame:        #11111b (Crust) - Darkest background
+     Toolbar:      #1e1e2e (Base) - Primary background
+     Omnibox:      #11111b (Crust) - URL bar background
+     Text:         #cdd6f4 (Text) - Primary text
+     Green Accent: #a6e3a1 (Green) - Primary accent color
+     Surface1:     #45475a (Surface1) - Hover states
    
    Deployment:
      1. Enable userChrome.css: Set toolkit.legacyUserProfileCustomizations.stylesheets = true
@@ -27,31 +28,29 @@
    References:
      - Catppuccin: https://github.com/catppuccin/catppuccin
      - Firefox Theming: https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Themes
+     - Chrome Theme Source: ~/catppuccin-extension-mocha-green/manifest.json
    ============================================================================= */
 
 /* =============================================================================
-   CATPPUCCIN MOCHA GREEN COLOR VARIABLES
+   CATPPUCCIN MOCHA GREEN COLOR VARIABLES (Based on Chrome Theme)
    ============================================================================= */
 :root {
-    /* Base Colors */
-    --catppuccin-base: #1e1e2e;
-    --catppuccin-mantle: #181825;
-    --catppuccin-crust: #11111b;
+    /* Base Colors - Matching Chrome Theme */
+    --catppuccin-base: #1e1e2e;        /* Toolbar background */
+    --catppuccin-crust: #11111b;       /* Frame, omnibox background */
+    --catppuccin-surface1: #45475a;    /* Frame incognito, hover states */
     
     /* Surface Colors */
     --catppuccin-surface0: #313244;
-    --catppuccin-surface1: #45475a;
     --catppuccin-surface2: #585b70;
     
     /* Text Colors */
-    --catppuccin-text: #cdd6f4;
-    --catppuccin-subtext1: #bac2de;
-    --catppuccin-subtext0: #a6adc8;
+    --catppuccin-text: #cdd6f4;        /* Primary text (white) */
+    --catppuccin-subtext1: #bac2de;    /* Secondary text */
+    --catppuccin-subtext0: #a6adc8;    /* Tertiary text */
     
-    /* Accent Colors (Green) */
-    --catppuccin-green: #a6e3a1;
-    --catppuccin-green-dark: #89d181;
-    --catppuccin-green-light: #b4f0b4;
+    /* Accent Colors (Green) - Matching Chrome Theme */
+    --catppuccin-green: #a6e3a1;       /* Primary accent (toolbar icons, omnibox text) */
     
     /* Semantic Colors */
     --catppuccin-red: #f38ba8;
@@ -61,44 +60,41 @@
 }
 
 /* =============================================================================
-   TAB BAR STYLING
+   TAB BAR STYLING (Matching Chrome Theme)
    ============================================================================= */
 
-/* Tab bar background */
+/* Tab bar background - Base color */
 #TabsToolbar {
     background-color: var(--catppuccin-base) !important;
-    border-bottom: 2px solid var(--catppuccin-green) !important;
+    border-bottom: 1px solid var(--catppuccin-surface0) !important;
 }
 
 /* Individual tabs */
 .tab-background {
-    background-color: var(--catppuccin-surface0) !important;
-    border-radius: 8px 8px 0 0 !important;
-    margin: 2px 4px 0 4px !important;
-    border: 1px solid transparent !important;
+    background-color: var(--catppuccin-base) !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border: none !important;
 }
 
 .tab-background:hover {
-    background-color: var(--catppuccin-surface1) !important;
-    border-color: var(--catppuccin-green) !important;
+    background-color: var(--catppuccin-surface0) !important;
 }
 
-/* Selected tab - PROMINENT GREEN */
+/* Selected tab - Matching Chrome style */
 .tab-background[selected="true"] {
-    background-color: rgba(166, 227, 161, 0.15) !important;
-    border: 2px solid var(--catppuccin-green) !important;
-    border-bottom: 3px solid var(--catppuccin-green) !important;
-    box-shadow: 0 0 8px rgba(166, 227, 161, 0.3) !important;
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 2px solid var(--catppuccin-green) !important;
 }
 
-/* Tab text */
+/* Tab text - White (matching Chrome tab_text) */
 .tab-label {
     color: var(--catppuccin-text) !important;
 }
 
 .tab-label[selected="true"] {
-    color: var(--catppuccin-green) !important;
-    font-weight: 500 !important;
+    color: var(--catppuccin-text) !important;
+    font-weight: normal !important;
 }
 
 /* Tab close button */
@@ -113,35 +109,41 @@
 }
 
 /* =============================================================================
-   NAVIGATION BAR STYLING
+   NAVIGATION BAR STYLING (Matching Chrome Theme)
    ============================================================================= */
 
-/* Navigation bar background */
+/* Navigation bar background - Base color */
 #nav-bar {
     background-color: var(--catppuccin-base) !important;
     border-bottom: 1px solid var(--catppuccin-surface0) !important;
 }
 
-/* URL bar */
+/* URL bar (Omnibox) - Crust background with green text (matching Chrome) */
 #urlbar {
-    background-color: var(--catppuccin-surface0) !important;
-    border: 2px solid var(--catppuccin-surface1) !important;
+    background-color: var(--catppuccin-crust) !important;
+    border: 1px solid var(--catppuccin-surface0) !important;
     border-radius: 8px !important;
-    color: var(--catppuccin-text) !important;
+    color: var(--catppuccin-green) !important; /* Green text like Chrome omnibox_text */
 }
 
 #urlbar[focused="true"] {
     border-color: var(--catppuccin-green) !important;
-    box-shadow: 0 0 0 3px rgba(166, 227, 161, 0.4), 0 0 12px rgba(166, 227, 161, 0.3) !important;
-    background-color: rgba(166, 227, 161, 0.1) !important;
+    box-shadow: 0 0 0 2px rgba(166, 227, 161, 0.3) !important;
+    background-color: var(--catppuccin-crust) !important;
 }
 
-/* URL bar text */
+/* URL bar text - Green (matching Chrome omnibox_text) */
 #urlbar-input {
-    color: var(--catppuccin-text) !important;
+    color: var(--catppuccin-green) !important;
 }
 
-/* Navigation buttons */
+/* URL bar results */
+.urlbarView {
+    background-color: var(--catppuccin-crust) !important;
+    border: 1px solid var(--catppuccin-surface0) !important;
+}
+
+/* Navigation buttons - Green icons (matching Chrome toolbar_button_icon) */
 #back-button,
 #forward-button,
 #reload-button,
@@ -150,7 +152,8 @@
     background-color: transparent !important;
     border: none !important;
     border-radius: 6px !important;
-    color: var(--catppuccin-text) !important;
+    color: var(--catppuccin-green) !important; /* Green icons like Chrome */
+    fill: var(--catppuccin-green) !important;
 }
 
 #back-button:hover,
@@ -158,9 +161,8 @@
 #reload-button:hover,
 #stop-button:hover,
 #home-button:hover {
-    background-color: rgba(166, 227, 161, 0.2) !important;
+    background-color: var(--catppuccin-surface0) !important;
     color: var(--catppuccin-green) !important;
-    border: 1px solid var(--catppuccin-green) !important;
 }
 
 /* =============================================================================
@@ -205,8 +207,8 @@
 
 /* Menu items */
 menupopup {
-    background-color: var(--catppuccin-surface0) !important;
-    border: 1px solid var(--catppuccin-surface1) !important;
+    background-color: var(--catppuccin-crust) !important;
+    border: 1px solid var(--catppuccin-surface0) !important;
     border-radius: 8px !important;
     padding: 4px !important;
 }
@@ -218,9 +220,28 @@ menuitem {
 }
 
 menuitem:hover {
-    background-color: rgba(166, 227, 161, 0.15) !important;
+    background-color: var(--catppuccin-surface0) !important;
     color: var(--catppuccin-green) !important;
-    border-left: 3px solid var(--catppuccin-green) !important;
+}
+
+/* =============================================================================
+   BOOKMARKS STYLING (Matching Chrome - White text)
+   ============================================================================= */
+
+/* Bookmark bar */
+#PersonalToolbar {
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 1px solid var(--catppuccin-surface0) !important;
+}
+
+/* Bookmark items - White text (matching Chrome bookmark_text) */
+.bookmark-item {
+    color: var(--catppuccin-text) !important;
+}
+
+.bookmark-item:hover {
+    background-color: var(--catppuccin-surface0) !important;
+    color: var(--catppuccin-text) !important;
 }
 
 /* =============================================================================
@@ -230,16 +251,16 @@ menuitem:hover {
 /* Scrollbar track */
 * {
     scrollbar-width: thin !important;
-    scrollbar-color: var(--catppuccin-green) var(--catppuccin-base) !important;
+    scrollbar-color: var(--catppuccin-surface1) var(--catppuccin-base) !important;
 }
 
 /* =============================================================================
    WINDOW DECORATIONS (Wayland)
    ============================================================================= */
 
-/* Title bar (hidden in Wayland, but style for compatibility) */
+/* Title bar - Crust color (matching Chrome frame) */
 #titlebar {
-    background-color: var(--catppuccin-base) !important;
+    background-color: var(--catppuccin-crust) !important;
     color: var(--catppuccin-text) !important;
 }
 
@@ -254,26 +275,21 @@ menuitem:hover {
 }
 
 /* =============================================================================
-   ADDITIONAL GREEN ACCENTS
+   ADDITIONAL CHROME-THEME MATCHING ELEMENTS
    ============================================================================= */
 
-/* Active tab indicator - MORE VISIBLE */
+/* Active tab indicator */
 .tab-line[selected="true"] {
     background-color: var(--catppuccin-green) !important;
-    height: 3px !important;
+    height: 2px !important;
 }
 
-/* Loading indicator */
+/* Loading indicator - Green */
 .tab-throbber[progress] {
     color: var(--catppuccin-green) !important;
 }
 
-/* Bookmark star */
-.bookmark-item[selected="true"] {
-    color: var(--catppuccin-green) !important;
-}
-
-/* Security indicator (HTTPS) */
+/* Security indicator (HTTPS) - Green */
 #identity-box.verifiedDomain {
     color: var(--catppuccin-green) !important;
 }
@@ -281,6 +297,8 @@ menuitem:hover {
 /* Search highlights */
 .findbar-textbox {
     border-color: var(--catppuccin-green) !important;
+    background-color: var(--catppuccin-crust) !important;
+    color: var(--catppuccin-green) !important;
 }
 
 /* Active button states */
@@ -288,6 +306,11 @@ button:focus,
 toolbarbutton:focus {
     outline: 2px solid var(--catppuccin-green) !important;
     outline-offset: 2px !important;
+}
+
+/* New Tab Page (NTP) - Matching Chrome ntp_background */
+#newtab-window {
+    background-color: var(--catppuccin-base) !important;
 }
 
 /* =============================================================================
