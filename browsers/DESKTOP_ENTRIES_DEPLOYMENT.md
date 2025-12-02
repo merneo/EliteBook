@@ -16,8 +16,10 @@ Albert launcher cannot find Firefox and Brave browsers because desktop entry fil
 
 Desktop entry files provide standardized application registration following the freedesktop.org Desktop Entry Specification. These files enable:
 - Application launchers (Albert, rofi, dmenu) to discover applications
-- Desktop environments to show applications in menus
+- Window managers and desktop environments to show applications in menus
 - File managers to associate file types with applications
+
+**Note:** Desktop entries work with both desktop environments (KDE, GNOME) and standalone window managers (Hyprland, sway, i3). This configuration uses Hyprland window manager with Albert launcher.
 
 ---
 

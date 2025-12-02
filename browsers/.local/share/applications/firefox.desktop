@@ -7,8 +7,10 @@
 # Technical Context:
 #   Desktop entries follow the freedesktop.org Desktop Entry Specification,
 #   which provides a standard way for applications to register themselves
-#   with desktop environments and application launchers. This ensures
-#   cross-desktop compatibility and proper integration with system menus.
+#   with application launchers (Albert, rofi, dmenu) and window managers.
+#   This ensures cross-desktop compatibility and proper integration with
+#   application launchers, regardless of whether using a desktop environment
+#   or standalone window manager like Hyprland.
 #
 # File Location:
 #   - Repository: browsers/.local/share/applications/firefox.desktop
