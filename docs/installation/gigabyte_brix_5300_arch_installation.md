@@ -1700,12 +1700,17 @@ arch-chroot /mnt
 ### Step 7.3: Set Timezone
 
 ```bash
-# Set timezone (replace with your timezone)
+# Set timezone (replace <TIMEZONE> with your timezone)
 # Examples:
 #   Europe/London
 #   America/New_York
 #   Asia/Tokyo
-ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
+#   Europe/Prague
+#   America/Los_Angeles
+ln -sf /usr/share/zoneinfo/<TIMEZONE> /etc/localtime
+
+# Example: For Prague, Czech Republic:
+# ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
 
 # Generate /etc/adjtime
 hwclock --systohc
@@ -2327,8 +2332,12 @@ lsinitcpio /boot/initramfs-linux.img | grep root.key
 
 ```bash
 # Create user with home directory and group memberships
-# Replace "username" with your desired username
-useradd -m -G wheel,video,audio,storage,input,power,network -s /bin/zsh username
+# Replace <username> with your desired username (e.g., john, alice, user)
+useradd -m -G wheel,video,audio,storage,input,power,network -s /bin/zsh <username>
+
+# Example: To create user "john":
+# useradd -m -G wheel,video,audio,storage,input,power,network -s /bin/zsh john
+```
 
 # Explanation:
 # -m: Create home directory (/home/username)
@@ -2347,7 +2356,11 @@ useradd -m -G wheel,video,audio,storage,input,power,network -s /bin/zsh username
 
 ```bash
 # Set password for user
-passwd username
+# Replace <username> with your actual username
+passwd <username>
+
+# Example: To set password for user "john":
+# passwd john
 ```
 
 **Prompt:**
@@ -2386,10 +2399,14 @@ EDITOR=nano visudo
 
 ```bash
 # Check user information
-id username
+# Replace <username> with your actual username
+id <username>
 
 # Should show:
-# uid=1000(username) gid=1000(username) groups=1000(username),wheel,video,audio,storage,input,power,network
+# uid=1000(<username>) gid=1000(<username>) groups=1000(<username>),wheel,video,audio,storage,input,power,network
+
+# Example: To check user "john":
+# id john
 ```
 
 **SUCCESS:** User created with groups and sudo access
@@ -2826,11 +2843,12 @@ mkinitcpio -P
 
 #### 12.10.2 Create Hyprland Configuration Directory
 
+**IMPORTANT:** Replace `<username>` with the actual username you created in Phase 10.
+
 ```bash
 # Create Hyprland config directory
-mkdir -p /home/username/.config/hypr
-
-# Replace "username" with your actual username
+# Replace <username> with your actual username (e.g., john, alice, user)
+mkdir -p /home/<username>/.config/hypr
 ```
 
 #### 12.10.3 Create Basic Hyprland Configuration
@@ -2839,7 +2857,8 @@ mkdir -p /home/username/.config/hypr
 
 ```bash
 # Create basic Hyprland configuration
-cat > /home/username/.config/hypr/hyprland.conf << 'EOF'
+# Replace <username> with your actual username
+cat > /home/<username>/.config/hypr/hyprland.conf << 'EOF'
 # Hyprland Configuration for GIGABYTE Brix 5300
 # AMD Ryzen 3 5300U, Radeon RX Vega Graphics
 
@@ -2985,7 +3004,7 @@ bindm = $mainMod, mouse:273, resizewindow
 EOF
 ```
 
-**Note:** Replace `username` with your actual username created in Phase 10.
+**IMPORTANT:** Replace `<username>` with your actual username created in Phase 10 (e.g., if you created user `john`, use `/home/john/.config/hypr/hyprland.conf`).
 
 **Official Resources:**
 - [Hyprland Configuration Documentation](https://wiki.hyprland.org/Configuring/Variables/)
@@ -2996,10 +3015,11 @@ EOF
 
 ```bash
 # Create Waybar config directory
-mkdir -p /home/username/.config/waybar
+# Replace <username> with your actual username
+mkdir -p /home/<username>/.config/waybar
 
 # Create basic Waybar configuration
-cat > /home/username/.config/waybar/config.jsonc << 'EOF'
+cat > /home/<username>/.config/waybar/config.jsonc << 'EOF'
 {
   "layer": "top",
   "position": "top",
@@ -3051,7 +3071,8 @@ EOF
 
 ```bash
 # Create Waybar style
-cat > /home/username/.config/waybar/style.css << 'EOF'
+# Replace <username> with your actual username
+cat > /home/<username>/.config/waybar/style.css << 'EOF'
 * {
     border: none;
     border-radius: 0;
@@ -3156,9 +3177,11 @@ EOF
 
 ```bash
 # Set correct ownership for user configuration files
-chown -R username:username /home/username/.config
+# Replace <username> with your actual username
+chown -R <username>:<username> /home/<username>/.config
 
-# Replace "username" with your actual username
+# Example: If username is "john", use:
+# chown -R john:john /home/john/.config
 ```
 
 **SUCCESS:** Phase 12 Complete: Hyprland Wayland compositor, AMD graphics drivers, and complete desktop environment installed
