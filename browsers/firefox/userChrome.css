@@ -1,0 +1,73 @@
+/* =============================================================================
+   FIREFOX USER CHROME CUSTOMIZATION (userChrome.css)
+   =============================================================================
+   Purpose: Customize Firefox UI appearance to match Hyprland desktop theme
+            and provide a clean, minimal interface.
+   
+   Academic Context:
+     This stylesheet implements visual design principles for reducing
+     cognitive load and improving user experience through interface
+     simplification. Based on research in human-computer interaction
+     and minimalist design principles.
+   
+   Deployment:
+     Copy to: ~/.mozilla/firefox/*.default-release/chrome/userChrome.css
+     Enable: Set toolkit.legacyUserProfileCustomizations.stylesheets = true
+             in about:config
+   
+   References:
+     - Firefox CSS Reference: https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Tutorial/Modifying_the_Default_Skin
+     - userChrome.css Guide: https://www.userchrome.org/
+   ============================================================================= */
+
+/* =============================================================================
+   GLOBAL STYLES
+   ============================================================================= */
+
+/* Match system theme colors */
+:root {
+    --toolbar-bgcolor: #1e1e2e; /* Catppuccin Mocha base */
+    --toolbar-color: #cdd6f4;    /* Catppuccin Mocha text */
+    --tab-selected-bgcolor: #313244; /* Catppuccin Mocha surface0 */
+}
+
+/* =============================================================================
+   TAB BAR CUSTOMIZATION
+   ============================================================================= */
+
+/* Compact tab bar */
+#TabsToolbar {
+    padding: 2px 4px !important;
+}
+
+/* Tab styling */
+.tab-background {
+    border-radius: 6px 6px 0 0 !important;
+    margin: 2px !important;
+}
+
+.tab-background[selected="true"] {
+    background-color: var(--tab-selected-bgcolor) !important;
+}
+
+/* =============================================================================
+   NAVIGATION BAR CUSTOMIZATION
+   ============================================================================= */
+
+/* Compact navigation bar */
+#nav-bar {
+    padding: 4px !important;
+}
+
+/* =============================================================================
+   WINDOW DECORATIONS (Wayland)
+   ============================================================================= */
+
+/* Hide title bar when maximized (Wayland) */
+#titlebar {
+    display: none !important;
+}
+
+/* =============================================================================
+   END OF CUSTOMIZATION
+   ============================================================================= */
