@@ -70,7 +70,8 @@ EliteBook/
 │   │   ├── hyprland-*.sh    # Desktop mode switching (corner/rounded)
 │   │   ├── screenshot-*.sh # Screenshot capture workflows
 │   │   ├── wallpaper-*.sh   # Wallpaper rotation and management
-│   │   └── waybar-*.sh      # Status bar theme switching
+│   │   ├── waybar-*.sh      # Status bar theme switching
+│   │   └── howdy-add-auto.sh # Auto-enroll Howdy face model with timestamp name
 │   └── remove-fingerprint-from-pam.sh  # Remove fingerprint from PAM configuration
 │
 ├── systemd/                 # systemd user service definitions
@@ -245,7 +246,7 @@ EliteBook/
 - `~/.howdy/` - Face model storage (encrypted)
 
 **Operational Notes:**
-- Enrollment: `sudo howdy add`
+- Enrollment: `sudo howdy add` or `howdy-add-auto.sh` (auto-generates timestamp name)
 - PAM module: `pam_python.so` (installed from GitHub fork)
 - IR emitter: Auto-activated via `linux-enable-ir-emitter`
 - Auto-activation: SDDM theme automatically triggers authentication 1 second after login screen display
