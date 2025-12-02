@@ -2848,6 +2848,22 @@ mkinitcpio -P
 
 **amdgpu** is the kernel module for AMD Radeon RX Vega (GCN 5.0 architecture). This enables early graphics initialization, improving boot experience and display output.
 
+**Verification after first boot:**
+```bash
+# Check if amdgpu module is loaded
+lsmod | grep amdgpu
+
+# Should show:
+# amdgpu               12345678  0
+# ...
+
+# Check graphics device
+lspci | grep -i vga
+
+# Should show:
+# 03:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] ...
+```
+
 #### 12.10.2 Create Hyprland Configuration Directory
 
 **IMPORTANT:** Replace `<username>` with the actual username you created in Phase 10.
@@ -2877,11 +2893,16 @@ cat > /home/<username>/.config/hypr/hyprland.conf << 'EOF'
 monitor=,preferred,auto,auto
 
 # Workspace Assignment
+# GIGABYTE Brix 5300 typically uses HDMI or DisplayPort output
+# Adjust monitor names based on your actual setup (check with: hyprctl monitors)
 workspace = 1, monitor:HDMI-A-1, default:true
 workspace = 2, monitor:HDMI-A-1
 workspace = 3, monitor:HDMI-A-1
 workspace = 4, monitor:HDMI-A-1
 workspace = 5, monitor:HDMI-A-1
+
+# Note: If using DisplayPort, replace HDMI-A-1 with DP-1 or check actual monitor name
+# Run 'hyprctl monitors' after first boot to see actual monitor names
 
 # Application Aliases
 $terminal = kitty
@@ -2891,7 +2912,10 @@ $menu = wofi --show drun
 # Autostart Applications
 exec-once = waybar
 exec-once = mako
-exec-once = swaybg --image ~/.config/wallpaper.png
+# Note: Create wallpaper directory and add wallpaper image, or comment out this line
+# exec-once = swaybg --image ~/.config/wallpaper.png
+# Alternative: Use solid color background
+exec-once = swaybg -c "#1e1e2e"
 
 # Environment Variables
 env = XCURSOR_SIZE,24
@@ -3128,14 +3152,19 @@ pacman -S \
 **Package breakdown:**
 - `swaybg` - Wallpaper utility for Wayland
   - [swaybg GitHub](https://github.com/swaywm/swaybg)
+  - **Note:** Default Hyprland config uses solid color background. To use wallpaper image, create `~/.config/wallpaper.png` and uncomment the `swaybg` line in `hyprland.conf`
 - `brightnessctl` - Screen brightness control (important for mini PC systems)
   - [brightnessctl GitHub](https://github.com/Hummer12007/brightnessctl)
+  - **Note:** GIGABYTE Brix 5300 may not have built-in display brightness control. This package is useful for external monitor brightness control.
 - `qt5-wayland` + `qt6-wayland` - Qt Wayland support (for KDE applications like Dolphin)
   - [Qt Wayland Documentation](https://doc.qt.io/qt-6/wayland.html)
+  - **Note:** Required for Dolphin file manager to work properly in Wayland
 - `xdg-utils` - Desktop integration utilities
   - [XDG Utils Specification](https://www.freedesktop.org/wiki/Software/xdg-utils/)
+  - **Note:** Required for proper desktop integration (file associations, default applications)
 - `xdg-user-dirs` - User directory management (Documents, Downloads, etc.)
   - [XDG User Dirs Specification](https://www.freedesktop.org/wiki/Software/xdg-user-dirs/)
+  - **Note:** Creates standard user directories (Documents, Downloads, Pictures, etc.) on first login
 
 #### 12.10.7 Install File Manager and Utilities
 
@@ -3175,6 +3204,12 @@ EOF
 ```
 
 **Note:** SDDM should automatically detect Hyprland session after installation. Verify by checking SDDM session selection menu after first boot.
+
+**If Hyprland session doesn't appear in SDDM:**
+- Verify `/usr/share/wayland-sessions/hyprland.desktop` exists
+- Check file permissions (`chmod 644 /usr/share/wayland-sessions/hyprland.desktop`)
+- Verify Hyprland binary exists (`ls /usr/bin/Hyprland`)
+- Restart SDDM service (`systemctl restart sddm`)
 
 **Official Resources:**
 - [SDDM Session Configuration](https://github.com/sddm/sddm/wiki/Sessions)
