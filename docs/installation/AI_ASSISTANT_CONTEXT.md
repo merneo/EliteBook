@@ -155,7 +155,7 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/ho
 **When user says:** "I need to deploy dotfiles/configuration files"
 
 **Your response should:**
-1. Reference that this is documented in `~/Documents/README_COMPLETE.md` Phase 17
+1. Reference that this is documented in `docs/installation/README_COMPLETE.md` Phase 17 (in this repository)
 2. Know that:
    - Repository is at `~/EliteBook`
    - Can use GNU Stow: `stow hypr kitty waybar nvim tmux scripts browsers -t ~/`
@@ -227,8 +227,8 @@ You: [Automatically check docs/installation/AI_ASSISTANT_CONTEXT.md]
 - `docs/installation/` - Installation documentation
 
 **Local Files (not in repository):**
-- `~/Documents/README_COMPLETE.md` - Version WITH AI prompts (for local use)
-- `~/Documents/extract-phase-prompt.sh` - Script to extract prompts
+- Local `~/Documents/README_COMPLETE.md` - Version WITH AI prompts (for local use, not in repository)
+- Local `~/Documents/extract-phase-prompt.sh` - Script to extract prompts (for local use)
 
 ---
 
