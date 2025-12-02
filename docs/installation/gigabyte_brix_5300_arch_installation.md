@@ -795,20 +795,20 @@ The `--iter-time 5000` parameter specifies that key derivation should take appro
 
 ```bash
 # Create LUKS2 encrypted container on root partition
-# Replace /dev/sdX2 with your actual root partition
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p4 (root partition created in Phase 3)
 cryptsetup luksFormat --type luks2 \
   --cipher aes-xts-plain64 \
   --key-size 512 \
   --pbkdf argon2id \
   --iter-time 5000 \
-  /dev/sdX2
+  /dev/nvme0n1p4
 ```
 
 **Prompt 1: Confirmation**
 ```
 WARNING!
 ========
-This will overwrite data on /dev/sdX2 irrevocably.
+This will overwrite data on /dev/nvme0n1p4 irrevocably.
 
 Are you sure? (Type 'yes' in capital letters):
 ```
@@ -817,7 +817,7 @@ Are you sure? (Type 'yes' in capital letters):
 
 **Prompt 2: Passphrase**
 ```
-Enter passphrase for /dev/sdX2:
+Enter passphrase for /dev/nvme0n1p4:
 ```
 
 **Enter a STRONG passphrase** (e.g., minimum 20 characters, mix of letters/numbers/symbols)
@@ -841,12 +841,13 @@ Verify passphrase:
 
 ```bash
 # Unlock LUKS container and map to /dev/mapper/cryptroot
-cryptsetup open /dev/sdX2 cryptroot
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p4 (root partition)
+cryptsetup open /dev/nvme0n1p4 cryptroot
 ```
 
 **Prompt:**
 ```
-Enter passphrase for /dev/sdX2:
+Enter passphrase for /dev/nvme0n1p4:
 ```
 
 **Enter the passphrase** you just created and press **Enter**
@@ -871,13 +872,13 @@ ls -la /dev/mapper/
 
 ```bash
 # Create LUKS2 encrypted container on swap partition
-# Replace /dev/sdX3 with your actual swap partition
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p5 (swap partition created in Phase 3)
 cryptsetup luksFormat --type luks2 \
   --cipher aes-xts-plain64 \
   --key-size 512 \
   --pbkdf argon2id \
   --iter-time 5000 \
-  /dev/sdX3
+  /dev/nvme0n1p5
 ```
 
 **Prompt 1: Confirmation**
@@ -899,7 +900,8 @@ Are you sure? (Type 'yes' in capital letters):
 
 ```bash
 # Unlock swap container and map to /dev/mapper/cryptswap
-cryptsetup open /dev/sdX3 cryptswap
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p5 (swap partition)
+cryptsetup open /dev/nvme0n1p5 cryptswap
 ```
 
 **Enter the SAME passphrase** as before.
@@ -922,10 +924,11 @@ ls -la /dev/mapper/
 
 ```bash
 # Display LUKS header information for root partition
-cryptsetup luksDump /dev/sdX2 | head -20
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p4 (root partition)
+cryptsetup luksDump /dev/nvme0n1p4 | head -20
 
 # Should show:
-# LUKS header information for /dev/sdX2
+# LUKS header information for /dev/nvme0n1p4
 # Version:        2
 # Cipher name:    aes
 # Cipher mode:    xts-plain64
@@ -1108,9 +1111,8 @@ mount -o subvol=@snapshots,compress=zstd,noatime /dev/mapper/cryptroot /mnt/.sna
 
 ```bash
 # Mount EFI partition
-mount /dev/sdX1 /mnt/boot
-
-# Replace /dev/sdX1 with your actual EFI partition
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p1 (EFI System Partition)
+mount /dev/nvme0n1p1 /mnt/boot
 ```
 
 **WARNING:** This partition is SHARED between Windows and Linux bootloaders (if dual-booting)
@@ -1598,20 +1600,20 @@ UUID (Universally Unique Identifier) is a permanent identifier for disk partitio
 blkid
 
 # Display only encrypted root partition UUID
-# Replace /dev/sdX2 with your actual root partition
-blkid /dev/sdX2
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p4 (root partition)
+blkid /dev/nvme0n1p4
 
 # Alternative: Filter only UUID value
-blkid -s UUID -o value /dev/sdX2
+blkid -s UUID -o value /dev/nvme0n1p4
 ```
 
 **Expected output:**
 ```
-/dev/sdX2: UUID="a1b2c3d4-e5f6-7890-abcd-ef1234567890" TYPE="crypto_LUKS" PARTUUID="..."
+/dev/nvme0n1p4: UUID="a1b2c3d4-e5f6-7890-abcd-ef1234567890" TYPE="crypto_LUKS" PARTUUID="..."
 ```
 
 **Steps to copy UUID:**
-1. Run: `blkid /dev/sdX2`
+1. Run: `blkid /dev/nvme0n1p4`
 2. Look for `UUID="..."` in the output
 3. Copy the value between quotes (format: `XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX`)
 4. Example: `a1b2c3d4-e5f6-7890-abcd-ef1234567890`
@@ -1636,10 +1638,7 @@ Find:
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
 ```
 
-Change to:
-```bash
-GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
-```
+**No change needed** - This line should remain as-is (already correct).
 
 **Line 2: GRUB_CMDLINE_LINUX**
 
@@ -1760,8 +1759,8 @@ ls -la /etc/cryptsetup.d/root.key
 
 ```bash
 # Add keyfile to LUKS key slot 1 (slot 0 has your passphrase)
-# Replace /dev/sdX2 with your actual root partition
-cryptsetup luksAddKey /dev/sdX2 /etc/cryptsetup.d/root.key
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p4 (root partition)
+cryptsetup luksAddKey /dev/nvme0n1p4 /etc/cryptsetup.d/root.key
 ```
 
 **Prompt:**
@@ -1775,7 +1774,8 @@ Enter any existing passphrase:
 
 **Verify keyfile was added:**
 ```bash
-cryptsetup luksDump /dev/sdX2 | grep "Key Slot"
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p4 (root partition)
+cryptsetup luksDump /dev/nvme0n1p4 | grep "Key Slot"
 
 # Should show:
 # Key Slot 0: ENABLED
@@ -1790,8 +1790,8 @@ cryptsetup luksDump /dev/sdX2 | grep "Key Slot"
 
 ```bash
 # Add keyfile to encrypted swap partition
-# Replace /dev/sdX3 with your actual swap partition
-cryptsetup luksAddKey /dev/sdX3 /etc/cryptsetup.d/root.key
+# For GIGABYTE Brix 5300: Use /dev/nvme0n1p5 (swap partition)
+cryptsetup luksAddKey /dev/nvme0n1p5 /etc/cryptsetup.d/root.key
 
 # Enter existing passphrase: (same as before)
 ```
@@ -2581,7 +2581,7 @@ cat > /home/username/.config/waybar/config.jsonc << 'EOF'
   
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock"],
-  "modules-right": ["pulseaudio", "network", "battery", "clock"],
+  "modules-right": ["pulseaudio", "network", "battery"],
   
   "hyprland/workspaces": {
     "format": "{id}",
