@@ -303,13 +303,12 @@ groups $USER
 ## Installation Script
 
 An automated installation script is available at:
-- `EliteBook/scripts/install-howdy.sh`
+- `HOWDY_SETUP_MANUAL.md` (installation guide)
 
 **Usage:**
 ```bash
 cd EliteBook/scripts
-chmod +x install-howdy.sh
-./install-howdy.sh
+# See HOWDY_SETUP_MANUAL.md for installation instructions
 ```
 
 **Options:**

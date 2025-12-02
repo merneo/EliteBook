@@ -71,7 +71,7 @@ EliteBook/
 │   │   ├── screenshot-*.sh # Screenshot capture workflows
 │   │   ├── wallpaper-*.sh   # Wallpaper rotation and management
 │   │   └── waybar-*.sh      # Status bar theme switching
-│   └── install-howdy.sh     # Automated Howdy face recognition installation script
+│   └── remove-fingerprint-from-pam.sh  # Remove fingerprint from PAM configuration
 │
 ├── systemd/                 # systemd user service definitions
 │   └── .config/systemd/user/
@@ -361,8 +361,8 @@ sudo systemctl enable --now tlp thermald acpid
 # yay: AUR helper - https://github.com/Jguer/yay
 yay -S swayosd python-validity-git
 
-# Optional: Install Howdy face recognition (automated script)
-# ./scripts/install-howdy.sh
+# Optional: Install Howdy face recognition
+# See HOWDY_SETUP_MANUAL.md for installation instructions
 ```
 
 **Step 3: Deploy Configurations with GNU Stow**
@@ -718,10 +718,6 @@ sudo timeshift --restore --snapshot 'YYYY-MM-DD_HH-MM-SS'
   - Enrollment status and verification
   - PAM configuration for fingerprint
   - Usage examples and testing
-- `FINGERPRINT_PASSWORD_FALLBACK.md`: Password fallback configuration guide
-  - Ensuring password entry after biometric failure
-  - Fingerprint message suppression options
-  - PAM configuration for proper fallback chain
 - `FINGERPRINT_REMOVE_MESSAGES.md`: Remove fingerprint messages guide
   - Solution for intrusive fingerprint messages
   - Script to remove fingerprint from PAM
