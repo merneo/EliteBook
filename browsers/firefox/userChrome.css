@@ -1,0 +1,53 @@
+/* =============================================================================
+   FIREFOX USER CHROME CUSTOMIZATION (userChrome.css)
+   =============================================================================
+   Purpose: Customize Firefox UI appearance to match Hyprland desktop theme
+            and provide a clean, minimal interface with Catppuccin Mocha Green
+            color scheme.
+   
+   Academic Context:
+     This stylesheet implements visual design principles for reducing
+     cognitive load and improving user experience through interface
+     simplification. Based on research in human-computer interaction
+     and minimalist design principles. Integrates Catppuccin color palette
+     for aesthetic consistency across the desktop environment.
+   
+   Deployment:
+     1. Enable userChrome: Set toolkit.legacyUserProfileCustomizations.stylesheets = true
+        in about:config
+     2. Copy this file to: ~/.mozilla/firefox/*.default-release/chrome/userChrome.css
+     3. Copy catppuccin-mocha-green.css to same directory
+     4. Restart Firefox
+   
+   References:
+     - Firefox CSS Reference: https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Tutorial/Modifying_the_Default_Skin
+     - userChrome.css Guide: https://www.userchrome.org/
+     - Catppuccin: https://github.com/catppuccin/catppuccin
+   ============================================================================= */
+
+/* =============================================================================
+   IMPORT CATPPUCCIN MOCHA GREEN THEME
+   ============================================================================= */
+@import "catppuccin-mocha-green.css";
+
+/* =============================================================================
+   ADDITIONAL CUSTOMIZATIONS
+   ============================================================================= */
+
+/* Compact spacing */
+#TabsToolbar {
+    padding: 2px 4px !important;
+}
+
+#nav-bar {
+    padding: 4px !important;
+}
+
+/* Hide title bar when maximized (Wayland) */
+#titlebar {
+    display: none !important;
+}
+
+/* =============================================================================
+   END OF CUSTOMIZATION
+   ============================================================================= */

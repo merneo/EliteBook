@@ -1,0 +1,480 @@
+/* =============================================================================
+   CATPPUCCIN MOCHA GREEN THEME FOR FIREFOX
+   =============================================================================
+   Purpose: Complete Catppuccin Mocha Green color scheme implementation for
+            Firefox browser, based on Google Chrome theme configuration.
+            Matches the system-wide theme used in Hyprland, Waybar, and other
+            desktop components.
+   
+   Academic Context:
+     This theme implements the Catppuccin color palette, a community-driven
+     pastel color scheme designed for eye comfort and aesthetic consistency
+     across applications. The Mocha variant uses darker base colors, while the
+     Green accent provides visual consistency with the system theme.
+   
+   Color Palette Reference (from Chrome theme):
+     Frame:        #11111b (Crust) - Darkest background
+     Toolbar:      #1e1e2e (Base) - Primary background
+     Omnibox:      #11111b (Crust) - URL bar background
+     Text:         #cdd6f4 (Text) - Primary text
+     Green Accent: #a6e3a1 (Green) - Primary accent color
+     Surface1:     #45475a (Surface1) - Hover states
+   
+   Deployment:
+     1. Enable userChrome.css: Set toolkit.legacyUserProfileCustomizations.stylesheets = true
+     2. Copy this file to: ~/.mozilla/firefox/*.default-release/chrome/catppuccin-mocha-green.css
+     3. Import in userChrome.css: @import "catppuccin-mocha-green.css";
+   
+   References:
+     - Catppuccin: https://github.com/catppuccin/catppuccin
+     - Firefox Theming: https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Themes
+     - Chrome Theme Source: ~/catppuccin-extension-mocha-green/manifest.json
+   ============================================================================= */
+
+/* =============================================================================
+   CATPPUCCIN MOCHA GREEN COLOR VARIABLES (Based on Chrome Theme)
+   ============================================================================= */
+:root {
+    /* Base Colors - Matching Chrome Theme */
+    --catppuccin-base: #1e1e2e;        /* Toolbar background */
+    --catppuccin-crust: #11111b;       /* Frame, omnibox background */
+    --catppuccin-surface1: #45475a;    /* Frame incognito, hover states */
+    
+    /* Surface Colors */
+    --catppuccin-surface0: #313244;
+    --catppuccin-surface2: #585b70;
+    
+    /* Text Colors */
+    --catppuccin-text: #cdd6f4;        /* Primary text (white) */
+    --catppuccin-subtext1: #bac2de;    /* Secondary text */
+    --catppuccin-subtext0: #a6adc8;    /* Tertiary text */
+    
+    /* Accent Colors (Green) - Matching Chrome Theme */
+    --catppuccin-green: #a6e3a1;       /* Primary accent (toolbar icons, omnibox text) */
+    
+    /* Semantic Colors */
+    --catppuccin-red: #f38ba8;
+    --catppuccin-yellow: #f9e2af;
+    --catppuccin-blue: #89b4fa;
+    --catppuccin-mauve: #cba6f7;
+}
+
+/* =============================================================================
+   TAB BAR STYLING (Matching Chrome Theme)
+   ============================================================================= */
+
+/* Tab bar background - Base color */
+#TabsToolbar {
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 1px solid var(--catppuccin-surface0) !important;
+}
+
+/* Individual tabs */
+.tab-background {
+    background-color: var(--catppuccin-base) !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+.tab-background:hover {
+    background-color: var(--catppuccin-surface0) !important;
+}
+
+/* Selected tab - Matching Chrome style */
+.tab-background[selected="true"] {
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 2px solid var(--catppuccin-green) !important;
+}
+
+/* Tab text - White (matching Chrome tab_text) */
+.tab-label {
+    color: var(--catppuccin-text) !important;
+}
+
+.tab-label[selected="true"] {
+    color: var(--catppuccin-text) !important;
+    font-weight: normal !important;
+}
+
+/* Tab close button */
+.tab-close-button {
+    color: var(--catppuccin-subtext0) !important;
+}
+
+.tab-close-button:hover {
+    background-color: var(--catppuccin-red) !important;
+    color: var(--catppuccin-base) !important;
+    border-radius: 4px !important;
+}
+
+/* =============================================================================
+   NAVIGATION BAR STYLING (Matching Chrome Theme)
+   ============================================================================= */
+
+/* Navigation bar background - Base color */
+#nav-bar {
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 1px solid var(--catppuccin-surface0) !important;
+}
+
+/* =============================================================================
+   ADDRESS BAR (OMNIBOX) STYLING - Catppuccin Mocha Green
+   =============================================================================
+   Based on Chrome theme: omnibox_background [17,17,27] = #11111b (Crust)
+                          omnibox_text [166,227,161] = #a6e3a1 (Green)
+   ============================================================================= */
+
+/* URL bar main container - Crust background */
+#urlbar {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border: 1px solid transparent !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+/* URL bar background element */
+#urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* URL bar when not focused */
+#urlbar:not([focused="true"]) {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border-color: transparent !important;
+}
+
+#urlbar:not([focused="true"]) #urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
+}
+
+/* URL bar when focused - Green border */
+#urlbar[focused="true"] {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border-color: #a6e3a1 !important;
+    border-width: 1px !important;
+    box-shadow: 0 0 0 1px rgba(166, 227, 161, 0.2) !important;
+}
+
+#urlbar[focused="true"] #urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border-color: #a6e3a1 !important;
+}
+
+/* URL bar text input - Green text */
+#urlbar-input {
+    color: #a6e3a1 !important;
+}
+
+.urlbar-input-text {
+    color: #a6e3a1 !important;
+}
+
+/* URL bar placeholder text */
+#urlbar-input::placeholder {
+    color: #a6adc8 !important;
+    opacity: 0.7 !important;
+}
+
+.urlbar-input-text::placeholder {
+    color: #a6adc8 !important;
+    opacity: 0.7 !important;
+}
+
+/* URL bar icons - Green */
+#urlbar-icons {
+    color: #a6e3a1 !important;
+}
+
+.urlbar-icon {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+/* Security indicator - Green */
+#identity-box {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+#identity-box * {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+#identity-box.verifiedDomain {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+#identity-box.verifiedDomain * {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+/* URL bar results dropdown - Crust background */
+.urlbarView {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border: 1px solid #313244 !important;
+    border-radius: 8px !important;
+    margin-top: 4px !important;
+}
+
+.urlbarView-body {
+    background-color: #11111b !important;
+    background: #11111b !important;
+}
+
+/* URL bar result items */
+.urlbarView-row {
+    background-color: transparent !important;
+    color: #cdd6f4 !important;
+    border-radius: 4px !important;
+}
+
+.urlbarView-row:hover {
+    background-color: #313244 !important;
+    color: #a6e3a1 !important;
+}
+
+.urlbarView-row[selected] {
+    background-color: #313244 !important;
+    color: #a6e3a1 !important;
+}
+
+/* URL bar result title */
+.urlbarView-title {
+    color: #cdd6f4 !important;
+}
+
+.urlbarView-row[selected] .urlbarView-title {
+    color: #a6e3a1 !important;
+}
+
+.urlbarView-row:hover .urlbarView-title {
+    color: #a6e3a1 !important;
+}
+
+/* URL bar result URL */
+.urlbarView-url {
+    color: #bac2de !important;
+}
+
+.urlbarView-row[selected] .urlbarView-url {
+    color: #a6e3a1 !important;
+}
+
+.urlbarView-row:hover .urlbarView-url {
+    color: #a6e3a1 !important;
+}
+
+/* URL bar one-off search buttons */
+#urlbar-search-mode-indicator {
+    background-color: #11111b !important;
+    color: #a6e3a1 !important;
+    border: 1px solid #313244 !important;
+}
+
+/* URL bar zoom indicator */
+#urlbar-zoom-button {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+/* URL bar page action buttons */
+#urlbar-page-action-button {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+/* Override any Firefox default colors */
+#urlbar-container {
+    background-color: transparent !important;
+}
+
+#urlbar-wrapper {
+    background-color: transparent !important;
+}
+
+/* Navigation buttons - Green icons (matching Chrome toolbar_button_icon) */
+#back-button,
+#forward-button,
+#reload-button,
+#stop-button,
+#home-button {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
+    color: var(--catppuccin-green) !important; /* Green icons like Chrome */
+    fill: var(--catppuccin-green) !important;
+}
+
+#back-button:hover,
+#forward-button:hover,
+#reload-button:hover,
+#stop-button:hover,
+#home-button:hover {
+    background-color: var(--catppuccin-surface0) !important;
+    color: var(--catppuccin-green) !important;
+}
+
+/* =============================================================================
+   SIDEBAR STYLING
+   ============================================================================= */
+
+/* Sidebar background */
+#sidebar-box {
+    background-color: var(--catppuccin-base) !important;
+}
+
+/* Sidebar header */
+#sidebar-header {
+    background-color: var(--catppuccin-surface0) !important;
+    border-bottom: 1px solid var(--catppuccin-surface1) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+/* Sidebar items */
+.sidebar-placesTree {
+    background-color: var(--catppuccin-base) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+.sidebar-placesTree > treechildren::-moz-tree-row(selected) {
+    background-color: var(--catppuccin-surface0) !important;
+}
+
+.sidebar-placesTree > treechildren::-moz-tree-row(hover) {
+    background-color: var(--catppuccin-surface1) !important;
+}
+
+/* =============================================================================
+   MENU STYLING
+   ============================================================================= */
+
+/* Menu bar */
+#toolbar-menubar {
+    background-color: var(--catppuccin-base) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+/* Menu items */
+menupopup {
+    background-color: var(--catppuccin-crust) !important;
+    border: 1px solid var(--catppuccin-surface0) !important;
+    border-radius: 8px !important;
+    padding: 4px !important;
+}
+
+menuitem {
+    color: var(--catppuccin-text) !important;
+    border-radius: 4px !important;
+    padding: 6px 8px !important;
+}
+
+menuitem:hover {
+    background-color: var(--catppuccin-surface0) !important;
+    color: var(--catppuccin-green) !important;
+}
+
+/* =============================================================================
+   BOOKMARKS STYLING (Matching Chrome - White text)
+   ============================================================================= */
+
+/* Bookmark bar */
+#PersonalToolbar {
+    background-color: var(--catppuccin-base) !important;
+    border-bottom: 1px solid var(--catppuccin-surface0) !important;
+}
+
+/* Bookmark items - White text (matching Chrome bookmark_text) */
+.bookmark-item {
+    color: var(--catppuccin-text) !important;
+}
+
+.bookmark-item:hover {
+    background-color: var(--catppuccin-surface0) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+/* =============================================================================
+   SCROLLBAR STYLING
+   ============================================================================= */
+
+/* Scrollbar track */
+* {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--catppuccin-surface1) var(--catppuccin-base) !important;
+}
+
+/* =============================================================================
+   WINDOW DECORATIONS (Wayland)
+   ============================================================================= */
+
+/* Title bar - Crust color (matching Chrome frame) */
+#titlebar {
+    background-color: var(--catppuccin-crust) !important;
+    color: var(--catppuccin-text) !important;
+}
+
+/* =============================================================================
+   STATUS BAR STYLING
+   ============================================================================= */
+
+#statusbar {
+    background-color: var(--catppuccin-base) !important;
+    border-top: 1px solid var(--catppuccin-surface0) !important;
+    color: var(--catppuccin-subtext0) !important;
+}
+
+/* =============================================================================
+   ADDITIONAL CHROME-THEME MATCHING ELEMENTS
+   ============================================================================= */
+
+/* Active tab indicator */
+.tab-line[selected="true"] {
+    background-color: var(--catppuccin-green) !important;
+    height: 2px !important;
+}
+
+/* Loading indicator - Green */
+.tab-throbber[progress] {
+    color: var(--catppuccin-green) !important;
+}
+
+/* Security indicator (HTTPS) - Green */
+#identity-box.verifiedDomain {
+    color: var(--catppuccin-green) !important;
+}
+
+/* Search highlights */
+.findbar-textbox {
+    border-color: var(--catppuccin-green) !important;
+    background-color: var(--catppuccin-crust) !important;
+    color: var(--catppuccin-green) !important;
+}
+
+/* Active button states */
+button:focus,
+toolbarbutton:focus {
+    outline: 2px solid var(--catppuccin-green) !important;
+    outline-offset: 2px !important;
+}
+
+/* New Tab Page (NTP) - Matching Chrome ntp_background */
+#newtab-window {
+    background-color: var(--catppuccin-base) !important;
+}
+
+/* =============================================================================
+   END OF THEME
+   ============================================================================= */
