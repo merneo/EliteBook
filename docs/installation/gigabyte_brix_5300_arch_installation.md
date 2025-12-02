@@ -139,30 +139,79 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 ## Disk Partitioning Strategy
 
-### Partition Layout (Percentage-Based)
+### Partition Layout for SAMSUNG 970 EVO Plus 500GB
 
 **IMPORTANT:** This guide assumes **Windows 11 is already installed**. The partitioning strategy below shows the layout after Windows 11 installation, with space reserved for Arch Linux.
 
+**Disk Specifications:**
+- **Model:** SAMSUNG 970 EVO Plus
+- **Capacity:** 500 GB (formatted capacity: ~465-500 GB)
+- **Interface:** M.2 NVMe PCIe 3.0 ×4
+- **Form Factor:** M.2 2280
+
 **Final Partition Layout (after Windows 11 installation):**
 
-| Partition | Percentage | Type | Filesystem | Mount Point | Purpose | Encrypted |
-|-----------|------------|------|------------|-------------|---------|-----------|
-| `/dev/nvme0n1p1` | 0.2% (min 512 MB) | EFI System | FAT32 | `/boot` | UEFI bootloader (GRUB + Windows) | **No** |
-| `/dev/nvme0n1p2` | 50-60% | Microsoft basic data | NTFS | N/A | Windows 11 system partition | **No** |
-| `/dev/nvme0n1p3` | ~1% | Microsoft recovery | NTFS | N/A | Windows Recovery Environment | **No** |
-| `/dev/nvme0n1p4` | 30-35% | Linux filesystem | Btrfs | `/` | Arch Linux root (encrypted) | **Yes (LUKS2)** |
-| `/dev/nvme0n1p5` | 3-5% | Linux swap | swap | `[SWAP]` | Encrypted swap partition | **Yes (LUKS2)** |
+| Partition | Percentage | Real Size | Type | Filesystem | Mount Point | Purpose | Encrypted |
+|-----------|------------|-----------|------|------------|-------------|---------|-----------|
+| `/dev/nvme0n1p1` | 0.1% | 512 MB | EFI System | FAT32 | `/boot` | UEFI bootloader (GRUB + Windows) | **No** |
+| `/dev/nvme0n1p2` | 50% | ~250 GB | Microsoft basic data | NTFS | N/A | Windows 11 system partition | **No** |
+| `/dev/nvme0n1p3` | 0.2% | ~1 GB | Microsoft recovery | NTFS | N/A | Windows Recovery Environment | **No** |
+| `/dev/nvme0n1p4` | 35% | ~175 GB | Linux filesystem | Btrfs | `/` | Arch Linux root (encrypted) | **Yes (LUKS2)** |
+| `/dev/nvme0n1p5` | 1.6% | ~8 GB | Linux swap | swap | `[SWAP]` | Encrypted swap partition | **Yes (LUKS2)** |
+| **Unallocated** | ~13% | ~65 GB | - | - | - | Reserved for future use or data | - |
 
-**Note:** Windows 11 installation typically creates:
-- EFI System Partition (512 MB)
-- Windows system partition (50-60% of disk)
-- Windows Recovery partition (~1%)
-- Remaining space (~30-40%) for Arch Linux
+**Total Disk Usage:**
+- **Windows 11:** ~251 GB (50.2%)
+- **Arch Linux:** ~183 GB (36.6%)
+- **Unallocated:** ~65 GB (13.2%)
+- **Total Used:** ~435 GB (87%)
 
-**Recommended allocation for Arch Linux:**
-- Root partition: 30-35% of total disk space
-- Swap partition: 3-5% of total disk space (minimum 2 GB, recommended 4-8 GB)
-- EFI partition: Shared with Windows (already created)
+**Detailed Breakdown:**
+
+**Windows 11 Partitions (created during Windows installation):**
+- **EFI System Partition (p1):** 512 MB
+  - Shared between Windows 11 and Arch Linux
+  - Contains Windows Boot Manager and GRUB bootloader
+  - FAT32 filesystem (required for UEFI)
+
+- **Windows 11 System Partition (p2):** ~250 GB (50%)
+  - Windows 11 installation files
+  - User data, applications, system files
+  - NTFS filesystem
+
+- **Windows Recovery Partition (p3):** ~1 GB (0.2%)
+  - Windows Recovery Environment (WinRE)
+  - System restore functionality
+  - NTFS filesystem
+
+**Arch Linux Partitions (created during Arch installation):**
+
+- **Root Partition (p4):** ~175 GB (35%)
+  - Arch Linux system files
+  - User home directories
+  - Applications and packages
+  - Btrfs filesystem with subvolumes
+  - LUKS2 encrypted
+
+- **Swap Partition (p5):** ~8 GB (1.6%)
+  - Virtual memory (swap space)
+  - Recommended: 4-8 GB for 8-16 GB RAM systems
+  - LUKS2 encrypted
+  - Can be adjusted based on RAM size:
+    - 8 GB RAM: 4-8 GB swap
+    - 16 GB RAM: 8 GB swap
+    - 32 GB RAM: 8-16 GB swap
+
+**Unallocated Space (~65 GB):**
+- Reserved for future expansion
+- Can be used for additional data partitions
+- Can be added to Windows or Arch Linux later if needed
+
+**Note:** Actual sizes may vary slightly due to:
+- Disk formatting overhead
+- Windows 11 installation size variations
+- Partition alignment requirements
+- File system overhead
 
 ### Encryption Details
 
@@ -529,17 +578,29 @@ Free space       ...         ...        ...  ~250G
 
 1. **Use arrow keys** to navigate to remaining **Free space** row (after Windows partitions)
 2. **Press Enter** on **[ New ]** menu option
-3. **Partition size**: Type `35%` (or calculate: if 250 GB free, use ~175 GB) and press **Enter**
-   - **Alternative**: Type specific size like `175G` for 175 GB
+3. **Partition size**: Type `175G` (175 GB for 500 GB disk) and press **Enter**
+   - **For SAMSUNG 970 EVO Plus 500GB:** Use `175G` (35% of disk)
+   - **Alternative percentage method**: Type `35%` if cfdisk supports percentage input
 4. Partition type will default to **Linux filesystem** (correct, do not change)
 
-**New partition created: /dev/nvme0n1p4 (35%, Linux filesystem)**
+**New partition created: /dev/nvme0n1p4 (175 GB, Linux filesystem)**
+
+**Size Calculation for 500GB Disk:**
+- Total disk: 500 GB
+- Windows 11: ~251 GB (50%)
+- Remaining: ~249 GB
+- Arch Linux root: 175 GB (35% of total, ~70% of remaining)
+- Swap: 8 GB (1.6% of total)
+- Unallocated: ~65 GB (13% of total)
 
 ### Step 3.6: Create Linux Swap Partition
 
 1. **Use arrow keys** to navigate to remaining **Free space** row
 2. **Press Enter** on **[ New ]** menu option
-3. **Partition size**: Type `8G` (8 GB recommended for 16 GB RAM) or `4G` (4 GB for 8 GB RAM) and press **Enter**
+3. **Partition size**: Type `8G` (8 GB recommended) and press **Enter**
+   - **For 8 GB RAM:** Use `4G` (4 GB swap)
+   - **For 16 GB RAM:** Use `8G` (8 GB swap) - **RECOMMENDED**
+   - **For 32 GB RAM:** Use `8G` or `16G` (8-16 GB swap)
    - **Minimum**: 2 GB
    - **Recommended**: 4-8 GB (equal to or half of system RAM)
 4. **Navigate to the newly created partition**
@@ -549,26 +610,37 @@ Free space       ...         ...        ...  ~250G
 
 **New partition created: /dev/nvme0n1p5 (8 GB, Linux swap)**
 
+**Swap Size Recommendations for GIGABYTE Brix 5300:**
+- **8 GB RAM:** 4 GB swap (50% of RAM)
+- **16 GB RAM:** 8 GB swap (50% of RAM) - **RECOMMENDED**
+- **32 GB RAM:** 8-16 GB swap (25-50% of RAM)
+
 ### Step 3.7: Verify Final Partition Layout
 
-**Your partition table should now look like this:**
+**Your partition table should now look like this (SAMSUNG 970 EVO Plus 500GB):**
 
 ```
 Device          Start        End    Sectors  Size Type
-/dev/nvme0n1p1   2048    1050623    1048576  512M EFI System (Windows 11)
+/dev/nvme0n1p1   2048    1050623    1048576  512M EFI System (Windows 11 - shared)
 /dev/nvme0n1p2   ...         ...        ... 250.0G Microsoft basic data (Windows 11)
-/dev/nvme0n1p3   ...         ...        ...  500M Microsoft reserved (Windows Recovery)
-/dev/nvme0n1p4   ...         ...        ...  35%  Linux filesystem (NEW)
-/dev/nvme0n1p5   ...         ...        ...   8G  Linux swap (NEW)
+/dev/nvme0n1p3   ...         ...        ...  1.0G Microsoft reserved (Windows Recovery)
+/dev/nvme0n1p4   ...         ...        ... 175.0G Linux filesystem (NEW - Arch Linux)
+/dev/nvme0n1p5   ...         ...        ...  8.0G Linux swap (NEW)
 ```
 
 **SUCCESS:** Verify:
 - Total partitions: **5**
-- nvme0n1p1: **512M EFI System** (Windows 11 - shared)
-- nvme0n1p2: **250.0G Microsoft basic data** (Windows 11)
-- nvme0n1p3: **500M Microsoft reserved** (Windows Recovery)
-- nvme0n1p4: **35% Linux filesystem** (NEW - Arch Linux)
-- nvme0n1p5: **8G Linux swap** (NEW)
+- nvme0n1p1: **512 MB EFI System** (Windows 11 - shared with GRUB)
+- nvme0n1p2: **250.0 GB Microsoft basic data** (Windows 11 system partition)
+- nvme0n1p3: **1.0 GB Microsoft reserved** (Windows Recovery Environment)
+- nvme0n1p4: **175.0 GB Linux filesystem** (NEW - Arch Linux root, encrypted)
+- nvme0n1p5: **8.0 GB Linux swap** (NEW - encrypted swap)
+
+**Total Disk Usage Summary:**
+- **Windows 11 partitions:** ~251.5 GB (50.3%)
+- **Arch Linux partitions:** ~183 GB (36.6%)
+- **Unallocated space:** ~65.5 GB (13.1%)
+- **Total used:** ~435 GB (87%)
 
 **If anything is wrong, DO NOT WRITE. Press 'q' to quit without saving and start over.**
 
