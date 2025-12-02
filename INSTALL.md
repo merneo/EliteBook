@@ -54,7 +54,7 @@ Complete system installation from Arch Linux live USB environment up to the firs
 - **Phase 10**: Automatic LUKS decryption setup (OPTIONAL - security trade-off)
 - **Phase 11**: User account creation
 - **Phase 12**: Network configuration
-- **Phase 13**: Desktop environment setup
+- **Phase 13**: Window manager setup (Hyprland)
 - **Phase 14**: Exit chroot and system reboot
 
 **Total Estimated Time**: 2-3 hours  

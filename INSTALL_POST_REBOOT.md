@@ -2334,7 +2334,7 @@ You now have:
 - **SUCCESS:** HD Webcam (720p, video calls)
 - **SUCCESS:** IR Camera (face recognition ready)
 - **SUCCESS:** Hyprland Wayland compositor
-- **SUCCESS:** Complete desktop environment (Waybar, Kitty, etc.)
+- **SUCCESS:** Complete window manager setup (Hyprland, Waybar, Kitty, etc.)
 - **SUCCESS:** PipeWire audio server
 - **SUCCESS:** NetworkManager for WiFi (Intel Wireless 8265)
 - **SUCCESS:** Bluetooth support (Intel 8087:0a2b)

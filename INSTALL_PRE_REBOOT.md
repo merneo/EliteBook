@@ -2,7 +2,7 @@
 
 **Complete system installation from Arch Linux live USB environment up to the first system reboot.**
 
-This guide covers the installation of Arch Linux on HP EliteBook x360 1030 G2 hardware, including disk partitioning, LUKS2 encryption setup, base system installation, bootloader configuration, and desktop environment preparation. After completing this guide, you will reboot into the installed system and continue with [INSTALL_POST_REBOOT.md](INSTALL_POST_REBOOT.md).
+This guide covers the installation of Arch Linux on HP EliteBook x360 1030 G2 hardware, including disk partitioning, LUKS2 encryption setup, base system installation, bootloader configuration, and window manager setup. After completing this guide, you will reboot into the installed system and continue with [INSTALL_POST_REBOOT.md](INSTALL_POST_REBOOT.md).
 
 **Estimated Total Time**: 2-3 hours  
 **Restart Count**: 1 (first system reboot at end of Phase 14)
@@ -25,7 +25,7 @@ This guide covers the installation of Arch Linux on HP EliteBook x360 1030 G2 ha
 12. [Phase 10: Automatic LUKS Decryption Setup (OPTIONAL)](#phase-10-automatic-luks-decryption-setup-optional)
 13. [Phase 11: User Account Creation](#phase-11-user-account-creation)
 14. [Phase 12: Network Configuration](#phase-12-network-configuration)
-15. [Phase 13: Desktop Environment Setup](#phase-13-desktop-environment-setup)
+15. [Phase 13: Window Manager Setup (Hyprland)](#phase-13-window-manager-setup-hyprland)
 16. [Phase 14: Exit Chroot and System Reboot](#phase-14-exit-chroot-and-system-reboot)
 
 ---
@@ -67,7 +67,7 @@ This guide covers the installation of Arch Linux on HP EliteBook x360 1030 G2 ha
 - **SUCCESS:** Fingerprint authentication for sudo and login
 - **SUCCESS:** [Hyprland](https://hyprland.org/) Wayland compositor with dynamic effects
 - **SUCCESS:** [Plymouth](https://www.freedesktop.org/wiki/Software/Plymouth) boot splash screen
-- **SUCCESS:** Complete desktop environment ready to use
+- **SUCCESS:** Complete window manager (Hyprland) and essential applications ready to use
 
 ---
 
@@ -2592,11 +2592,11 @@ systemctl enable bluetooth
 
 ****SUCCESS:** Phase 12 Complete: NetworkManager and Bluetooth enabled**
 
-****NEXT:** Next: Install desktop environment (Hyprland) and utilities (Phase 13)**
+****NEXT:** Next: Install window manager (Hyprland) and utilities (Phase 13)**
 
 ---
 
-## Phase 13: Desktop Environment Setup
+## Phase 13: Window Manager Setup (Hyprland)
 
 ****TIME:** Estimated Time: 20-40 minutes (depends on internet speed)**
 
@@ -2884,13 +2884,15 @@ Hyprland is a dynamic tiling Wayland compositor written in C++. It's inspired by
   - More minimal (fewer built-in features)
   - Written in C (slower than C++)
 - **KDE Plasma (Wayland)**: Full desktop environment, but:
-  - Heavy (many dependencies)
+  - Heavy (many dependencies, full desktop environment)
   - Less keyboard-driven
   - More resource-intensive
-- **GNOME (Wayland)**: Another full desktop, but:
+  - **Note:** Not selected because we want a lightweight window manager, not a full desktop environment
+- **GNOME (Wayland)**: Full desktop environment, but:
   - Less customizable
   - More mouse-oriented
   - Different workflow philosophy
+  - **Note:** Not selected because we want a lightweight window manager, not a full desktop environment
 
 **For Our Use Case:**
 
@@ -3872,7 +3874,7 @@ systemctl enable sddm
 ### Step 13.11: Install Web Browsers and File Manager
 
 ```bash
-# Install Firefox, Brave, and Dolphin file manager
+# Install Firefox and file manager
 pacman -S firefox dolphin ark
 
 # Install Brave from AUR (requires yay)
@@ -3891,13 +3893,20 @@ pacman -S firefox dolphin ark
   - [Brave GitHub](https://github.com/brave/brave-browser)
   - [ArchWiki Brave](https://wiki.archlinux.org/title/Brave)
   - **Theme Configuration:** Catppuccin Mocha Green theme extension available in repository (`browsers/brave/`)
-- `dolphin` - KDE file manager
+- `dolphin` - File manager (standalone KDE application, works with Hyprland)
   - [Dolphin Website](https://apps.kde.org/dolphin/)
-  - [KDE Applications](https://apps.kde.org/)
-  - [ArchWiki KDE](https://wiki.archlinux.org/title/KDE)
-- `ark` - Archive manager (zip, tar, 7z)
+  - [ArchWiki Dolphin](https://wiki.archlinux.org/title/KDE#Dolphin)
+  - **Note:** Dolphin is a standalone application that works independently of KDE desktop environment. It provides full Wayland support and integrates well with Hyprland.
+- `ark` - Archive manager (zip, tar, 7z) - standalone KDE application
   - [Ark Website](https://apps.kde.org/ark/)
   - [ArchWiki File Archivers](https://wiki.archlinux.org/title/List_of_applications#File_archivers)
+  - **Note:** Ark works independently of desktop environment and integrates with Hyprland.
+
+**Alternative File Managers (Optional):**
+If you prefer lighter alternatives, you can install:
+- `thunar` - Lightweight file manager (XFCE)
+- `pcmanfm` - Minimal file manager (LXDE)
+- `ranger` - Terminal-based file manager (vim-style navigation)
 
 **Browser Theme Configuration:**
 After system installation, browser themes can be deployed from the repository:
@@ -4198,7 +4207,7 @@ systemctl is-enabled sshd.service
 
 ---
 
-****SUCCESS:** Phase 13 Complete: Desktop environment and all essential software installed, SSH enabled for remote access**
+****SUCCESS:** Phase 13 Complete: Window manager (Hyprland) and all essential software installed, SSH enabled for remote access**
 
 ****NEXT:** Next: Exit chroot and prepare for first boot (Phase 14)**
 
