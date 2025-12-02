@@ -2375,8 +2375,8 @@ You now have:
 - [GRUB](https://wiki.archlinux.org/title/GRUB) - Bootloader
 - [Timeshift](https://github.com/teejee2008/timeshift) - System snapshots
 
-**Desktop Environment:**
-- [Hyprland](https://hyprland.org/) - Wayland compositor
+**Window Manager:**
+- [Hyprland](https://hyprland.org/) - Wayland compositor (window manager)
   - [GitHub](https://github.com/hyprwm/Hyprland)
   - [Wiki](https://wiki.hyprland.org/)
 

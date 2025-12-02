@@ -2784,33 +2784,26 @@ sway is an i3wm-compatible Wayland compositor, also built on wlroots:
 - **Performance**: Written in C (slower than C++)
 - **Features**: More minimal, fewer built-in features
 
-**KDE Plasma (Wayland):**
+**Note on Desktop Environments vs Window Managers:**
 
-KDE Plasma provides a full desktop environment with Wayland support:
+This configuration uses **Hyprland**, which is a **window manager** (compositor), not a full desktop environment. Desktop environments like KDE Plasma or GNOME include:
+- Window manager
+- File manager
+- Panel/status bar
+- Application launcher
+- System settings
+- Default applications suite
 
-**Advantages:**
-- **Complete Desktop**: Full suite of applications and tools
-- **Polish**: Highly polished user interface
-- **Features**: Extensive feature set
+Hyprland is a standalone window manager, so we install individual applications as needed:
+- **File manager**: Dolphin (standalone KDE application)
+- **Status bar**: Waybar (standalone application)
+- **Application launcher**: Albert (standalone application)
+- **Terminal**: Kitty (standalone application)
 
-**Limitations:**
-- **Resource Usage**: Higher memory and CPU usage
-- **Complexity**: More complex, more dependencies
-- **Keyboard-Driven**: Less keyboard-oriented, more mouse-dependent
-
-**GNOME (Wayland):**
-
-GNOME provides another full desktop environment:
-
-**Advantages:**
-- **Integration**: Excellent application integration
-- **Accessibility**: Strong accessibility features
-- **Design**: Cohesive design language
-
-**Limitations:**
-- **Customization**: Limited customization compared to tiling window managers
-- **Workflow**: Different workflow philosophy (mouse-oriented)
-- **Performance**: Higher resource usage
+This modular approach provides:
+- **Lightweight**: Only install what you need
+- **Flexibility**: Choose best application for each task
+- **Performance**: Lower resource usage than full desktop environments
 
 **Hyprland Selection Rationale:**
 
