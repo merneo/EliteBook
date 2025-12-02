@@ -392,7 +392,9 @@ sudo sed -i '1s/^# //' /etc/pam.d/sudo
 
 ```bash
 # Enrollment
-sudo howdy add          # Enroll new face
+sudo howdy add          # Enroll new face (interactive - prompts for name)
+howdy-add               # Automated enrollment with timestamp name (alias)
+howdy-add-auto.sh       # Automated enrollment script (full path)
 sudo howdy remove       # Remove all enrollments
 
 # Testing
@@ -412,9 +414,22 @@ sudo -k && sudo whoami  # Test with cache cleared
 ## Next Steps
 
 1. **Enroll your face:**
+   
+   **Option A: Automated enrollment (recommended)**
+   ```bash
+   howdy-add
+   # or
+   howdy-add-auto.sh
+   ```
+   This automatically generates a timestamp-based name (e.g., `2025-12-02_16-47-18`)
+   and eliminates the need for manual name input. Requires `expect` package for
+   full automation (install with: `sudo pacman -S expect`).
+   
+   **Option B: Manual enrollment**
    ```bash
    sudo howdy add
    ```
+   You will be prompted to enter a label for the face model manually.
 
 2. **Test face recognition:**
    ```bash

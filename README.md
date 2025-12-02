@@ -246,7 +246,10 @@ EliteBook/
 - `~/.howdy/` - Face model storage (encrypted)
 
 **Operational Notes:**
-- Enrollment: `sudo howdy add` or `howdy-add-auto.sh` (auto-generates timestamp name)
+- Enrollment: `sudo howdy add` (interactive) or `howdy-add-auto.sh` (automated with timestamp)
+- Automated enrollment: The `howdy-add-auto.sh` script generates timestamp-based model names
+  (format: `YYYY-MM-DD_HH-MM-SS`) and automatically provides input to Howdy's interactive prompt,
+  eliminating manual name entry requirements. Requires `expect` package for full automation.
 - PAM module: `pam_python.so` (installed from GitHub fork)
 - IR emitter: Auto-activated via `linux-enable-ir-emitter`
 - Auto-activation: SDDM theme automatically triggers authentication 1 second after login screen display

@@ -1,39 +1,76 @@
 #!/bin/bash
 
 # =============================================================================
-# HOWDY AUTO-ENROLLMENT WRAPPER SCRIPT
+# HOWDY AUTOMATED FACE MODEL ENROLLMENT WRAPPER SCRIPT
 # =============================================================================
 # Author: merneo
-# Purpose: Automatically enroll face model with auto-generated name from
-#          current date and time, eliminating the need for manual name input.
+# Purpose: Automates the Howdy face recognition enrollment process by
+#          generating timestamp-based model names and eliminating manual
+#          user input requirements during the enrollment workflow.
+#
+# Academic Context:
+#   This script addresses the usability limitation of Howdy's interactive
+#   enrollment process, where users must manually enter a label for each
+#   face model. By automating name generation using ISO 8601-inspired
+#   timestamp formatting, the script reduces cognitive load and ensures
+#   unique, sortable model identifiers without user intervention.
+#
+# Technical Approach:
+#   The script employs multiple automation strategies (expect, pexpect, printf)
+#   to provide input to Howdy's interactive prompt, ensuring compatibility
+#   across different system configurations. The timestamp-based naming
+#   convention provides both uniqueness guarantees and chronological
+#   sortability for model management.
 #
 # Usage:
 #   howdy-add-auto.sh [OPTIONS]
 #
 # Options:
-#   -U, --user USER    Set the user account to use (default: current user)
-#   -h, --help         Show this help message
+#   -U, --user USER    Specify target user account (default: current user)
+#   -h, --help         Display usage information and exit
 #
-# Example:
-#   howdy-add-auto.sh
-#   howdy-add-auto.sh -U username
+# Examples:
+#   howdy-add-auto.sh                    # Enroll face model for current user
+#   howdy-add-auto.sh -U username        # Enroll face model for specified user
 #
 # Generated Name Format:
-#   YYYY-MM-DD_HH-MM-SS (e.g., "2025-12-02_16-30-45")
+#   YYYY-MM-DD_HH-MM-SS (ISO 8601-inspired, e.g., "2025-12-02_16-30-45")
+#   - Format ensures lexicographic sorting matches chronological order
+#   - Includes seconds precision for uniqueness in rapid enrollments
+#   - Uses underscore separator for filesystem compatibility
 #
 # Operational Context:
-#   This script wraps the standard `sudo howdy add` command and automatically
-#   provides a timestamp-based name when prompted, eliminating interactive
-#   input requirements. The generated name includes date and time down to
-#   seconds for uniqueness.
+#   This wrapper script interfaces with Howdy's command-line interface,
+#   specifically the `howdy add` subcommand, which requires interactive
+#   input for model labeling. By automating this interaction, the script
+#   enables batch enrollment workflows and reduces user interaction overhead
+#   in system administration scenarios.
+#
+# Dependencies:
+#   - howdy: Face recognition system (required)
+#   - expect: Automation tool for interactive programs (recommended)
+#   - pexpect: Python library for programmatic interaction (optional fallback)
+#
+# References:
+#   - Howdy GitHub: https://github.com/boltgolt/howdy
+#   - Expect Documentation: https://www.tcl.tk/man/expect5.31/expect.1.html
+#   - ISO 8601 Date/Time Standard: https://en.wikipedia.org/wiki/ISO_8601
 # =============================================================================
 
 # =============================================================================
-# SCRIPT CONFIGURATION
+# SCRIPT CONFIGURATION AND SAFETY SETTINGS
+# =============================================================================
+# Error Handling:
+#   - set -e: Exit immediately if any command returns non-zero status
+#   - set -u: Treat unset variables as errors (prevents undefined behavior)
+#   - set -o pipefail: Return value of pipeline is last non-zero exit status
+#
+# These settings ensure robust error handling and prevent silent failures
+# in automation scenarios where user intervention is not expected.
 # =============================================================================
 set -euo pipefail
 
-# Script metadata
+# Script metadata for version tracking and identification
 SCRIPT_NAME="howdy-add-auto.sh"
 SCRIPT_VERSION="1.0.0"
 
@@ -95,14 +132,33 @@ while [[ $# -gt 0 ]]; do
 done
 
 # =============================================================================
-# NAME GENERATION
+# TIMESTAMP-BASED MODEL NAME GENERATION
 # =============================================================================
-# Generate timestamp-based name: YYYY-MM-DD_HH-MM-SS
-# Format ensures:
-#   - Uniqueness: Includes seconds for precise timestamp
-#   - Readability: Human-readable date/time format
-#   - Compatibility: No special characters that could cause issues
-#   - Sortability: Chronological sorting by name
+# Algorithm: Generate ISO 8601-inspired timestamp string for model identification
+#
+# Format Specification: YYYY-MM-DD_HH-MM-SS
+#   - YYYY: Four-digit year (ensures Y2K+ compatibility)
+#   - MM: Two-digit month (01-12, zero-padded)
+#   - DD: Two-digit day (01-31, zero-padded)
+#   - HH: Two-digit hour (00-23, 24-hour format)
+#   - MM: Two-digit minute (00-59, zero-padded)
+#   - SS: Two-digit second (00-59, zero-padded)
+#   - Separator: Underscore (_) for filesystem compatibility
+#
+# Design Rationale:
+#   1. Uniqueness: Second-level precision ensures uniqueness in normal usage
+#   2. Lexicographic Ordering: String comparison matches chronological order
+#   3. Human Readability: Standard date/time format is immediately interpretable
+#   4. Filesystem Compatibility: No special characters that require escaping
+#   5. Sortability: Natural string sorting produces chronological sequence
+#
+# Example Output: "2025-12-02_16-30-45"
+#   Represents: December 2, 2025 at 16:30:45 (4:30:45 PM)
+#
+# Edge Cases:
+#   - Rapid enrollments (<1 second apart): Second precision may cause collisions
+#     (mitigated by Howdy's internal ID system)
+#   - Timezone: Uses system local time (not UTC) for user convenience
 # =============================================================================
 MODEL_NAME=$(date +"%Y-%m-%d_%H-%M-%S")
 
@@ -136,40 +192,80 @@ echo "Starting enrollment process..."
 echo "Position yourself 30-60cm from the camera and look directly at it."
 echo ""
 
-# Execute howdy add with auto-generated name
-# Try multiple methods for maximum compatibility
+# =============================================================================
+# AUTOMATED INPUT PROVISION TO HOWDY INTERACTIVE PROMPT
+# =============================================================================
+# Problem: Howdy's `add` subcommand requires interactive input for model labeling
+# Solution: Employ programmatic interaction techniques to provide input automatically
+#
+# Automation Strategy (Multi-Method Fallback):
+#   The script attempts multiple automation methods in order of reliability,
+#   ensuring maximum compatibility across different system configurations.
+#
+# Method Selection Rationale:
+#   1. Expect (Primary): Most reliable, designed specifically for interactive automation
+#   2. Pexpect (Secondary): Python-based alternative, cross-platform compatibility
+#   3. Printf (Tertiary): Simple pipe-based approach, may fail with direct terminal I/O
+#
+# Implementation Notes:
+#   - Each method handles the same interaction pattern: detect prompt, send input
+#   - Error handling ensures graceful degradation if automation fails
+#   - Exit codes are preserved to maintain script reliability
+# =============================================================================
 EXIT_CODE=1
 
-# Method 1: Try expect if available (most reliable)
+# Method 1: Expect-based automation (most reliable)
+# Expect is a Tcl extension designed for automating interactive programs
+# Reference: https://www.tcl.tk/man/expect5.31/expect.1.html
 if command -v expect &> /dev/null; then
+    # Spawn Howdy process and interact with its standard I/O streams
     expect << EOF
+# Spawn Howdy command as child process with pseudo-terminal (PTY)
 spawn $HOWDY_CMD
+
+# Pattern matching: Wait for Howdy's label prompt
 expect {
+    # Match prompt string and send generated model name
     "Enter a label for this new model" {
-        send "$MODEL_NAME\r"
-        exp_continue
+        send "$MODEL_NAME\r"  # Send name followed by carriage return (Enter key)
+        exp_continue          # Continue matching (may see prompt again)
     }
-    eof
+    eof                       # End of file (process terminated)
 }
+# Wait for spawned process to complete and capture exit status
 wait
 EOF
     EXIT_CODE=$?
-# Method 2: Try Python pexpect if available
+
+# Method 2: Python pexpect library (cross-platform alternative)
+# Pexpect provides Python interface for expect-like functionality
+# Reference: https://pexpect.readthedocs.io/
 elif python3 -c "import pexpect" 2>/dev/null; then
     python3 << PYEOF
 import sys
 import pexpect
 
+# Parse command string into list for subprocess execution
 cmd = "$HOWDY_CMD".split()
+
+# Spawn Howdy process with UTF-8 encoding for proper character handling
 child = pexpect.spawn(cmd[0], cmd[1:], encoding='utf-8')
-child.logfile = sys.stdout
+child.logfile = sys.stdout  # Redirect child output to parent stdout
 
 try:
+    # Wait for Howdy's label prompt (30 second timeout)
     child.expect("Enter a label for this new model", timeout=30)
+    
+    # Send generated model name (automatically appends newline)
     child.sendline("$MODEL_NAME")
+    
+    # Wait for process completion (120 second timeout for enrollment)
     child.expect(pexpect.EOF, timeout=120)
+    
+    # Close process and capture exit status
     child.close()
     sys.exit(child.exitstatus if child.exitstatus is not None else 0)
+    
 except pexpect.TIMEOUT:
     print("Error: Timeout waiting for Howdy prompt", file=sys.stderr)
     child.close()
@@ -180,10 +276,15 @@ except Exception as e:
     sys.exit(1)
 PYEOF
     EXIT_CODE=$?
-# Method 3: Fallback to printf (may not work if howdy uses direct terminal input)
+
+# Method 3: Printf pipe fallback (least reliable)
+# Simple pipe-based approach: may fail if Howdy uses direct terminal I/O
+# This method relies on standard input redirection, which may not work
+# if Howdy reads directly from /dev/tty (terminal device) instead of stdin
 else
     echo "Warning: Neither 'expect' nor Python 'pexpect' available."
     echo "Attempting with printf (may require manual input if this fails)..."
+    # Pipe model name to Howdy's standard input
     printf "%s\n" "$MODEL_NAME" | $HOWDY_CMD
     EXIT_CODE=$?
 fi
