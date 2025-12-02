@@ -26,6 +26,7 @@ Type=Application
 Name=Brave
 GenericName=Web Browser
 Comment=Browse the World Wide Web with privacy
+TryExec=brave
 Exec=brave %u
 Terminal=false
 X-MultipleArgs=false

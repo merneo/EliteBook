@@ -26,6 +26,7 @@ Type=Application
 Name=Firefox
 GenericName=Web Browser
 Comment=Browse the World Wide Web
+TryExec=firefox
 Exec=firefox %u
 Terminal=false
 X-MultipleArgs=false
