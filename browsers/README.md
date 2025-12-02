@@ -122,7 +122,7 @@ cp chromium/preferences.json ~/.config/chromium/Default/Preferences
 
 ### Comprehensive Guides
 
-- **`BROWSER_THEMES_DOCUMENTATION.md`**: Academic-level documentation for Catppuccin Mocha Green theme implementation
+- **`BROWSER_THEMES_DOCUMENTATION.md`**: Comprehensive technical documentation for Catppuccin Mocha Green theme implementation
   - Color palette reference with RGB values
   - Firefox theme implementation details
   - Brave theme implementation details

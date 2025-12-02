@@ -12,7 +12,7 @@
 
 Chromium command-line flags configuration file.
 
-**Academic Context:**
+**Technical Context:**
 Chromium supports command-line flags for runtime configuration of browser behavior. These flags enable features, configure rendering backends, and optimize performance. The flags file contains commented explanations for each flag, following Chromium's flag documentation standards.
 
 **Key Flag Categories:**
@@ -45,7 +45,7 @@ chmod +x ~/.local/bin/chromium-wayland
 
 Chromium user preferences configuration (Default/Preferences file format).
 
-**Academic Context:**
+**Technical Context:**
 Chromium stores user preferences in JSON format following Chrome's preferences schema. This file can be used to pre-configure privacy settings, appearance, and security preferences. The preferences are applied when Chromium creates a new profile.
 
 **Key Preference Categories:**

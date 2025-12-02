@@ -4,11 +4,11 @@
 // Purpose: Comprehensive Firefox configuration for Arch Linux with Wayland
 //          support, privacy enhancements, and performance optimizations.
 //
-// Academic Context:
+// Technical Context:
 //   This configuration file implements privacy-first browsing principles
 //   while maintaining compatibility with modern web standards and Wayland
-//   compositor integration. Settings are based on academic research in
-//   privacy-preserving technologies and browser security best practices.
+//   compositor integration. Settings follow established best practices in
+//   privacy-preserving technologies and browser security.
 //
 // Deployment:
 //   Copy this file to: ~/.mozilla/firefox/*.default-release/user.js

@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document provides academic-level documentation for implementing the Catppuccin Mocha Green color scheme in web browsers, ensuring visual consistency with the desktop environment (Hyprland, Waybar, Kitty, Neovim, etc.).
+This document provides comprehensive technical documentation for implementing the Catppuccin Mocha Green color scheme in web browsers, ensuring visual consistency with the desktop environment (Hyprland, Waybar, Kitty, Neovim, etc.).
 
 ---
 
@@ -236,7 +236,7 @@ If you want to publish themes to Chrome Web Store using your Developer account:
 
 ---
 
-## Academic References
+## Technical References
 
 ### Color Theory
 

@@ -16,7 +16,8 @@
 5. **Base System**: Install via `pacstrap` with essential packages
 6. **Bootloader**: GRUB with optional automatic LUKS decryption (can be toggled for security)
 7. **Desktop**: Hyprland, Kitty, Waybar, PipeWire, SDDM
-8. **Services**: NetworkManager, Bluetooth, SSH enabled
+8. **Browsers**: Firefox, Brave (optional)
+9. **Services**: NetworkManager, Bluetooth, SSH enabled
 
 **Estimated Time**: 2-3 hours  
 **Documentation**: [INSTALL_PRE_REBOOT.md](INSTALL_PRE_REBOOT.md)
@@ -25,7 +26,8 @@
 1. **Biometric Auth**: Fingerprint (python-validity), Face recognition (Howdy)
 2. **System Snapshots**: Timeshift with Btrfs (daily snapshots)
 3. **Dotfiles**: Deploy from GitHub repository
-4. **GPG Keys**: Configure for signed Git commits
+4. **Browser Themes**: Deploy Catppuccin Mocha Green themes (optional)
+5. **GPG Keys**: Configure for signed Git commits
 
 **Estimated Time**: 1-2 hours  
 **Documentation**: [INSTALL_POST_REBOOT.md](INSTALL_POST_REBOOT.md)

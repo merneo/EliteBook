@@ -4,7 +4,7 @@
 # Purpose: Desktop entry file for Brave browser, enabling Albert launcher
 #          and other application managers to discover and launch Brave.
 #
-# Academic Context:
+# Technical Context:
 #   Desktop entries follow the freedesktop.org Desktop Entry Specification,
 #   which provides a standard way for applications to register themselves
 #   with desktop environments and application launchers. This ensures

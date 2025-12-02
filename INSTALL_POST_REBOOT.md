@@ -1671,6 +1671,7 @@ ls -la
 # nvim/
 # tmux/
 # scripts/
+# browsers/
 # ...
 ```
 
@@ -1684,7 +1685,7 @@ ls -la
 sudo pacman -S stow
 
 # Deploy all configurations
-stow hypr kitty waybar nvim tmux scripts -t ~/
+stow hypr kitty waybar nvim tmux scripts browsers -t ~/
 ```
 
 **If manual copy:**
@@ -1712,6 +1713,9 @@ cp tmux/.tmux.conf ~/.tmux.conf
 mkdir -p ~/.local/bin
 cp -r scripts/.local/bin/* ~/.local/bin/
 chmod +x ~/.local/bin/*
+
+# Copy browser configurations (optional - can be done later)
+# See browsers/THEME_DEPLOYMENT.md for browser theme deployment
 ```
 
 ### Step 17.6: Install Tmux Plugin Manager
@@ -1735,7 +1739,46 @@ nvim
 # Type :q to exit Neovim
 ```
 
-### Step 17.8: Logout and Login
+### Step 17.8: Deploy Browser Themes (Optional)
+
+**Browser theme configuration is available in the repository:**
+
+**Firefox Theme:**
+```bash
+# Find Firefox profile
+FIREFOX_PROFILE=$(find ~/.mozilla/firefox -name "*.default-release" -type d | head -1)
+
+# Create chrome directory
+mkdir -p "$FIREFOX_PROFILE/chrome"
+
+# Copy theme files
+cp ~/EliteBook/browsers/firefox/userChrome.css "$FIREFOX_PROFILE/chrome/"
+cp ~/EliteBook/browsers/firefox/catppuccin-mocha-green.css "$FIREFOX_PROFILE/chrome/"
+cp ~/EliteBook/browsers/firefox/user.js "$FIREFOX_PROFILE/"
+
+# Enable userChrome.css in Firefox
+# Open Firefox: about:config
+# Set: toolkit.legacyUserProfileCustomizations.stylesheets = true
+# Restart Firefox
+```
+
+**Brave Theme:**
+```bash
+# Install Brave theme extension
+# Open Brave: brave://extensions/
+# Enable Developer mode
+# Click "Load unpacked"
+# Select: ~/EliteBook/browsers/brave
+```
+
+**Documentation:**
+- Complete deployment guide: `browsers/THEME_DEPLOYMENT.md`
+- Theme documentation: `browsers/BROWSER_THEMES_DOCUMENTATION.md`
+- Desktop entries: `browsers/DESKTOP_ENTRIES_DEPLOYMENT.md`
+
+**Note:** Browser themes can be deployed at any time after browsers are installed. This step is optional during initial setup.
+
+### Step 17.9: Logout and Login
 
 **Logout of Hyprland:**
 ```bash
@@ -1751,6 +1794,7 @@ hyprctl dispatch exit
 - **SUCCESS:** Custom keybindings working
 - **SUCCESS:** Rounded corners (or corner mode as configured)
 - **SUCCESS:** All scripts functional
+- **SUCCESS:** Browser themes available (if deployed)
 
 ****SUCCESS:** Phase 17 Complete: Dotfiles deployed and active**
 

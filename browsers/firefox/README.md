@@ -12,7 +12,7 @@
 
 Firefox user preferences file implementing privacy, security, and performance optimizations.
 
-**Academic Context:**
+**Technical Context:**
 This file contains Firefox preference settings following Mozilla's `user.js` specification. Preferences are set using the `user_pref()` function and override default Firefox settings. The configuration emphasizes privacy-first principles, performance optimization for Wayland environments, and integration with the desktop environment.
 
 **Key Configuration Areas:**
@@ -31,7 +31,7 @@ This file contains Firefox preference settings following Mozilla's `user.js` spe
 
 Firefox UI customization stylesheet implementing Catppuccin Mocha Green theme.
 
-**Academic Context:**
+**Technical Context:**
 This stylesheet imports the main theme file and provides additional UI customizations. Firefox's userChrome.css system allows complete UI customization following CSS standards. The file uses `@import` to load the comprehensive theme stylesheet.
 
 **Location:** `~/.mozilla/firefox/*.default-release/chrome/userChrome.css`
@@ -44,7 +44,7 @@ This stylesheet imports the main theme file and provides additional UI customiza
 
 Complete Catppuccin Mocha Green theme implementation for Firefox, based on Google Chrome theme configuration.
 
-**Academic Context:**
+**Technical Context:**
 This stylesheet implements the Catppuccin color palette, a community-driven pastel color scheme designed for eye comfort and aesthetic consistency. The theme matches the Google Chrome Catppuccin Mocha Green theme exactly, ensuring visual consistency across browsers.
 
 **Color Implementation:**

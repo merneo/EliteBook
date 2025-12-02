@@ -13,7 +13,7 @@
 
 Chrome extension manifest file for Brave theme installation.
 
-**Academic Context:**
+**Technical Context:**
 Brave uses Chromium's theme system, which requires a Chrome extension manifest (manifest.json) following the Chrome Extension Manifest V3 specification. The manifest defines theme colors using RGB arrays, which are applied to various browser UI elements.
 
 **Manifest Structure:**

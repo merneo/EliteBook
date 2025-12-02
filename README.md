@@ -792,6 +792,29 @@ sudo timeshift --restore --snapshot 'YYYY-MM-DD_HH-MM-SS'
   - NumPy array to scalar conversion fix
   - Diagnostic message display improvements
 
+#### Browser Configuration Documentation
+- `browsers/BROWSER_THEMES_DOCUMENTATION.md`: Comprehensive academic-level documentation for Catppuccin Mocha Green theme implementation
+  - Complete color palette reference with RGB values
+  - Firefox theme implementation details and architecture
+  - Brave theme implementation and Chrome extension format
+  - Chrome Web Store publishing guide
+  - Visual consistency with desktop environment
+- `browsers/THEME_DEPLOYMENT.md`: Step-by-step deployment guide for browser themes
+  - Firefox theme deployment procedures
+  - Brave theme extension installation
+  - Troubleshooting sections for common issues
+  - Verification procedures
+- `browsers/DESKTOP_ENTRIES_DEPLOYMENT.md`: Desktop entry file deployment guide
+  - Albert launcher integration procedures
+  - Desktop entry specification compliance
+  - Deployment methods (GNU Stow, manual, system-wide)
+  - Verification and troubleshooting
+- `browsers/ALBERT_TROUBLESHOOTING.md`: Albert launcher browser discovery troubleshooting
+  - Root cause analysis for browser discovery issues
+  - Step-by-step verification procedures
+  - Common issues and resolution methods
+  - Albert configuration reference
+
 ### External Resources
 
 **Arch Linux:**

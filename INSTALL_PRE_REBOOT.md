@@ -3869,18 +3869,28 @@ systemctl enable sddm
 # Created symlink /etc/systemd/system/display-manager.service → /usr/lib/systemd/system/sddm.service
 ```
 
-### Step 13.11: Install Web Browser and File Manager
+### Step 13.11: Install Web Browsers and File Manager
 
 ```bash
-# Install Firefox and Dolphin file manager
+# Install Firefox, Brave, and Dolphin file manager
 pacman -S firefox dolphin ark
+
+# Install Brave from AUR (requires yay)
+# Note: If yay is not installed yet, install Brave after yay setup
+# yay -S brave-bin
 ```
 
 **Package breakdown:**
-- `firefox` - Web browser
+- `firefox` - Open-source web browser
   - [Firefox Website](https://www.mozilla.org/firefox/)
   - [Firefox Developer Documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox)
   - [ArchWiki Firefox](https://wiki.archlinux.org/title/Firefox)
+  - **Theme Configuration:** Catppuccin Mocha Green theme available in repository (`browsers/firefox/`)
+- `brave-bin` - Privacy-focused Chromium-based browser (AUR package)
+  - [Brave Website](https://brave.com/)
+  - [Brave GitHub](https://github.com/brave/brave-browser)
+  - [ArchWiki Brave](https://wiki.archlinux.org/title/Brave)
+  - **Theme Configuration:** Catppuccin Mocha Green theme extension available in repository (`browsers/brave/`)
 - `dolphin` - KDE file manager
   - [Dolphin Website](https://apps.kde.org/dolphin/)
   - [KDE Applications](https://apps.kde.org/)
@@ -3888,6 +3898,12 @@ pacman -S firefox dolphin ark
 - `ark` - Archive manager (zip, tar, 7z)
   - [Ark Website](https://apps.kde.org/ark/)
   - [ArchWiki File Archivers](https://wiki.archlinux.org/title/List_of_applications#File_archivers)
+
+**Browser Theme Configuration:**
+After system installation, browser themes can be deployed from the repository:
+- **Firefox Theme:** See `browsers/THEME_DEPLOYMENT.md` for deployment instructions
+- **Brave Theme:** See `browsers/THEME_DEPLOYMENT.md` for extension installation
+- **Documentation:** Complete browser configuration documentation in `browsers/` directory
 
 ### Step 13.12: Install System Utilities
 
