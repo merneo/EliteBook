@@ -2,7 +2,7 @@
 
 **Complete index of all documentation files in the EliteBook repository.**
 
-**Total Files:** 54 markdown files  
+**Total Files:** 56 markdown files  
 **Last Updated:** December 2, 2025  
 **Repository:** https://github.com/merneo/EliteBook
 
@@ -181,9 +181,21 @@
 
 | File | Description | Lines | Status |
 |------|-------------|-------|--------|
+| `TROUBLESHOOTING.md` | Comprehensive troubleshooting guide | ~400 | ✅ Complete |
 | `WORKFLOW_MULTIPLE_TASKS.md` | Workflow for multiple tasks | ~150 | ✅ Complete |
 
-**Note:** Most troubleshooting is integrated into component-specific documentation.
+**Purpose:** Centralized troubleshooting guide for common issues across all system components.
+
+**Key Topics:**
+- Installation issues
+- Boot & encryption problems
+- Hardware issues
+- Authentication problems
+- Network & connectivity
+- Audio & video
+- Window manager issues
+- Browser issues
+- General system issues
 
 ---
 
@@ -194,6 +206,18 @@
 | File | Description | Lines | Status |
 |------|-------------|-------|--------|
 | `DEPLOYMENT_INSTRUCTIONS.md` | Dotfiles deployment procedures | ~200 | ✅ Complete |
+| `SCRIPTS_REFERENCE.md` | Complete reference for all automation scripts | ~300 | ✅ Complete |
+
+**Purpose:** Documentation for deploying configurations and using automation scripts.
+
+**Scripts Documented:**
+- Visual effects scripts (effects-on.sh, effects-off.sh, effects-toggle.sh)
+- Window manager scripts (hyprland-corner.sh, hyprland-rounded.sh)
+- Screenshot scripts (screenshot-mode.sh, screenshot-mode-exit.sh)
+- Wallpaper scripts (wallpaper-rotate.sh, wallpaper-change.sh)
+- Status bar scripts (waybar-theme-switch.sh)
+- Authentication scripts (howdy-add-auto.sh)
+- Configuration scripts (configure-silent-fingerprint.sh, remove-fingerprint-from-pam.sh)
 
 ---
 
@@ -207,7 +231,8 @@
 - **Configuration:** 2 files
 - **Browser:** 7 files
 - **Component-Specific:** 4 files
-- **Workflow & Deployment:** 2 files
+- **Troubleshooting:** 2 files (TROUBLESHOOTING.md, WORKFLOW_MULTIPLE_TASKS.md)
+- **Workflow & Deployment:** 3 files (DEPLOYMENT_INSTRUCTIONS.md, SCRIPTS_REFERENCE.md, etc.)
 - **Other:** 4 files
 
 ### By Status

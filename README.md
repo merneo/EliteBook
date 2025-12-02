@@ -16,6 +16,8 @@
 - [📖 Installation Guide](INSTALL.md) - Complete installation procedures
 - [🤖 AI Knowledge Base](docs/installation/AI_ASSISTANT_CONTEXT.md) - For AI assistants
 - [⚙️ Configuration Reference](CONFIGURATION_FILES_DOCUMENTATION.md) - All configuration files
+- [🔧 Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
+- [📜 Scripts Reference](SCRIPTS_REFERENCE.md) - All automation scripts
 
 ---
 
@@ -755,6 +757,21 @@ sudo timeshift --list
 # Restore snapshot
 sudo timeshift --restore --snapshot 'YYYY-MM-DD_HH-MM-SS'
 ```
+
+---
+
+## Documentation Index
+
+**Complete Documentation Index:** See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for a comprehensive index of all 54 documentation files organized by category.
+
+**Quick Reference:**
+- **Installation:** 5 files (INSTALL.md, INSTALL_PRE_REBOOT.md, INSTALL_POST_REBOOT.md, etc.)
+- **AI Assistant:** 5 files (AI_ASSISTANT_CONTEXT.md, HOW_TO_ASK_AI.md, etc.)
+- **Hardware & Authentication:** 25 files (fingerprint, Howdy, biometrics)
+- **Configuration:** 2 files (CONFIGURATION_FILES_DOCUMENTATION.md, etc.)
+- **Browser:** 7 files (themes, deployment, troubleshooting)
+- **Component-Specific:** 4 files (waybar, grub, plymouth, albert-theme)
+- **Workflow & Deployment:** 2 files (DEPLOYMENT_INSTRUCTIONS.md, etc.)
 
 ---
 
