@@ -1,6 +1,6 @@
 # Arch Linux Installation Guide - GIGABYTE Brix 5300
 
-**Version:** 1.0.0  
+**Version:** 2.0.0  
 **Last Updated:** December 2, 2025  
 **Language:** US English (Academic Publication Standard)  
 **Purpose:** Arch Linux installation guide for GIGABYTE Brix 5300 barebone with AMD Ryzen 3 5300U and Radeon RX Vega graphics
@@ -2239,6 +2239,11 @@ mkinitcpio -P
 # ==> Image generation successful
 ```
 
+**If error occurs:**
+- **"No such file or directory" (keyfile):** Verify keyfile path in `FILES=()` is correct, check file exists
+- **"Hook 'encrypt' not found":** Verify `encrypt` hook is installed (`pacman -Q mkinitcpio`), check hook order
+- **"Failed to build image":** Check disk space (`df -h`), verify kernel is installed, check mkinitcpio config syntax
+
 **Regenerate GRUB config:**
 ```bash
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -3512,7 +3517,7 @@ systemctl is-enabled NetworkManager
 
 ---
 
-**Document Version:** 1.0.0  
+**Document Version:** 2.0.0  
 **Last Updated:** December 2, 2025  
 **Author:** Arch Linux Installation Guide - GIGABYTE Brix 5300  
 **Hardware:** GIGABYTE Brix 5300 barebone, AMD Ryzen 3 5300U, Radeon RX Vega  
