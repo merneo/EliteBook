@@ -111,6 +111,22 @@ EliteBook/
 ├── albert/                  # Application launcher theme files
 │   └── .local/share/albert/ # Catppuccin Mocha theme variants
 │
+├── browsers/                # Web browser configuration and themes
+│   ├── firefox/             # Firefox configuration and Catppuccin Mocha Green theme
+│   │   ├── user.js          # Firefox preferences (privacy, performance, Wayland)
+│   │   ├── userChrome.css   # UI customization main file
+│   │   └── catppuccin-mocha-green.css  # Complete theme implementation
+│   ├── brave/               # Brave browser theme extension
+│   │   ├── manifest.json    # Chrome extension manifest for theme
+│   │   └── catppuccin-mocha-green.json  # Theme color configuration
+│   ├── chromium/            # Chromium browser configuration
+│   │   ├── flags.conf       # Command-line flags (Wayland, GPU acceleration)
+│   │   └── preferences.json # User preferences template
+│   ├── BROWSER_THEMES_DOCUMENTATION.md  # Academic theme documentation
+│   ├── THEME_DEPLOYMENT.md  # Step-by-step deployment guide
+│   ├── DESKTOP_ENTRIES_DEPLOYMENT.md  # Desktop entry deployment
+│   └── ALBERT_TROUBLESHOOTING.md  # Albert launcher integration
+│
 └── neofetch/                # System information display configuration
     └── .config/neofetch/
         └── config.conf      # ASCII art, system info formatting
@@ -303,7 +319,43 @@ EliteBook/
 - `kitty/.config/kitty/kitty.conf`
 - `tmux/.tmux.conf`
 
-### 6. Operational Scripts
+### 6. Browser Configuration
+
+**Purpose:** Web browser configuration and theme management for Firefox, Brave, and Chromium with Catppuccin Mocha Green theme integration.
+
+**Official Resources:**
+- **Firefox:** [mozilla.org/firefox](https://www.mozilla.org/firefox/)
+- **Brave:** [brave.com](https://brave.com/)
+- **Chromium:** [chromium.org](https://www.chromium.org/)
+
+**Key Features:**
+- **Catppuccin Mocha Green Theme:** Complete theme implementation matching system-wide color scheme
+- **Firefox Theme:** Based on Google Chrome Catppuccin Mocha Green theme
+  - Address bar: Crust background (#11111b) with green text (#a6e3a1)
+  - Tab bar: Base background with green accent borders
+  - Visual consistency with Chrome theme
+- **Brave Theme:** Chrome extension format with complete color mapping
+- **Wayland Integration:** Native Wayland rendering for all browsers
+- **Privacy Settings:** Enhanced tracking protection, minimal telemetry
+- **Desktop Entries:** Albert launcher integration for browser discovery
+
+**Configuration Files:**
+- `browsers/firefox/`: Firefox user.js, userChrome.css, theme CSS
+- `browsers/brave/`: Chrome extension manifest and theme JSON
+- `browsers/chromium/`: Command-line flags and preferences
+
+**Documentation:**
+- `BROWSER_THEMES_DOCUMENTATION.md`: Academic-level theme documentation
+- `THEME_DEPLOYMENT.md`: Step-by-step deployment procedures
+- `DESKTOP_ENTRIES_DEPLOYMENT.md`: Desktop entry deployment guide
+- `ALBERT_TROUBLESHOOTING.md`: Albert launcher integration troubleshooting
+
+**Operational Notes:**
+- Firefox requires `toolkit.legacyUserProfileCustomizations.stylesheets = true` in about:config
+- Brave theme installed as unpacked Chrome extension
+- All themes use exact Catppuccin Mocha Green color values matching Chrome theme
+
+### 7. Operational Scripts
 
 **Purpose:** Automation scripts for common system administration tasks and visual mode switching.
 
@@ -316,6 +368,7 @@ EliteBook/
 - `wallpaper-rotate.sh`: Automatic wallpaper rotation daemon (3-minute interval)
 - `wallpaper-change.sh`: Manual wallpaper rotation trigger
 - `waybar-theme-switch.sh`: Status bar theme switching
+- `howdy-add-auto.sh`: Automated Howdy face enrollment with timestamp-based naming
 
 **Operational Notes:**
 - All scripts are idempotent (safe to run multiple times)
