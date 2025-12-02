@@ -119,12 +119,14 @@
 }
 
 /* =============================================================================
-   ADDRESS BAR (OMNIBOX) STYLING - Matching Chrome Theme Exactly
+   ADDRESS BAR (OMNIBOX) STYLING - Catppuccin Mocha Green
+   =============================================================================
+   Based on Chrome theme: omnibox_background [17,17,27] = #11111b (Crust)
+                          omnibox_text [166,227,161] = #a6e3a1 (Green)
    ============================================================================= */
 
-/* URL bar container - Crust background (#11111b = RGB 17, 17, 27) */
-#urlbar,
-#urlbar-background {
+/* URL bar main container - Crust background */
+#urlbar {
     background-color: #11111b !important;
     background: #11111b !important;
     border: 1px solid transparent !important;
@@ -132,64 +134,104 @@
     box-shadow: none !important;
 }
 
+/* URL bar background element */
+#urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 /* URL bar when not focused */
-#urlbar:not([focused="true"]),
+#urlbar:not([focused="true"]) {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border-color: transparent !important;
+}
+
 #urlbar:not([focused="true"]) #urlbar-background {
     background-color: #11111b !important;
     background: #11111b !important;
-    border: 1px solid transparent !important;
 }
 
-/* URL bar when focused - Keep Crust background, subtle green border */
-#urlbar[focused="true"],
-#urlbar[focused="true"] #urlbar-background {
+/* URL bar when focused - Green border */
+#urlbar[focused="true"] {
     background-color: #11111b !important;
     background: #11111b !important;
-    border: 1px solid #a6e3a1 !important;
+    border-color: #a6e3a1 !important;
+    border-width: 1px !important;
     box-shadow: 0 0 0 1px rgba(166, 227, 161, 0.2) !important;
 }
 
-/* URL bar text input - Green text (#a6e3a1 = RGB 166, 227, 161) */
-#urlbar-input,
+#urlbar[focused="true"] #urlbar-background {
+    background-color: #11111b !important;
+    background: #11111b !important;
+    border-color: #a6e3a1 !important;
+}
+
+/* URL bar text input - Green text */
+#urlbar-input {
+    color: #a6e3a1 !important;
+}
+
 .urlbar-input-text {
     color: #a6e3a1 !important;
 }
 
-/* URL bar text when typing */
-#urlbar-input::placeholder,
+/* URL bar placeholder text */
+#urlbar-input::placeholder {
+    color: #a6adc8 !important;
+    opacity: 0.7 !important;
+}
+
 .urlbar-input-text::placeholder {
     color: #a6adc8 !important;
     opacity: 0.7 !important;
 }
 
-/* URL bar icon container - Green icons */
-#urlbar-icons,
+/* URL bar icons - Green */
+#urlbar-icons {
+    color: #a6e3a1 !important;
+}
+
 .urlbar-icon {
     color: #a6e3a1 !important;
     fill: #a6e3a1 !important;
 }
 
-/* URL bar security indicator - Green */
-#identity-box,
+/* Security indicator - Green */
+#identity-box {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
 #identity-box * {
     color: #a6e3a1 !important;
     fill: #a6e3a1 !important;
 }
 
-#identity-box.verifiedDomain,
+#identity-box.verifiedDomain {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
 #identity-box.verifiedDomain * {
     color: #a6e3a1 !important;
     fill: #a6e3a1 !important;
 }
 
 /* URL bar results dropdown - Crust background */
-.urlbarView,
-.urlbarView-body {
+.urlbarView {
     background-color: #11111b !important;
     background: #11111b !important;
     border: 1px solid #313244 !important;
     border-radius: 8px !important;
     margin-top: 4px !important;
+}
+
+.urlbarView-body {
+    background-color: #11111b !important;
+    background: #11111b !important;
 }
 
 /* URL bar result items */
@@ -199,7 +241,11 @@
     border-radius: 4px !important;
 }
 
-.urlbarView-row:hover,
+.urlbarView-row:hover {
+    background-color: #313244 !important;
+    color: #a6e3a1 !important;
+}
+
 .urlbarView-row[selected] {
     background-color: #313244 !important;
     color: #a6e3a1 !important;
@@ -214,12 +260,20 @@
     color: #a6e3a1 !important;
 }
 
+.urlbarView-row:hover .urlbarView-title {
+    color: #a6e3a1 !important;
+}
+
 /* URL bar result URL */
 .urlbarView-url {
     color: #bac2de !important;
 }
 
 .urlbarView-row[selected] .urlbarView-url {
+    color: #a6e3a1 !important;
+}
+
+.urlbarView-row:hover .urlbarView-url {
     color: #a6e3a1 !important;
 }
 
@@ -234,6 +288,21 @@
 #urlbar-zoom-button {
     color: #a6e3a1 !important;
     fill: #a6e3a1 !important;
+}
+
+/* URL bar page action buttons */
+#urlbar-page-action-button {
+    color: #a6e3a1 !important;
+    fill: #a6e3a1 !important;
+}
+
+/* Override any Firefox default colors */
+#urlbar-container {
+    background-color: transparent !important;
+}
+
+#urlbar-wrapper {
+    background-color: transparent !important;
 }
 
 /* Navigation buttons - Green icons (matching Chrome toolbar_button_icon) */
