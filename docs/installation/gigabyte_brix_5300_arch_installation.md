@@ -28,6 +28,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Graphics**: AMD Radeon™ RX Vega (6 compute units, integrated)
 - **Memory**: Kingston FURY Impact 2×32GB DDR4 3200MHz CL20 SO-DIMM (64 GB total)
 - **Storage**: M.2 NVMe SSD (user-installed, PCIe 3.0 ×4)
+- **Audio**: Realtek ALC897 HD Audio Codec
 - **Network**: Gigabit Ethernet, AMD RZ608 WiFi 6 (802.11ax), Bluetooth 5.2
 
 **Target Audience:**
@@ -45,6 +46,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Graphics:** AMD Radeon™ RX Vega (integrated, 6 compute units)
 - **Memory:** Kingston FURY Impact 2×32GB DDR4 3200MHz CL20 SO-DIMM (64 GB total)
 - **Storage:** M.2 NVMe SSD (user-installed)
+- **Audio:** Realtek ALC897 HD Audio Codec
 - **Network:** Gigabit Ethernet, AMD RZ608 WiFi 6 (802.11ax), Bluetooth 5.2
 - **Video Output:** HDMI 2.0, DisplayPort 1.4, USB-C (DisplayPort Alt Mode)
 
@@ -105,6 +107,11 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Ethernet:** Gigabit Ethernet port (recommended for fastest installation)
 - **WiFi:** AMD RZ608 WiFi 6 (802.11ax) - requires driver configuration during installation
 - **Bluetooth:** Bluetooth 5.2 (integrated with AMD RZ608 WiFi module)
+
+**Audio:**
+- **Audio Codec:** Realtek ALC897 HD Audio Codec
+- **Driver:** ALSA (Advanced Linux Sound Architecture) - included in kernel
+- **Audio Server:** PipeWire (installed in Phase 12)
 
 ### Software Prerequisites
 
@@ -2252,11 +2259,19 @@ pacman -S \
 - **Compatibility**: Drop-in replacement for PulseAudio (applications don't need changes)
 - **Wayland Integration**: Better integration with Wayland compositors like Hyprland
 
+**GIGABYTE Brix 5300 Audio Hardware:**
+- **Audio Codec:** Realtek ALC897 HD Audio Codec
+- **ALSA Support:** Realtek ALC897 is fully supported by the Linux kernel's ALSA (Advanced Linux Sound Architecture) subsystem
+- **Driver:** `snd-hda-intel` kernel module (automatically loaded for Realtek audio codecs)
+- **Compatibility:** PipeWire works seamlessly with Realtek ALC897 through ALSA compatibility layer
+
 **Official Resources:**
 - [PipeWire Website](https://pipewire.org/)
 - [PipeWire Documentation](https://docs.pipewire.org/)
 - [PipeWire GitHub](https://gitlab.freedesktop.org/pipewire/pipewire)
 - [ArchWiki PipeWire](https://wiki.archlinux.org/title/PipeWire)
+- [ArchWiki Advanced Linux Sound Architecture](https://wiki.archlinux.org/title/Advanced_Linux_Sound_Architecture)
+- [Realtek Audio Codec Support](https://www.realtek.com/en/products/computer-peripheral-ics/category/audio-codecs)
 
 ```bash
 # Install PipeWire audio stack
@@ -2272,10 +2287,42 @@ pacman -S \
 **Package breakdown:**
 - `pipewire` - Core PipeWire server
 - `pipewire-alsa` - ALSA compatibility layer (for applications using ALSA directly)
+  - **Note:** This provides compatibility with Realtek ALC897 HD Audio Codec through ALSA
 - `pipewire-pulse` - PulseAudio compatibility layer (for applications expecting PulseAudio)
 - `pipewire-jack` - JACK compatibility layer (for professional audio applications)
 - `wireplumber` - Session manager (handles device routing, policy, permissions)
 - `pavucontrol` - GUI volume control (familiar interface for PulseAudio users)
+
+**Realtek ALC897 HD Audio Codec Configuration:**
+- The Realtek ALC897 audio codec is automatically detected and configured by the Linux kernel
+- No additional drivers or firmware are required (included in `linux-firmware` package)
+- Audio output is available through:
+  - **HDMI/DisplayPort:** Audio passthrough via graphics card (AMD Radeon RX Vega)
+  - **3.5mm Audio Jack:** Analog audio output (if available on GIGABYTE Brix 5300)
+  - **USB Audio:** USB audio devices (if connected)
+
+**Verification After Installation:**
+After first boot, verify audio functionality:
+```bash
+# Check if audio codec is detected
+cat /proc/asound/cards
+
+# Should show Realtek ALC897 or similar
+# Expected output:
+# 0 [Generic        ]: HDA-Intel - HD-Audio Generic
+#                      HD-Audio Generic at 0x... irq ...
+
+# Check audio devices
+pactl list short sinks
+
+# Test audio (if speaker-test is installed)
+speaker-test -c 2 -t wav
+```
+
+**Official Resources:**
+- [ArchWiki Advanced Linux Sound Architecture](https://wiki.archlinux.org/title/Advanced_Linux_Sound_Architecture)
+- [ArchWiki Realtek Audio](https://wiki.archlinux.org/title/Advanced_Linux_Sound_Architecture#Realtek)
+- [Realtek ALC897 Specifications](https://www.realtek.com/en/products/computer-peripheral-ics/category/audio-codecs)
 
 ### Step 12.8: Install Display Manager (SDDM)
 
