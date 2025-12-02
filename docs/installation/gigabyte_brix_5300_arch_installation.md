@@ -25,7 +25,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Model**: GIGABYTE Brix 5300 barebone
 - **Processor**: AMD Ryzen™ 3 5300U (4C/8T, 2.6-3.8 GHz, Zen 2, 15W TDP)
 - **Graphics**: AMD Radeon™ RX Vega (6 compute units, integrated)
-- **Memory**: DDR4 SO-DIMM (user-installed, 8-32 GB recommended)
+- **Memory**: Kingston FURY Impact 2×32GB DDR4 3200MHz CL20 SO-DIMM (64 GB total)
 - **Storage**: M.2 NVMe SSD (user-installed, PCIe 3.0 ×4)
 - **Network**: Gigabit Ethernet, AMD RZ608 WiFi 6 (802.11ax), Bluetooth 5.2
 
@@ -42,7 +42,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 - **Cache:** 6 MB L3 cache
 - **TDP:** 15W
 - **Graphics:** AMD Radeon™ RX Vega (integrated, 6 compute units)
-- **Memory:** DDR4 SO-DIMM (user-installed, typically 8-32 GB)
+- **Memory:** Kingston FURY Impact 2×32GB DDR4 3200MHz CL20 SO-DIMM (64 GB total)
 - **Storage:** M.2 NVMe SSD (user-installed)
 - **Network:** Gigabit Ethernet, AMD RZ608 WiFi 6 (802.11ax), Bluetooth 5.2
 - **Video Output:** HDMI 2.0, DisplayPort 1.4, USB-C (DisplayPort Alt Mode)
@@ -51,7 +51,7 @@ This installation guide documents the complete procedure for installing Arch Lin
 - GIGABYTE Brix 5300 barebone system
 - AMD Ryzen 3 5300U processor (pre-installed)
 - AMD Radeon RX Vega graphics (integrated)
-- DDR4 SO-DIMM memory modules (user-installed, minimum 8 GB recommended)
+- Kingston FURY Impact 2×32GB DDR4 3200MHz CL20 SO-DIMM (64 GB total, pre-installed)
 - M.2 NVMe SSD (user-installed, minimum 128 GB recommended)
 - UEFI firmware (not legacy BIOS)
 - USB flash drive (8 GB minimum)
@@ -87,9 +87,11 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 **GIGABYTE Brix 5300 System Requirements:**
 - **Processor:** AMD Ryzen 3 5300U (pre-installed, 4C/8T, 2.6-3.8 GHz)
-- **Memory:** DDR4 SO-DIMM (user-installed)
-  - Minimum: 8 GB (4 GB × 2 or 8 GB × 1)
-  - Recommended: 16 GB (8 GB × 2) or 32 GB (16 GB × 2)
+- **Memory:** Kingston FURY Impact 2×32GB DDR4 3200MHz CL20 SO-DIMM
+  - **Total RAM:** 64 GB (32 GB × 2)
+  - **Speed:** DDR4-3200 (3200 MHz)
+  - **Timing:** CL20 (CAS Latency 20)
+  - **Form Factor:** SO-DIMM (laptop memory)
 - **Storage:** M.2 NVMe SSD (user-installed)
   - Minimum: 128 GB (for minimal installation)
   - Recommended: 256 GB or larger (for comfortable usage)
@@ -156,15 +158,15 @@ This installation guide documents the complete procedure for installing Arch Lin
 | `/dev/nvme0n1p1` | 0.1% | 512 MB | EFI System | FAT32 | `/boot` | UEFI bootloader (GRUB + Windows) | **No** |
 | `/dev/nvme0n1p2` | 50% | ~250 GB | Microsoft basic data | NTFS | N/A | Windows 11 system partition | **No** |
 | `/dev/nvme0n1p3` | 0.2% | ~1 GB | Microsoft recovery | NTFS | N/A | Windows Recovery Environment | **No** |
-| `/dev/nvme0n1p4` | 35% | ~175 GB | Linux filesystem | Btrfs | `/` | Arch Linux root (encrypted) | **Yes (LUKS2)** |
+| `/dev/nvme0n1p4` | 45% | ~225 GB | Linux filesystem | Btrfs | `/` | Arch Linux root (encrypted) | **Yes (LUKS2)** |
 | `/dev/nvme0n1p5` | 1.6% | ~8 GB | Linux swap | swap | `[SWAP]` | Encrypted swap partition | **Yes (LUKS2)** |
-| **Unallocated** | ~13% | ~65 GB | - | - | - | Reserved for future use or data | - |
+| **Unallocated** | ~3% | ~15 GB | - | - | - | Reserved for future use or data | - |
 
 **Total Disk Usage:**
 - **Windows 11:** ~251 GB (50.2%)
-- **Arch Linux:** ~183 GB (36.6%)
-- **Unallocated:** ~65 GB (13.2%)
-- **Total Used:** ~435 GB (87%)
+- **Arch Linux:** ~233 GB (46.6%)
+- **Unallocated:** ~15 GB (3.0%)
+- **Total Used:** ~485 GB (97%)
 
 **Detailed Breakdown:**
 
@@ -186,26 +188,28 @@ This installation guide documents the complete procedure for installing Arch Lin
 
 **Arch Linux Partitions (created during Arch installation):**
 
-- **Root Partition (p4):** ~175 GB (35%)
+- **Root Partition (p4):** ~225 GB (45%)
   - Arch Linux system files
   - User home directories
   - Applications and packages
   - Btrfs filesystem with subvolumes
   - LUKS2 encrypted
+  - **Increased from 175 GB to 225 GB** for more storage space
 
 - **Swap Partition (p5):** ~8 GB (1.6%)
   - Virtual memory (swap space)
-  - Recommended: 4-8 GB for 8-16 GB RAM systems
+  - **For 64 GB RAM:** 8 GB swap is sufficient
+  - With 64 GB RAM, swap is rarely used (only for hibernation or extreme memory pressure)
   - LUKS2 encrypted
-  - Can be adjusted based on RAM size:
-    - 8 GB RAM: 4-8 GB swap
-    - 16 GB RAM: 8 GB swap
-    - 32 GB RAM: 8-16 GB swap
+  - **Note:** For 64 GB RAM systems, swap is primarily for:
+    - Hibernation (suspend-to-disk) - requires swap ≥ RAM size
+    - Emergency overflow (rarely needed with 64 GB RAM)
+    - If hibernation is needed, increase swap to 64 GB or disable hibernation
 
-**Unallocated Space (~65 GB):**
-- Reserved for future expansion
-- Can be used for additional data partitions
-- Can be added to Windows or Arch Linux later if needed
+**Unallocated Space (~15 GB):**
+- Minimal reserved space
+- Can be used for additional data partitions if needed
+- Most disk space allocated to Arch Linux for maximum storage
 
 **Note:** Actual sizes may vary slightly due to:
 - Disk formatting overhead
@@ -578,31 +582,34 @@ Free space       ...         ...        ...  ~250G
 
 1. **Use arrow keys** to navigate to remaining **Free space** row (after Windows partitions)
 2. **Press Enter** on **[ New ]** menu option
-3. **Partition size**: Type `175G` (175 GB for 500 GB disk) and press **Enter**
-   - **For SAMSUNG 970 EVO Plus 500GB:** Use `175G` (35% of disk)
-   - **Alternative percentage method**: Type `35%` if cfdisk supports percentage input
+3. **Partition size**: Type `225G` (225 GB for 500 GB disk) and press **Enter**
+   - **For SAMSUNG 970 EVO Plus 500GB:** Use `225G` (45% of disk)
+   - **Alternative percentage method**: Type `45%` if cfdisk supports percentage input
 4. Partition type will default to **Linux filesystem** (correct, do not change)
 
-**New partition created: /dev/nvme0n1p4 (175 GB, Linux filesystem)**
+**New partition created: /dev/nvme0n1p4 (225 GB, Linux filesystem)**
 
 **Size Calculation for 500GB Disk:**
 - Total disk: 500 GB
 - Windows 11: ~251 GB (50%)
 - Remaining: ~249 GB
-- Arch Linux root: 175 GB (35% of total, ~70% of remaining)
+- Arch Linux root: 225 GB (45% of total, ~90% of remaining)
 - Swap: 8 GB (1.6% of total)
-- Unallocated: ~65 GB (13% of total)
+- Unallocated: ~15 GB (3% of total)
 
 ### Step 3.6: Create Linux Swap Partition
 
 1. **Use arrow keys** to navigate to remaining **Free space** row
 2. **Press Enter** on **[ New ]** menu option
-3. **Partition size**: Type `8G` (8 GB recommended) and press **Enter**
-   - **For 8 GB RAM:** Use `4G` (4 GB swap)
-   - **For 16 GB RAM:** Use `8G` (8 GB swap) - **RECOMMENDED**
-   - **For 32 GB RAM:** Use `8G` or `16G` (8-16 GB swap)
+3. **Partition size**: Type `8G` (8 GB) and press **Enter**
+   - **For 64 GB RAM (GIGABYTE Brix 5300):** Use `8G` (8 GB swap)
+   - **Swap size rationale for 64 GB RAM:**
+     - With 64 GB RAM, swap is rarely used during normal operation
+     - 8 GB swap is sufficient for emergency overflow
+     - **For hibernation (suspend-to-disk):** Requires swap ≥ RAM size (64 GB)
+     - If hibernation is needed, increase swap to 64 GB or disable hibernation
    - **Minimum**: 2 GB
-   - **Recommended**: 4-8 GB (equal to or half of system RAM)
+   - **Recommended for 64 GB RAM**: 8 GB (sufficient for normal use)
 4. **Navigate to the newly created partition**
 5. **Press Enter** on **[ Type ]** menu option
 6. **Scroll down** to find **Linux swap** (type code 19 or 82)
@@ -610,10 +617,13 @@ Free space       ...         ...        ...  ~250G
 
 **New partition created: /dev/nvme0n1p5 (8 GB, Linux swap)**
 
-**Swap Size Recommendations for GIGABYTE Brix 5300:**
-- **8 GB RAM:** 4 GB swap (50% of RAM)
-- **16 GB RAM:** 8 GB swap (50% of RAM) - **RECOMMENDED**
-- **32 GB RAM:** 8-16 GB swap (25-50% of RAM)
+**Swap Size for GIGABYTE Brix 5300 (64 GB RAM):**
+- **64 GB RAM (Kingston FURY Impact 2×32GB):** 8 GB swap
+- **Rationale:**
+  - With 64 GB RAM, swap is rarely used during normal operation
+  - 8 GB provides emergency overflow capacity
+  - **Hibernation note:** If hibernation (suspend-to-disk) is required, swap must be ≥ 64 GB
+  - For most use cases, 8 GB swap is sufficient with 64 GB RAM
 
 ### Step 3.7: Verify Final Partition Layout
 
@@ -624,7 +634,7 @@ Device          Start        End    Sectors  Size Type
 /dev/nvme0n1p1   2048    1050623    1048576  512M EFI System (Windows 11 - shared)
 /dev/nvme0n1p2   ...         ...        ... 250.0G Microsoft basic data (Windows 11)
 /dev/nvme0n1p3   ...         ...        ...  1.0G Microsoft reserved (Windows Recovery)
-/dev/nvme0n1p4   ...         ...        ... 175.0G Linux filesystem (NEW - Arch Linux)
+/dev/nvme0n1p4   ...         ...        ... 225.0G Linux filesystem (NEW - Arch Linux)
 /dev/nvme0n1p5   ...         ...        ...  8.0G Linux swap (NEW)
 ```
 
@@ -633,14 +643,14 @@ Device          Start        End    Sectors  Size Type
 - nvme0n1p1: **512 MB EFI System** (Windows 11 - shared with GRUB)
 - nvme0n1p2: **250.0 GB Microsoft basic data** (Windows 11 system partition)
 - nvme0n1p3: **1.0 GB Microsoft reserved** (Windows Recovery Environment)
-- nvme0n1p4: **175.0 GB Linux filesystem** (NEW - Arch Linux root, encrypted)
+- nvme0n1p4: **225.0 GB Linux filesystem** (NEW - Arch Linux root, encrypted) - **INCREASED**
 - nvme0n1p5: **8.0 GB Linux swap** (NEW - encrypted swap)
 
 **Total Disk Usage Summary:**
 - **Windows 11 partitions:** ~251.5 GB (50.3%)
-- **Arch Linux partitions:** ~183 GB (36.6%)
-- **Unallocated space:** ~65.5 GB (13.1%)
-- **Total used:** ~435 GB (87%)
+- **Arch Linux partitions:** ~233 GB (46.6%) - **INCREASED from 183 GB**
+- **Unallocated space:** ~15.5 GB (3.1%) - **REDUCED from 65 GB**
+- **Total used:** ~485 GB (97%)
 
 **If anything is wrong, DO NOT WRITE. Press 'q' to quit without saving and start over.**
 
