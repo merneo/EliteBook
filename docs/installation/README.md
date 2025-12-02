@@ -30,7 +30,7 @@
 
 **Example workflow:**
 ```
-User: "Potřebuji nastavit fingerprint na HP notebooku"
+User: "I need to setup fingerprint on HP notebook"
 AI: [Reads AI_ASSISTANT_CONTEXT.md] 
     → Finds "Fingerprint Authentication Setup" section
     → Knows: Hardware is Validity Sensors 138a:0092
@@ -46,7 +46,7 @@ AI: [Reads AI_ASSISTANT_CONTEXT.md]
 
 Simply say:
 ```
-Potřebuji nastavit fingerprint na HP notebooku
+I need to setup fingerprint on HP notebook
 ```
 
 The AI assistant should automatically:

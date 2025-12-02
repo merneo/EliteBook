@@ -1,208 +1,208 @@
-# Jak se ptát AI asistenta - Quick Guide
+# How to Ask AI Assistants - Quick Guide
 
 **Purpose:** Examples of how to ask AI assistant (Cursor CLI, Claude, ChatGPT) for help with HP EliteBook x360 1030 G2 installation and configuration.
 
 ---
 
-## Základní princip
+## Basic Principle
 
-Když potřebujete pomoc, AI asistent by měl:
-1. Otevřít `~/Documents/AI_ASSISTANT_CONTEXT.md` pro kontext
-2. Najít relevantní sekci
-3. Použít dokumentaci z `~/Documents/README_COMPLETE.md`
-4. Poskytnout instrukce podle dokumentace
+When you need help, the AI assistant should:
+1. Open `docs/installation/AI_ASSISTANT_CONTEXT.md` for context
+2. Find the relevant section
+3. Use documentation from `docs/installation/README_COMPLETE.md`
+4. Provide instructions according to the documentation
 
 ---
 
-## Příklady zpráv
+## Example Queries
 
 ### Fingerprint Authentication
 
-**Jednoduchá fráze:**
+**Simple phrase:**
 ```
-Potřebuji nastavit fingerprint na HP notebooku
-```
-
-**S odkazem na kontext:**
-```
-Potřebuji nastavit fingerprint - podívej se do AI_ASSISTANT_CONTEXT.md
+I need to setup fingerprint on HP notebook
 ```
 
-**Kompletní:**
+**With context reference:**
 ```
-Potřebuji nastavit fingerprint na HP EliteBook x360 1030 G2. 
-Podívej se do ~/Documents/AI_ASSISTANT_CONTEXT.md pro kontext 
-a použij dokumentaci z ~/Documents/README_COMPLETE.md Phase 15.
+I need to setup fingerprint - check AI_ASSISTANT_CONTEXT.md
+```
+
+**Complete:**
+```
+I need to setup fingerprint on HP EliteBook x360 1030 G2. 
+Check docs/installation/AI_ASSISTANT_CONTEXT.md for context 
+and use documentation from docs/installation/README_COMPLETE.md Phase 15.
 ```
 
 ---
 
 ### Face Recognition (Howdy)
 
-**Jednoduchá fráze:**
+**Simple phrase:**
 ```
-Instaluju face recognition na HP notebooku
-```
-
-**S odkazem:**
-```
-Potřebuji nastavit Howdy - je to zdokumentováno v AI_ASSISTANT_CONTEXT.md
+I'm installing face recognition on HP notebook
 ```
 
-**Kompletní:**
+**With reference:**
 ```
-Potřebuji nastavit face recognition (Howdy) na HP EliteBook. 
-Použij AI_ASSISTANT_CONTEXT.md jako referenci a README_COMPLETE.md Phase 15c.
+I need to setup Howdy - it's documented in AI_ASSISTANT_CONTEXT.md
+```
+
+**Complete:**
+```
+I need to setup face recognition (Howdy) on HP EliteBook. 
+Use AI_ASSISTANT_CONTEXT.md as reference and README_COMPLETE.md Phase 15c.
 ```
 
 ---
 
 ### Window Manager (Hyprland)
 
-**Jednoduchá fráze:**
+**Simple phrase:**
 ```
-Nastavuji Hyprland na HP notebooku
-```
-
-**S odkazem:**
-```
-Potřebuji konfigurovat window manager - podívej se do AI_ASSISTANT_CONTEXT.md
+I'm configuring Hyprland on HP notebook
 ```
 
-**Kompletní:**
+**With reference:**
 ```
-Potřebuji nastavit Hyprland window manager. 
-Je to zdokumentováno v AI_ASSISTANT_CONTEXT.md a README_COMPLETE.md Phase 13/17.
+I need to configure window manager - check AI_ASSISTANT_CONTEXT.md
+```
+
+**Complete:**
+```
+I need to setup Hyprland window manager. 
+It's documented in AI_ASSISTANT_CONTEXT.md and README_COMPLETE.md Phase 13/17.
 ```
 
 ---
 
 ### Browser Themes
 
-**Jednoduchá fráze:**
+**Simple phrase:**
 ```
-Nastavuji browser themes
-```
-
-**S odkazem:**
-```
-Potřebuji deploynout Firefox/Brave theme - použij AI_ASSISTANT_CONTEXT.md
+I'm configuring browser themes
 ```
 
-**Kompletní:**
+**With reference:**
 ```
-Potřebuji nastavit Catppuccin Mocha Green theme pro Firefox a Brave. 
-Podívej se do AI_ASSISTANT_CONTEXT.md a browsers/THEME_DEPLOYMENT.md.
+I need to deploy Firefox/Brave theme - use AI_ASSISTANT_CONTEXT.md
+```
+
+**Complete:**
+```
+I need to setup Catppuccin Mocha Green theme for Firefox and Brave. 
+Check AI_ASSISTANT_CONTEXT.md and browsers/THEME_DEPLOYMENT.md.
 ```
 
 ---
 
 ### Dotfiles Deployment
 
-**Jednoduchá fráze:**
+**Simple phrase:**
 ```
-Deployuji dotfiles z repository
-```
-
-**S odkazem:**
-```
-Potřebuji nasadit konfigurační soubory - je to v AI_ASSISTANT_CONTEXT.md
+I'm deploying dotfiles from repository
 ```
 
-**Kompletní:**
+**With reference:**
 ```
-Potřebuji deploynout dotfiles z ~/EliteBook repository. 
-Použij AI_ASSISTANT_CONTEXT.md a README_COMPLETE.md Phase 17.
-```
-
----
-
-## Šablony zpráv
-
-### Šablona 1: Jednoduchá (doporučeno)
-```
-Potřebuji [úkol] na HP notebooku
+I need to deploy configuration files - it's in AI_ASSISTANT_CONTEXT.md
 ```
 
-**Příklady:**
-- "Potřebuji nastavit fingerprint na HP notebooku"
-- "Potřebuji konfigurovat Hyprland na HP notebooku"
-- "Potřebuji deploynout browser themes na HP notebooku"
-
----
-
-### Šablona 2: S odkazem na kontext
+**Complete:**
 ```
-Potřebuji [úkol] - podívej se do AI_ASSISTANT_CONTEXT.md
-```
-
-**Příklady:**
-- "Potřebuji nastavit fingerprint - podívej se do AI_ASSISTANT_CONTEXT.md"
-- "Instaluju Howdy - je to zdokumentováno v AI_ASSISTANT_CONTEXT.md"
-- "Nastavuji window manager - použij AI_ASSISTANT_CONTEXT.md jako referenci"
-
----
-
-### Šablona 3: Kompletní (nejlepší)
-```
-Potřebuji [úkol] na HP EliteBook x360 1030 G2. 
-Podívej se do ~/Documents/AI_ASSISTANT_CONTEXT.md pro kontext 
-a použij dokumentaci z ~/Documents/README_COMPLETE.md Phase [číslo].
-```
-
-**Příklady:**
-- "Potřebuji nastavit fingerprint na HP EliteBook x360 1030 G2. Podívej se do ~/Documents/AI_ASSISTANT_CONTEXT.md pro kontext a použij dokumentaci z ~/Documents/README_COMPLETE.md Phase 15."
-- "Instaluju face recognition na HP EliteBook. Použij AI_ASSISTANT_CONTEXT.md jako referenci a README_COMPLETE.md Phase 15c pro detaily."
-
----
-
-## Co AI asistent udělá
-
-Když napíšete například:
-```
-Potřebuji nastavit fingerprint na HP notebooku
-```
-
-AI asistent by měl:
-1. ✅ Otevřít `~/Documents/AI_ASSISTANT_CONTEXT.md`
-2. ✅ Najít sekci "Fingerprint Authentication Setup"
-3. ✅ Zjistit hardware: Validity Sensors 138a:0092
-4. ✅ Zjistit, že je to zdokumentováno v Phase 15
-5. ✅ Otevřít `~/Documents/README_COMPLETE.md` Phase 15
-6. ✅ Poskytnout instrukce podle dokumentace
-7. ✅ Vědět, že to už bylo děláno dříve
-
----
-
-## Tipy
-
-💡 **Nejjednodušší způsob:**
-```
-Potřebuji [úkol] na HP notebooku
-```
-AI asistent by měl automaticky zkontrolovat AI_ASSISTANT_CONTEXT.md
-
-💡 **Pokud chcete být explicitní:**
-```
-Potřebuji [úkol] - podívej se do AI_ASSISTANT_CONTEXT.md
-```
-
-💡 **Pokud znáte číslo fáze:**
-```
-Potřebuji [úkol] - je to v README_COMPLETE.md Phase [číslo]
-```
-
-💡 **Pro více kontextu:**
-```
-Potřebuji [úkol] na HP EliteBook x360 1030 G2. 
-Použij AI_ASSISTANT_CONTEXT.md a README_COMPLETE.md Phase [číslo].
+I need to deploy dotfiles from ~/EliteBook repository. 
+Use AI_ASSISTANT_CONTEXT.md and README_COMPLETE.md Phase 17.
 ```
 
 ---
 
-## Seznam běžných úkolů
+## Query Templates
 
-| Úkol | AI_ASSISTANT_CONTEXT.md sekce | README_COMPLETE.md fáze |
+### Template 1: Simple (Recommended)
+```
+I need to [task] on HP notebook
+```
+
+**Examples:**
+- "I need to setup fingerprint on HP notebook"
+- "I need to configure Hyprland on HP notebook"
+- "I need to deploy browser themes on HP notebook"
+
+---
+
+### Template 2: With context reference
+```
+I need to [task] - check AI_ASSISTANT_CONTEXT.md
+```
+
+**Examples:**
+- "I need to setup fingerprint - check AI_ASSISTANT_CONTEXT.md"
+- "I'm installing Howdy - it's documented in AI_ASSISTANT_CONTEXT.md"
+- "I'm configuring window manager - use AI_ASSISTANT_CONTEXT.md as reference"
+
+---
+
+### Template 3: Complete (Best)
+```
+I need to [task] on HP EliteBook x360 1030 G2. 
+Check docs/installation/AI_ASSISTANT_CONTEXT.md for context 
+and use documentation from docs/installation/README_COMPLETE.md Phase [number].
+```
+
+**Examples:**
+- "I need to setup fingerprint on HP EliteBook x360 1030 G2. Check docs/installation/AI_ASSISTANT_CONTEXT.md for context and use documentation from docs/installation/README_COMPLETE.md Phase 15."
+- "I'm installing face recognition on HP EliteBook. Use AI_ASSISTANT_CONTEXT.md as reference and README_COMPLETE.md Phase 15c for details."
+
+---
+
+## What the AI Assistant Will Do
+
+When you write, for example:
+```
+I need to setup fingerprint on HP notebook
+```
+
+The AI assistant should:
+1. ✅ Open `docs/installation/AI_ASSISTANT_CONTEXT.md`
+2. ✅ Find section "Fingerprint Authentication Setup"
+3. ✅ Identify hardware: Validity Sensors 138a:0092
+4. ✅ Identify that it's documented in Phase 15
+5. ✅ Open `docs/installation/README_COMPLETE.md` Phase 15
+6. ✅ Provide instructions according to documentation
+7. ✅ Know that this has been done before
+
+---
+
+## Tips
+
+💡 **Simplest way:**
+```
+I need to [task] on HP notebook
+```
+The AI assistant should automatically check AI_ASSISTANT_CONTEXT.md
+
+💡 **If you want to be explicit:**
+```
+I need to [task] - check AI_ASSISTANT_CONTEXT.md
+```
+
+💡 **If you know the phase number:**
+```
+I need to [task] - it's in README_COMPLETE.md Phase [number]
+```
+
+💡 **For more context:**
+```
+I need to [task] on HP EliteBook x360 1030 G2. 
+Use AI_ASSISTANT_CONTEXT.md and README_COMPLETE.md Phase [number].
+```
+
+---
+
+## List of Common Tasks
+
+| Task | AI_ASSISTANT_CONTEXT.md Section | README_COMPLETE.md Phase |
 |------|-------------------------------|-------------------------|
 | Fingerprint setup | Fingerprint Authentication Setup | Phase 15 |
 | Face recognition | Face Recognition (Howdy) Setup | Phase 15c |
@@ -215,5 +215,5 @@ Použij AI_ASSISTANT_CONTEXT.md a README_COMPLETE.md Phase [číslo].
 
 ---
 
-**Soubor:** `~/Documents/HOW_TO_ASK_AI.md`  
-**Datum vytvoření:** 2025-12-02
+**File:** `docs/installation/HOW_TO_ASK_AI.md`  
+**Created:** 2025-12-02

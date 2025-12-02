@@ -199,7 +199,7 @@ sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/ho
 
 **Example workflow:**
 ```
-User: "Potřebuji nastavit fingerprint na HP notebooku"
+User: "I need to setup fingerprint on HP notebook"
 You: [Automatically check docs/installation/AI_ASSISTANT_CONTEXT.md]
      "I see this is documented in docs/installation/README_COMPLETE.md Phase 15. 
       Since you have HP EliteBook x360 1030 G2 with Validity 138a:0092 sensor,
