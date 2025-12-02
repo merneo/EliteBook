@@ -10,7 +10,7 @@
 
 ## Quick Navigation
 
-- [📚 Documentation Index](DOCUMENTATION_INDEX.md) - Complete index of all 59 documentation files
+- [📚 Documentation Index](DOCUMENTATION_INDEX.md) - Complete index of all 60 documentation files
 - [📝 Changelog](CHANGELOG.md) - Repository change history
 - [🚀 Quick Start](#quick-start) - Get started quickly
 - [📖 Installation Guide](INSTALL.md) - Complete installation procedures
@@ -44,7 +44,7 @@
 
 ### Documentation Index
 
-See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for complete index of all 59 documentation files.
+See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for complete index of all 60 documentation files.
 
 ### Installation Templates
 
@@ -52,6 +52,7 @@ For vendor-neutral or vendor-specific installation guides:
 - [Core Installation](docs/installation/blank_arch.md) - Vendor-neutral Arch Linux installation
 - [Intel Hardware](docs/installation/blank_intel_arch.md) - Intel CPU microcode and graphics drivers
 - [AMD Hardware](docs/installation/blank_amd_arch.md) - AMD CPU microcode and graphics drivers
+- [GIGABYTE Brix 5300](docs/installation/gigabyte_brix_5300_arch_installation.md) - GIGABYTE Brix 5300 specific (AMD Ryzen 3 5300U, Radeon RX Vega)
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Complete index of all documentation files in the EliteBook repository.**
 
-**Total Files:** 59 markdown files  
+**Total Files:** 60 markdown files  
 **Last Updated:** December 2, 2025  
 **Repository:** https://github.com/merneo/EliteBook
 
@@ -35,6 +35,7 @@
 | `docs/installation/blank_arch.md` | Core Arch Linux installation (vendor-neutral) | ~2200 | ✅ Complete |
 | `docs/installation/blank_intel_arch.md` | Arch Linux installation with Intel drivers | ~2300 | ✅ Complete |
 | `docs/installation/blank_amd_arch.md` | Arch Linux installation with AMD drivers | ~2300 | ✅ Complete |
+| `docs/installation/gigabyte_brix_5300_arch_installation.md` | GIGABYTE Brix 5300 specific installation | ~2400 | ✅ Complete |
 
 **Purpose:** Step-by-step installation procedures for Arch Linux on HP EliteBook x360 1030 G2, plus vendor-neutral and vendor-specific installation templates.
 
@@ -52,6 +53,7 @@
 - `blank_arch.md`: Vendor-neutral core installation (no Intel/AMD specific drivers)
 - `blank_intel_arch.md`: Intel CPU microcode and graphics drivers included
 - `blank_amd_arch.md`: AMD CPU microcode and graphics drivers included
+- `gigabyte_brix_5300_arch_installation.md`: GIGABYTE Brix 5300 specific (AMD Ryzen 3 5300U, Radeon RX Vega)
 - All templates use percentage-based disk partitioning
 - Academic documentation with references and citations
 
