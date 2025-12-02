@@ -203,3 +203,29 @@ tmp/
 *.swp
 *.swo
 *~
+
+# =============================================================================
+# BROWSER CACHE & TEMPORARY FILES
+# =============================================================================
+# Purpose: Exclude browser cache files and temporary theme files
+#
+# Browser Cache Files:
+#   - *.pak: Browser cache/package files (Chrome, Brave, Chromium)
+#   - Cache/, cache/: Browser cache directories
+#   - Local Storage/, Session Storage/: Browser storage directories
+#   - IndexedDB/, GPUCache/, Code Cache/: Browser data directories
+#
+# Why Exclude:
+#   - Cache files are temporary and can be regenerated
+#   - Large file sizes (clutter repository)
+#   - User-specific data (not portable)
+# =============================================================================
+**/Cached Theme.pak
+**/*.pak
+**/Cache/
+**/cache/
+**/Local Storage/
+**/Session Storage/
+**/IndexedDB/
+**/GPUCache/
+**/Code Cache/
