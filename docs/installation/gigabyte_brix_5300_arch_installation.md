@@ -156,17 +156,17 @@ This installation guide documents the complete procedure for installing Arch Lin
 | Partition | Percentage | Real Size | Type | Filesystem | Mount Point | Purpose | Encrypted |
 |-----------|------------|-----------|------|------------|-------------|---------|-----------|
 | `/dev/nvme0n1p1` | 0.1% | 512 MB | EFI System | FAT32 | `/boot` | UEFI bootloader (GRUB + Windows) | **No** |
-| `/dev/nvme0n1p2` | 50% | ~250 GB | Microsoft basic data | NTFS | N/A | Windows 11 system partition | **No** |
+| `/dev/nvme0n1p2` | 53% | ~265 GB | Microsoft basic data | NTFS | N/A | Windows 11 system partition | **No** |
 | `/dev/nvme0n1p3` | 0.2% | ~1 GB | Microsoft recovery | NTFS | N/A | Windows Recovery Environment | **No** |
 | `/dev/nvme0n1p4` | 45% | ~225 GB | Linux filesystem | Btrfs | `/` | Arch Linux root (encrypted) | **Yes (LUKS2)** |
 | `/dev/nvme0n1p5` | 1.6% | ~8 GB | Linux swap | swap | `[SWAP]` | Encrypted swap partition | **Yes (LUKS2)** |
-| **Unallocated** | ~3% | ~15 GB | - | - | - | Reserved for future use or data | - |
+| **Unallocated** | 0% | 0 GB | - | - | - | **Full disk utilized** | - |
 
 **Total Disk Usage:**
-- **Windows 11:** ~251 GB (50.2%)
+- **Windows 11:** ~266 GB (53.2%)
 - **Arch Linux:** ~233 GB (46.6%)
-- **Unallocated:** ~15 GB (3.0%)
-- **Total Used:** ~485 GB (97%)
+- **Unallocated:** 0 GB (0%)
+- **Total Used:** ~500 GB (100%) - **Full disk utilized**
 
 **Detailed Breakdown:**
 
@@ -176,10 +176,11 @@ This installation guide documents the complete procedure for installing Arch Lin
   - Contains Windows Boot Manager and GRUB bootloader
   - FAT32 filesystem (required for UEFI)
 
-- **Windows 11 System Partition (p2):** ~250 GB (50%)
+- **Windows 11 System Partition (p2):** ~265 GB (53%)
   - Windows 11 installation files
   - User data, applications, system files
   - NTFS filesystem
+  - **Increased from 250 GB to 265 GB** (utilizes unallocated space)
 
 - **Windows Recovery Partition (p3):** ~1 GB (0.2%)
   - Windows Recovery Environment (WinRE)
@@ -206,10 +207,10 @@ This installation guide documents the complete procedure for installing Arch Lin
     - Emergency overflow (rarely needed with 64 GB RAM)
     - If hibernation is needed, increase swap to 64 GB or disable hibernation
 
-**Unallocated Space (~15 GB):**
-- Minimal reserved space
-- Can be used for additional data partitions if needed
-- Most disk space allocated to Arch Linux for maximum storage
+**Unallocated Space: 0 GB (0%)**
+- **Full disk utilization** - no unallocated space
+- All 500 GB disk space is allocated to partitions
+- Windows 11 partition increased to utilize remaining space
 
 **Note:** Actual sizes may vary slightly due to:
 - Disk formatting overhead
@@ -591,11 +592,11 @@ Free space       ...         ...        ...  ~250G
 
 **Size Calculation for 500GB Disk:**
 - Total disk: 500 GB
-- Windows 11: ~251 GB (50%)
-- Remaining: ~249 GB
-- Arch Linux root: 225 GB (45% of total, ~90% of remaining)
+- Windows 11: ~266 GB (53%)
+- Remaining: ~234 GB
+- Arch Linux root: 225 GB (45% of total, ~96% of remaining)
 - Swap: 8 GB (1.6% of total)
-- Unallocated: ~15 GB (3% of total)
+- Unallocated: 0 GB (0% - full disk utilized)
 
 ### Step 3.6: Create Linux Swap Partition
 
@@ -632,7 +633,7 @@ Free space       ...         ...        ...  ~250G
 ```
 Device          Start        End    Sectors  Size Type
 /dev/nvme0n1p1   2048    1050623    1048576  512M EFI System (Windows 11 - shared)
-/dev/nvme0n1p2   ...         ...        ... 250.0G Microsoft basic data (Windows 11)
+/dev/nvme0n1p2   ...         ...        ... 265.0G Microsoft basic data (Windows 11)
 /dev/nvme0n1p3   ...         ...        ...  1.0G Microsoft reserved (Windows Recovery)
 /dev/nvme0n1p4   ...         ...        ... 225.0G Linux filesystem (NEW - Arch Linux)
 /dev/nvme0n1p5   ...         ...        ...  8.0G Linux swap (NEW)
@@ -641,16 +642,16 @@ Device          Start        End    Sectors  Size Type
 **SUCCESS:** Verify:
 - Total partitions: **5**
 - nvme0n1p1: **512 MB EFI System** (Windows 11 - shared with GRUB)
-- nvme0n1p2: **250.0 GB Microsoft basic data** (Windows 11 system partition)
+- nvme0n1p2: **265.0 GB Microsoft basic data** (Windows 11 system partition) - **INCREASED from 250 GB**
 - nvme0n1p3: **1.0 GB Microsoft reserved** (Windows Recovery Environment)
-- nvme0n1p4: **225.0 GB Linux filesystem** (NEW - Arch Linux root, encrypted) - **INCREASED**
+- nvme0n1p4: **225.0 GB Linux filesystem** (NEW - Arch Linux root, encrypted)
 - nvme0n1p5: **8.0 GB Linux swap** (NEW - encrypted swap)
 
 **Total Disk Usage Summary:**
-- **Windows 11 partitions:** ~251.5 GB (50.3%)
-- **Arch Linux partitions:** ~233 GB (46.6%) - **INCREASED from 183 GB**
-- **Unallocated space:** ~15.5 GB (3.1%) - **REDUCED from 65 GB**
-- **Total used:** ~485 GB (97%)
+- **Windows 11 partitions:** ~266.5 GB (53.3%) - **INCREASED from 251.5 GB**
+- **Arch Linux partitions:** ~233 GB (46.6%)
+- **Unallocated space:** 0 GB (0%) - **FULL DISK UTILIZED**
+- **Total used:** ~500 GB (100%)
 
 **If anything is wrong, DO NOT WRITE. Press 'q' to quit without saving and start over.**
 
