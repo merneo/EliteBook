@@ -1,8 +1,15 @@
 # AI Assistant Context - HP EliteBook x360 1030 G2 Installation
 
+**Version:** 2.0.0  
+**Last Updated:** December 2, 2025  
 **Purpose:** This file provides context and instructions for AI assistants (Cursor CLI, Claude, ChatGPT) when helping with Arch Linux installation and configuration on HP EliteBook x360 1030 G2.
 
-**Primary Documentation:** `docs/installation/README_COMPLETE.md` (in this repository) contains complete installation guide with all phases documented.
+**Usage Modes:** This file can be used in three ways:
+1. **AI Knowledge Base** - AI assistants automatically access this file for system context
+2. **AI Instructions** - Explicit instructions for AI assistants on how to respond to user queries
+3. **Manual Reference** - Users can manually reference this file for quick hardware and system information
+
+**Primary Documentation:** `docs/installation/README_COMPLETE.md` (in this repository) contains complete installation guide with all phases documented. This can be used by AI assistants or followed manually command-by-command.
 
 **Repository Location:** This file is in `docs/installation/AI_ASSISTANT_CONTEXT.md` in the EliteBook repository.
 

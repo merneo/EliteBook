@@ -2,6 +2,48 @@
 
 **Well-Documented Arch Linux System Configuration for HP EliteBook x360 1030 G2**
 
+**Version:** 2.0.0  
+**Last Updated:** December 2, 2025  
+**Repository:** https://github.com/merneo/EliteBook
+
+---
+
+## Quick Navigation
+
+- [📚 Documentation Index](DOCUMENTATION_INDEX.md) - Complete index of all 54 documentation files
+- [📝 Changelog](CHANGELOG.md) - Repository change history
+- [🚀 Quick Start](#quick-start) - Get started quickly
+- [📖 Installation Guide](INSTALL.md) - Complete installation procedures
+- [🤖 AI Knowledge Base](docs/installation/AI_ASSISTANT_CONTEXT.md) - For AI assistants
+- [⚙️ Configuration Reference](CONFIGURATION_FILES_DOCUMENTATION.md) - All configuration files
+
+---
+
+## Quick Start
+
+### For New Users
+
+1. **Read Installation Guide**: Start with [INSTALL.md](INSTALL.md) for overview
+2. **Follow Installation**: Use [INSTALL_PRE_REBOOT.md](INSTALL_PRE_REBOOT.md) for system installation
+3. **Configure System**: Use [INSTALL_POST_REBOOT.md](INSTALL_POST_REBOOT.md) for post-installation configuration
+4. **Deploy Dotfiles**: Follow [DEPLOYMENT_INSTRUCTIONS.md](DEPLOYMENT_INSTRUCTIONS.md)
+
+### For AI Assistants
+
+1. **Read Context File**: Check [docs/installation/AI_ASSISTANT_CONTEXT.md](docs/installation/AI_ASSISTANT_CONTEXT.md) for system context
+2. **Reference Documentation**: Use [docs/installation/README_COMPLETE.md](docs/installation/README_COMPLETE.md) for detailed procedures
+3. **Follow Instructions**: See [docs/installation/HOW_TO_ASK_AI.md](docs/installation/HOW_TO_ASK_AI.md) for query examples
+
+### For Manual Execution
+
+1. **Open Complete Guide**: Use [docs/installation/README_COMPLETE.md](docs/installation/README_COMPLETE.md)
+2. **Follow Phase-by-Phase**: Execute commands sequentially
+3. **Verify Each Step**: Check success messages before proceeding
+
+### Documentation Index
+
+See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for complete index of all 54 documentation files.
+
 ---
 
 ## Overview
@@ -11,6 +53,11 @@ This repository contains a comprehensive, well-documented system configuration s
 **Target Audience:** System administrators, Linux enthusiasts, and users seeking a well-documented reference for configuring Arch Linux on similar hardware platforms.
 
 **Repository Philosophy:** This is a **personal system configuration repository** with comprehensive documentation. While primarily designed for personal use, the configurations and documentation may serve as a reference for similar hardware deployments. All configurations are designed for operational reliability, maintainability, and thorough documentation.
+
+**Documentation Standards:** All documentation uses US English (academic publication standard) and can be used in three modes:
+1. **AI Knowledge Base** - Automatic context access for AI assistants
+2. **AI Instructions** - Explicit guidance for AI assistants
+3. **Manual Guide** - Step-by-step command-by-command execution
 
 ---
 

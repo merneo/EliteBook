@@ -2,8 +2,9 @@
 
 **Author:** EliteBook Configuration Repository  
 **Date:** December 2, 2025  
-**Version:** 1.0  
-**Language:** US English (Academic Publication Standard)
+**Version:** 2.0.0  
+**Language:** US English (Academic Publication Standard)  
+**Repository:** https://github.com/merneo/EliteBook
 
 ---
 

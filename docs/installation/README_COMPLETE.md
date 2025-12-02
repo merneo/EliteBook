@@ -1,10 +1,12 @@
 # Arch Linux Complete Installation Guide - HP EliteBook x360 1030 G2
 
+**Version:** 2.0.0  
+**Last Updated:** December 2, 2025  
 **Complete installation procedure combining pre-reboot and post-reboot configuration steps.**
 
-This document combines [INSTALL_PRE_REBOOT.md](INSTALL_PRE_REBOOT.md) and [INSTALL_POST_REBOOT.md](INSTALL_POST_REBOOT.md) into a single comprehensive guide.
+This document combines [INSTALL_PRE_REBOOT.md](../INSTALL_PRE_REBOOT.md) and [INSTALL_POST_REBOOT.md](../INSTALL_POST_REBOOT.md) into a single comprehensive guide.
 
-**Estimated Total Time**: 3-5 hours
+**Estimated Total Time**: 3-5 hours  
 **Restart Count**: 1 (first system reboot between pre-reboot and post-reboot phases)
 
 ---
