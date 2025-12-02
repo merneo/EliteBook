@@ -2,7 +2,7 @@
 
 **Complete index of all documentation files in the EliteBook repository.**
 
-**Total Files:** 56 markdown files  
+**Total Files:** 59 markdown files  
 **Last Updated:** December 2, 2025  
 **Repository:** https://github.com/merneo/EliteBook
 
@@ -32,8 +32,11 @@
 | `INSTALL_POST_REBOOT.md` | Complete post-reboot configuration (Phases 14.5-18) | ~2500 | ✅ Complete |
 | `docs/installation/README_COMPLETE.md` | Combined installation guide (pre + post) | ~6500 | ✅ Complete |
 | `docs/installation/README.md` | Installation documentation directory overview | ~140 | ✅ Complete |
+| `docs/installation/blank_arch.md` | Core Arch Linux installation (vendor-neutral) | ~2200 | ✅ Complete |
+| `docs/installation/blank_intel_arch.md` | Arch Linux installation with Intel drivers | ~2300 | ✅ Complete |
+| `docs/installation/blank_amd_arch.md` | Arch Linux installation with AMD drivers | ~2300 | ✅ Complete |
 
-**Purpose:** Step-by-step installation procedures for Arch Linux on HP EliteBook x360 1030 G2.
+**Purpose:** Step-by-step installation procedures for Arch Linux on HP EliteBook x360 1030 G2, plus vendor-neutral and vendor-specific installation templates.
 
 **Key Topics:**
 - Windows 11 dual-boot setup
@@ -44,6 +47,13 @@
 - User account creation
 - Network configuration
 - Window manager (Hyprland) setup
+
+**Installation Templates:**
+- `blank_arch.md`: Vendor-neutral core installation (no Intel/AMD specific drivers)
+- `blank_intel_arch.md`: Intel CPU microcode and graphics drivers included
+- `blank_amd_arch.md`: AMD CPU microcode and graphics drivers included
+- All templates use percentage-based disk partitioning
+- Academic documentation with references and citations
 
 ---
 
