@@ -102,7 +102,7 @@ btrfs subvolume list /
 
 # Check network (WiFi)
 nmcli device status
-# Should show: wlan0 connected (if WiFi is connected)
+# Should show: wlp58s0 connected (if WiFi is connected)
 
 # Check Bluetooth
 systemctl status bluetooth
@@ -204,7 +204,7 @@ ss -tlnp | grep :22
 
 # Get IP address for SSH connection
 ip addr show | grep "inet " | grep -v 127.0.0.1
-# Example output: inet 192.168.1.100/24
+# Example output (HP EliteBook x360 1030 G2): inet 192.168.0.39/24
 ```
 
 **Connect from remote computer:**

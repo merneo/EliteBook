@@ -553,19 +553,19 @@ iwctl
 ```bash
 # List WiFi devices
 device list
-# Should show: wlan0 (or similar)
+# Should show: wlp58s0 (HP EliteBook x360 1030 G2)
 
 # Scan for networks
-station wlan0 scan
+station wlp58s0 scan
 
 # Wait 3 seconds for scan to complete
 
 # List available networks
-station wlan0 get-networks
+station wlp58s0 get-networks
 # Shows list of SSIDs with signal strength
 
 # Connect to your network (replace "YourSSID" with your actual WiFi name)
-station wlan0 connect "YourSSID"
+station wlp58s0 connect "YourSSID"
 
 # Enter passphrase: (type your WiFi password)
 
@@ -588,15 +588,15 @@ ping -c 3 archlinux.org
 
 ```bash
 # Get IP address assigned to WiFi interface
-ip -brief addr show wlan0
+ip -brief addr show wlp58s0
 
-# Example output:
-# wlan0   UP   192.168.1.100/24
+# Example output (HP EliteBook x360 1030 G2):
+# wlp58s0          UP             192.168.0.39/24 fe80::f416:ffe7:fa47:67c5/64
 
 # If using Ethernet (eth0 or enp2s0):
 ip -brief addr show
 
-# Note the IP address (e.g., 192.168.1.100)
+# Note the IP address (e.g., 192.168.0.39)
 ```
 
 ### Step 3.5: Connect from Second Computer
@@ -606,20 +606,20 @@ On your **second computer** (the one you'll use for installation):
 **Linux/macOS:**
 ```bash
 # SSH into the HP EliteBook
-ssh root@192.168.1.100
+ssh root@192.168.0.39
 
-# Replace 192.168.1.100 with actual IP from previous step
+# Replace 192.168.0.39 with actual IP from previous step
 ```
 
 **Windows (PowerShell or Windows Terminal):**
 ```powershell
 # SSH into the HP EliteBook
-ssh root@192.168.1.100
+ssh root@192.168.0.39
 ```
 
 **First connection warning:**
 ```
-The authenticity of host '192.168.1.100' can't be established.
+The authenticity of host '192.168.0.39' can't be established.
 ED25519 key fingerprint is SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 ```
