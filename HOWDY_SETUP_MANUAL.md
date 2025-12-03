@@ -149,7 +149,7 @@ sudo howdy add
 The PAM stack for sudo is configured as:
 
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      include     system-auth
 ```
 
@@ -249,7 +249,7 @@ cat /etc/pam.d/sudo
 
 **Expected first line:**
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 ```
 
 If missing, the line was already there and Howdy is properly configured.
@@ -393,8 +393,7 @@ sudo sed -i '1s/^# //' /etc/pam.d/sudo
 ```bash
 # Enrollment
 sudo howdy add          # Enroll new face (interactive - prompts for name)
-howdy-add               # Automated enrollment with timestamp name (alias)
-howdy-add-auto.sh       # Automated enrollment script (full path)
+howdy-add-auto.sh       # Automated enrollment with timestamp name
 sudo howdy remove       # Remove all enrollments
 
 # Testing
@@ -417,11 +416,15 @@ sudo -k && sudo whoami  # Test with cache cleared
    
    **Option A: Automated enrollment (recommended)**
    ```bash
-   howdy-add
-   # or
    howdy-add-auto.sh
    ```
    This automatically generates a timestamp-based name (e.g., `2025-12-02_16-47-18`)
+   
+   **Option B: Interactive enrollment**
+   ```bash
+   sudo howdy add
+   ```
+   Enter a label for the face model when prompted (e.g., "Initial model" or your name)
    and eliminates the need for manual name input. Requires `expect` package for
    full automation (install with: `sudo pacman -S expect`).
    

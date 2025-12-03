@@ -46,7 +46,7 @@
 
 3. **PAM Configuration:**
    ```
-   auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+   auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
    ```
    - Status: ✅ Correctly configured
 
@@ -117,7 +117,7 @@ sudo whoami
 
 ### Face Model
 - User: `<USERNAME>`
-- Model file: `/lib/security/howdy/models/<USERNAME>.dat`
+- Model file: `/usr/lib/security/howdy/models/<USERNAME>.dat`
 - Enrollment date: 2025-12-02 08:56:19
 - Status: ✅ Active and working
 
@@ -147,7 +147,7 @@ The following warnings are **expected and harmless** in terminal environment:
 
 2. **Verify camera:**
    ```bash
-   sudo grep device_path /lib/security/howdy/config.ini
+   sudo grep device_path /usr/lib/security/howdy/config.ini
    v4l2-ctl --device=/dev/video2 --list-formats-ext
    ```
 

@@ -30,14 +30,30 @@ Since `pam_fprintd.so` does not support suppressing messages, the best solution 
 
 ### Step 1: Remove Fingerprint from PAM
 
+**Note:** Configuration scripts have been removed from version 1.0. Manual configuration is required. Automated scripts will be available in version 2.0.
+
+**Manual steps:**
+
+1. **Backup PAM configurations:**
 ```bash
-sudo ~/EliteBook/scripts/remove-fingerprint-from-pam.sh
+sudo cp /etc/pam.d/sudo /etc/pam.d/sudo.backup
+sudo cp /etc/pam.d/sddm /etc/pam.d/sddm.backup
+sudo cp /etc/pam.d/system-login /etc/pam.d/system-login.backup
 ```
 
-This script:
-- Backs up PAM configurations
-- Removes fingerprint authentication from `/etc/pam.d/sudo`, `/etc/pam.d/sddm`, and `/etc/pam.d/system-login`
-- Leaves Howdy and password authentication intact
+2. **Remove fingerprint authentication:**
+```bash
+# Remove from sudo
+sudo sed -i '/pam_fprintd.so/d' /etc/pam.d/sudo
+
+# Remove from SDDM
+sudo sed -i '/pam_fprintd.so/d' /etc/pam.d/sddm
+
+# Remove from system-login
+sudo sed -i '/pam_fprintd.so/d' /etc/pam.d/system-login
+```
+
+This removes fingerprint authentication from PAM files, leaving Howdy and password authentication intact.
 
 ### Step 2: Verify Configuration
 
@@ -46,7 +62,7 @@ This script:
 cat /etc/pam.d/sudo | grep -E "howdy|fprintd|system-auth"
 
 # Should show:
-# auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+# auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 # auth      include     system-auth
 # (No fingerprint line)
 ```
@@ -81,7 +97,7 @@ sudo nano /etc/pam.d/sudo
 **Comment out or remove the fingerprint line:**
 ```
 #%PAM-1.0
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 # auth      sufficient  pam_fprintd.so  <-- Comment this out
 auth      include     system-auth
 account   include     system-auth
@@ -97,7 +113,7 @@ sudo nano /etc/pam.d/sddm
 **Comment out or remove the fingerprint line:**
 ```
 #%PAM-1.0
-auth        sufficient  pam_python.so /lib/security/howdy/pam.py
+auth        sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 # auth        sufficient  pam_fprintd.so  <-- Comment this out
 auth        include     system-login
 account     include     system-login
@@ -139,7 +155,7 @@ session     include     system-login
 If you want to restore fingerprint authentication later:
 
 ```bash
-sudo ~/EliteBook/scripts/configure-silent-fingerprint.sh
+# Manual configuration required - see Step 1 above
 ```
 
 Or manually add the line back:

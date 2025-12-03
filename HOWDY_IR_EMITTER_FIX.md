@@ -17,13 +17,13 @@ Modified Howdy's PAM integration to automatically start the IR emitter before fa
 
 ### Changes Made
 
-1. **Modified `/lib/security/howdy/pam.py`**:
+1. **Modified `/usr/lib/security/howdy/pam.py`**:
    - Added `start_ir_emitter()` function that launches `linux-enable-ir-emitter run` in background
    - Added `stop_ir_emitter()` function to clean up the process
    - Modified `doAuth()` to start IR emitter BEFORE calling `compare.py`
    - Ensured IR emitter is stopped after authentication completes (success or failure)
 
-2. **Modified `/lib/security/howdy/compare.py`** (already done):
+2. **Modified `/usr/lib/security/howdy/compare.py`** (already done):
    - Added IR emitter startup code as backup (in case pam.py fails)
    - Added cleanup on exit
 
@@ -131,11 +131,11 @@ sudo journalctl | grep -i "howdy\|ir\|emitter" | tail -20
 
 ## Files Modified
 
-1. `/lib/security/howdy/pam.py`
+1. `/usr/lib/security/howdy/pam.py`
    - Added IR emitter startup/cleanup functions
    - Modified `doAuth()` to use them
 
-2. `/lib/security/howdy/compare.py`
+2. `/usr/lib/security/howdy/compare.py`
    - Already had IR emitter code (backup)
 
 ---

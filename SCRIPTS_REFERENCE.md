@@ -256,45 +256,9 @@ howdy-add-auto.sh -U username
 - `expect`: Automation tool (recommended)
 - `pexpect`: Python library (optional fallback)
 
+**Location:** `scripts/.local/bin/howdy-add-auto.sh`
+
 **Reference:** See script header for complete documentation.
-
----
-
-## Configuration Scripts
-
-### `configure-silent-fingerprint.sh`
-
-**Purpose:** Configure fingerprint authentication to remove intrusive messages.
-
-**Usage:**
-```bash
-sudo ./configure-silent-fingerprint.sh
-```
-
-**What it does:**
-- Removes fingerprint messages from PAM configuration
-- Configures clean authentication flow
-- Ensures fallback to password works correctly
-
-**Location:** `scripts/configure-silent-fingerprint.sh`
-
----
-
-### `remove-fingerprint-from-pam.sh`
-
-**Purpose:** Remove fingerprint authentication from PAM configuration.
-
-**Usage:**
-```bash
-sudo ./remove-fingerprint-from-pam.sh
-```
-
-**What it does:**
-- Removes `pam_fprintd.so` from PAM files
-- Restores password-only authentication
-- Creates backup of original configuration
-
-**Location:** `scripts/remove-fingerprint-from-pam.sh`
 
 ---
 
@@ -314,12 +278,6 @@ All scripts in `scripts/.local/bin/` are automatically in PATH when deployed:
 - `~/.local/bin/wallpaper-rotate.sh`
 - `~/.local/bin/waybar-theme-switch.sh`
 - `~/.local/bin/howdy-add-auto.sh`
-
-### Configuration Scripts
-
-Scripts in `scripts/` directory (not in PATH):
-- `scripts/configure-silent-fingerprint.sh`
-- `scripts/remove-fingerprint-from-pam.sh`
 
 ---
 

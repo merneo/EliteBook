@@ -18,15 +18,17 @@
 ## Hardware Information
 
 **Device:** HP EliteBook x360 1030 G2  
-**CPU:** Intel Core i5-7300U (7th Gen)  
-**RAM:** 8 GB  
+**CPU:** Intel Core i5-7300U (7th Gen, 2 cores / 4 threads, 2.60 GHz base, 3.50 GHz turbo)  
+**RAM:** 8 GB DDR4  
 **Storage:** NVMe SSD 238.5 GB  
-**Graphics:** Intel HD 620 (integrated)  
+**Graphics:** Intel HD Graphics 620 (integrated)  
+**Audio:** Conexant CX8200 HD Audio Codec (HDA Intel PCH)  
+**Display:** 1920×1080 13.3" FHD touchscreen (AU Optronics 0x422D)  
+**Network:** Intel Wireless 8265 (802.11ac), wlp58s0 interface, Bluetooth 4.2  
 **Fingerprint Sensor:** Validity Sensors 138a:0092  
-**IR Camera:** Chicony IR Camera (04f2:b58e) - for face recognition  
-**HD Camera:** HP HD Camera (04f2:b58f) - 720p for video calls  
-**WiFi:** Intel Wireless 8265  
-**Bluetooth:** Intel 8087:0a2b  
+**IR Camera:** Chicony IR Camera (04f2:b58e) at /dev/video2 - for face recognition  
+**HD Camera:** HP HD Camera (04f2:b58f) at /dev/video0 - 720p for video calls  
+**Smart Card:** Alcor Micro AU9560 (PC/SC compatible, optional - may not be present in all configurations)  
 
 ---
 
@@ -109,7 +111,7 @@ sudo howdy config  # Set device_path = /dev/video2
 # Enroll face
 sudo howdy add
 # Configure PAM
-sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /lib/security/howdy/pam.py
+sudo nano /etc/pam.d/sudo  # Add: auth sufficient pam_python.so /usr/lib/security/howdy/pam.py
 ```
 
 **Documentation:** `docs/installation/README_COMPLETE.md` - Phase 15c (in this repository)

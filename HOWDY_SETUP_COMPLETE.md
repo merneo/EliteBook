@@ -27,7 +27,7 @@ Two face models have been enrolled for better recognition in different lighting 
 Howdy is properly integrated in `/etc/pam.d/sudo`:
 
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      include     system-auth
 ```
 

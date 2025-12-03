@@ -26,7 +26,7 @@ Update PAM configuration to ensure proper fallback to password:
 
 **`/etc/pam.d/sudo`:**
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      sufficient  pam_fprintd.so
 auth      include     system-auth
 ```
@@ -58,7 +58,7 @@ Create a wrapper that suppresses messages, but this is complex and not recommend
 **`/etc/pam.d/sudo`:**
 ```
 #%PAM-1.0
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      sufficient  pam_fprintd.so
 auth      include     system-auth
 account   include     system-auth
@@ -68,7 +68,7 @@ session   include     system-auth
 **`/etc/pam.d/sddm`:**
 ```
 #%PAM-1.0
-auth        sufficient  pam_python.so /lib/security/howdy/pam.py
+auth        sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth        sufficient  pam_fprintd.so
 auth        include     system-login
 account     include     system-login
@@ -128,15 +128,27 @@ session     include     system-login
 
 ---
 
-## Configuration Script
+## Configuration
 
-Use the provided script to ensure proper PAM configuration:
+**Note:** Configuration scripts have been removed from version 1.0. Manual configuration is required. Automated scripts will be available in version 2.0.
+
+**Manual configuration:**
+
+Edit PAM files to add `quiet` parameter to `pam_fprintd.so`:
 
 ```bash
-sudo ~/EliteBook/scripts/configure-silent-fingerprint.sh
+# Edit sudo PAM configuration
+sudo nano /etc/pam.d/sudo
+
+# Change:
+# auth      sufficient  pam_fprintd.so
+# To:
+# auth      sufficient  pam_fprintd.so quiet
+
+# Repeat for /etc/pam.d/sddm and /etc/pam.d/system-login if needed
 ```
 
-**Note:** The script attempts to add `quiet` parameter, but it may not work if `pam_fprintd.so` doesn't support it. The script will still ensure proper fallback to password.
+**Note:** The `quiet` parameter may not work if `pam_fprintd.so` doesn't support it. The configuration will still ensure proper fallback to password.
 
 ---
 
@@ -190,7 +202,7 @@ sudo nano /etc/pam.d/sudo
 # auth      sufficient  pam_fprintd.so
 
 # Keep only Howdy and password:
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      include     system-auth
 ```
 

@@ -76,7 +76,7 @@ sudo visudo
 sudo nano /etc/pam.d/su
 
 # Add at the top:
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 
 # Test with:
 su - root

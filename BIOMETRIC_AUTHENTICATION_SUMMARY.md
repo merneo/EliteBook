@@ -27,7 +27,7 @@ This system implements a comprehensive multi-factor biometric authentication sys
 
 **Configuration:**
 - PAM module: `pam_python.so` (installed from GitHub fork)
-- Howdy script: `/lib/security/howdy/pam.py`
+- Howdy script: `/usr/lib/security/howdy/pam.py`
 - Face models: `~/.howdy/` (encrypted storage)
 - IR emitter: Auto-activated via `linux-enable-ir-emitter`
 
@@ -160,7 +160,7 @@ When authentication is required (sudo or login), the system attempts methods in 
 ### Sudo Authentication (`/etc/pam.d/sudo`)
 
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      sufficient  pam_fprintd.so
 auth      include     system-auth
 ```
@@ -170,7 +170,7 @@ auth      include     system-auth
 ### SDDM Login (`/etc/pam.d/sddm`)
 
 ```
-auth        sufficient  pam_python.so /lib/security/howdy/pam.py
+auth        sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth        sufficient  pam_fprintd.so
 auth        include     system-login
 ```
@@ -181,7 +181,7 @@ auth        include     system-login
 
 ```
 auth       required   pam_shells.so
-auth       sufficient  pam_python.so /lib/security/howdy/pam.py
+auth       sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth       sufficient  pam_fprintd.so
 auth       requisite  pam_nologin.so
 auth       include    system-auth
@@ -382,7 +382,7 @@ sudo journalctl -u howdy -n 50       # Howdy logs
 - `/etc/pam.d/sudo` - Sudo PAM configuration
 - `/etc/pam.d/sddm` - SDDM PAM configuration
 - `/etc/pam.d/system-login` - System login PAM configuration
-- `/lib/security/howdy/config.ini` - Howdy configuration
+- `/usr/lib/security/howdy/config.ini` - Howdy configuration
 - `~/.howdy/` - Face model storage
 - `/var/lib/fprint/` - Fingerprint template storage
 

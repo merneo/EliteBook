@@ -13,7 +13,7 @@
 ```
 #%PAM-1.0
 
-auth        sufficient  pam_python.so /lib/security/howdy/pam.py
+auth        sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth        include     system-login
 ...
 ```
@@ -23,7 +23,7 @@ auth        include     system-login
 #%PAM-1.0
 
 auth       required   pam_shells.so
-auth       sufficient  pam_python.so /lib/security/howdy/pam.py
+auth       sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth       requisite  pam_nologin.so
 auth       include    system-auth
 ...
@@ -33,7 +33,7 @@ auth       include    system-auth
 ```
 #%PAM-1.0
 
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      include     system-auth
 ...
 ```
@@ -57,7 +57,7 @@ auth      include     system-auth
 
 1. **User appears at SDDM login screen**
 2. **SDDM triggers PAM authentication**
-3. **PAM loads howdy module** (`pam_python.so /lib/security/howdy/pam.py`)
+3. **PAM loads howdy module** (`pam_python.so /usr/lib/security/howdy/pam.py`)
 4. **Howdy attempts face recognition:**
    - Activates IR emitter
    - Captures frames from `/dev/video2`
@@ -215,13 +215,13 @@ sudo systemctl restart sddm
 ### Modified Files
 
 1. **`/etc/pam.d/sddm`**
-   - Added: `auth sufficient pam_python.so /lib/security/howdy/pam.py`
+   - Added: `auth sufficient pam_python.so /usr/lib/security/howdy/pam.py`
 
 2. **`/etc/pam.d/system-login`**
-   - Added: `auth sufficient pam_python.so /lib/security/howdy/pam.py`
+   - Added: `auth sufficient pam_python.so /usr/lib/security/howdy/pam.py`
 
 3. **`/etc/pam.d/sudo`**
-   - Added: `auth sufficient pam_python.so /lib/security/howdy/pam.py`
+   - Added: `auth sufficient pam_python.so /usr/lib/security/howdy/pam.py`
 
 ### Backup Files
 

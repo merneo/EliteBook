@@ -28,7 +28,7 @@ No face detected, aborting
 
 ### 1. IR Emitter Activation ✅
 
-**File:** `/lib/security/howdy/cli/add.py`
+**File:** `/usr/lib/security/howdy/cli/add.py`
 
 Added IR emitter activation code before video capture initialization:
 
@@ -65,7 +65,7 @@ except Exception:
 
 ### 2. Increased Frame Checking ✅
 
-**File:** `/lib/security/howdy/cli/add.py`
+**File:** `/usr/lib/security/howdy/cli/add.py`
 
 Changed from 60 to 120 frames:
 ```python
@@ -74,7 +74,7 @@ while frames < 120:  # Was: while frames < 60:
 
 ### 3. Improved Face Detection ✅
 
-**File:** `/lib/security/howdy/cli/add.py`
+**File:** `/usr/lib/security/howdy/cli/add.py`
 
 Increased upsampling from 1 to 2 for better detection:
 ```python
@@ -83,7 +83,7 @@ face_locations = face_detector(gsframe, 2)  # Was: face_detector(gsframe, 1)
 
 ### 4. Adjusted Dark Threshold ✅
 
-**File:** `/lib/security/howdy/config.ini`
+**File:** `/usr/lib/security/howdy/config.ini`
 
 Increased `dark_threshold` from 50 to 60:
 ```ini
@@ -92,7 +92,7 @@ dark_threshold = 60
 
 ### 5. Enhanced Error Messages ✅
 
-**File:** `/lib/security/howdy/cli/add.py`
+**File:** `/usr/lib/security/howdy/cli/add.py`
 
 Improved error messages with diagnostic information:
 
@@ -109,7 +109,7 @@ else:
 
 ### 6. Fixed Deprecation Warning ✅
 
-**File:** `/lib/security/howdy/compare.py`
+**File:** `/usr/lib/security/howdy/compare.py`
 
 Fixed Python datetime deprecation warning:
 ```python
@@ -154,7 +154,7 @@ sudo howdy add
 
 If you need to apply these fixes manually:
 
-1. **Add IR emitter code** to `/lib/security/howdy/cli/add.py` (see code above)
+1. **Add IR emitter code** to `/usr/lib/security/howdy/cli/add.py` (see code above)
 2. **Change frame limit** from 60 to 120
 3. **Change upsampling** from 1 to 2
 4. **Update config.ini** dark_threshold to 60

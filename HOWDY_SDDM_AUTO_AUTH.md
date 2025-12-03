@@ -136,7 +136,7 @@ sudo systemctl restart sddm
    ```bash
    cat /etc/pam.d/sddm | grep howdy
    ```
-   Should contain: `auth sufficient pam_python.so /lib/security/howdy/pam.py`
+   Should contain: `auth sufficient pam_python.so /usr/lib/security/howdy/pam.py`
 
 2. Verify Howdy PAM module exists:
    ```bash

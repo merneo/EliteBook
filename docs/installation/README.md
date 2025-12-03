@@ -35,6 +35,13 @@
   - AMD-specific configuration notes
   - For AMD processors and Radeon graphics
 
+- **`gigabyte_brix_5300_arch_installation.md`** - GIGABYTE Brix 5300 specific installation
+  - GIGABYTE Brix 5300 barebone system specifications
+  - AMD Ryzen 3 5300U (4C/8T, 2.6-3.8 GHz, Zen 2, 15W)
+  - AMD Radeon RX Vega graphics (6 compute units, integrated)
+  - Complete installation guide with hardware-specific notes
+  - DDR4 SO-DIMM and M.2 NVMe SSD configuration
+
 ### AI Assistant Documentation
 
 - **`AI_ASSISTANT_CONTEXT.md`** - Context file for AI assistants (Cursor CLI, Claude, ChatGPT)
@@ -129,10 +136,15 @@ All documentation can be used manually, command-by-command:
 ## Hardware Information
 
 **Device:** HP EliteBook x360 1030 G2  
-**CPU:** Intel Core i5-7300U (7th Gen)  
+**CPU:** Intel Core i5-7300U (7th Gen, 2 cores / 4 threads, 2.60 GHz base, 3.50 GHz turbo)  
+**Graphics:** Intel HD Graphics 620 (integrated)  
+**Audio:** Conexant CX8200 HD Audio Codec (HDA Intel PCH)  
+**Display:** 1920×1080 13.3" FHD touchscreen (AU Optronics 0x422D)  
+**Network:** Intel Wireless 8265 (802.11ac), wlp58s0 interface, Bluetooth 4.2  
 **Fingerprint:** Validity Sensors 138a:0092  
-**IR Camera:** Chicony IR Camera (04f2:b58e)  
-**HD Camera:** HP HD Camera (04f2:b58f)  
+**IR Camera:** Chicony IR Camera (04f2:b58e) at /dev/video2  
+**HD Camera:** HP HD Camera (04f2:b58f) at /dev/video0  
+**Smart Card:** Alcor Micro AU9560 (PC/SC compatible, optional)  
 
 **Full hardware list:** See `AI_ASSISTANT_CONTEXT.md`
 

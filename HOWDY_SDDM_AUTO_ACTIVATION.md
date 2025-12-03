@@ -157,7 +157,7 @@ sudo systemctl restart sddm
    cat /etc/pam.d/sddm | grep -E "howdy|fprintd"
    ```
    Should contain:
-   - `auth sufficient pam_python.so /lib/security/howdy/pam.py`
+   - `auth sufficient pam_python.so /usr/lib/security/howdy/pam.py`
    - `auth sufficient pam_fprintd.so`
 
 2. Verify Howdy PAM module exists:

@@ -279,7 +279,7 @@ auth        include     system-login
 **After:**
 ```
 #%PAM-1.0
-auth        sufficient  pam_python.so /lib/security/howdy/pam.py
+auth        sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth        include     system-login
 ```
 
@@ -299,7 +299,7 @@ auth       include    system-auth
 ```
 #%PAM-1.0
 auth       required   pam_shells.so
-auth       sufficient  pam_python.so /lib/security/howdy/pam.py
+auth       sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth       requisite  pam_nologin.so
 auth       include    system-auth
 ```
@@ -309,7 +309,7 @@ auth       include    system-auth
 ### 3. `/etc/pam.d/sudo` (Already Configured)
 
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      include     system-auth
 ```
 

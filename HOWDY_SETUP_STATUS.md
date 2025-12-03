@@ -21,14 +21,14 @@
    - Status: Detected and accessible
 
 3. **Howdy Configuration**
-   - Config File: `/lib/security/howdy/config.ini`
+   - Config File: `/usr/lib/security/howdy/config.ini`
    - Device Path: `/dev/video2` ✅
    - Timeout: 4 seconds
    - Status: Configured
 
 4. **PAM Configuration**
    - Sudo PAM: `/etc/pam.d/sudo`
-   - Howdy PAM Line: `auth sufficient pam_python.so /lib/security/howdy/pam.py` ✅
+   - Howdy PAM Line: `auth sufficient pam_python.so /usr/lib/security/howdy/pam.py` ✅
    - Backup Created: `/etc/pam.d/sudo.backup.20251201_*`
    - Status: Configured
 
@@ -114,7 +114,7 @@ sudo whoami
 
 ### Howdy Configuration File
 
-**Location:** `/lib/security/howdy/config.ini`
+**Location:** `/usr/lib/security/howdy/config.ini`
 
 **Key Settings:**
 ```ini
@@ -131,7 +131,7 @@ timeout = 4
 
 **Current Configuration:**
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 #%PAM-1.0
 auth		include		system-auth
 account		include		system-auth
@@ -180,7 +180,7 @@ grep -i howdy /etc/pam.d/sudo
 
 **Solutions:**
 - Re-enroll face model: `sudo howdy remove` then `sudo howdy add`
-- Verify device path: `sudo grep device_path /lib/security/howdy/config.ini`
+- Verify device path: `sudo grep device_path /usr/lib/security/howdy/config.ini`
 - Check camera permissions: `ls -la /dev/video2`
 - Ensure user is in video group: `groups $USER`
 
@@ -214,7 +214,7 @@ sudo cp /etc/pam.d/sddm /etc/pam.d/sddm.backup
 sudo nano /etc/pam.d/sddm
 
 # Add at the TOP of the file:
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 
 # Save and exit
 ```
@@ -279,7 +279,7 @@ v4l2-ctl --list-devices
 ls -la /dev/video2
 
 # Check Howdy configuration
-sudo cat /lib/security/howdy/config.ini | grep device_path
+sudo cat /usr/lib/security/howdy/config.ini | grep device_path
 
 # Check PAM configuration
 grep -i howdy /etc/pam.d/sudo

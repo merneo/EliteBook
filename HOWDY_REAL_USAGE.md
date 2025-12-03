@@ -104,7 +104,7 @@ sudo bash -c "sudo whoami"
 ```
 #%PAM-1.0
 
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      include     system-auth
 account   include     system-auth
 session   include     system-auth

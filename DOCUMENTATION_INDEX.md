@@ -229,7 +229,6 @@
 - Wallpaper scripts (wallpaper-rotate.sh, wallpaper-change.sh)
 - Status bar scripts (waybar-theme-switch.sh)
 - Authentication scripts (howdy-add-auto.sh)
-- Configuration scripts (configure-silent-fingerprint.sh, remove-fingerprint-from-pam.sh)
 
 ---
 

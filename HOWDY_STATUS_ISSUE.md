@@ -73,7 +73,7 @@ yay -S pam-python
 
 ### Attempt 2: Manual PAM Configuration ❌
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 ```
 **Result:** PAM module `/usr/lib/security/pam_python.so` doesn't exist
 

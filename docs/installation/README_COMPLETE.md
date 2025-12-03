@@ -62,12 +62,17 @@ This documentation can be used in three ways:
 ## Pre-Installation Requirements
 
 **Hardware Prerequisites:**
-- HP EliteBook x360 1030 G2 (7th Gen Intel Core i5-7300U)
-- 8 GB RAM minimum
+- HP EliteBook x360 1030 G2 (7th Gen Intel Core i5-7300U, 2 cores / 4 threads, 2.60 GHz base, 3.50 GHz turbo)
+- 8 GB DDR4 RAM minimum
 - NVMe SSD 238.5 GB total capacity
 - USB flash drive (8 GB minimum) for Arch Linux ISO
 - Second computer for remote SSH installation (highly recommended)
 - Validity Sensors 138a:0092 fingerprint reader (built-in)
+- Conexant CX8200 HD Audio Codec (HDA Intel PCH)
+- Intel Wireless 8265 (802.11ac), wlp58s0 interface
+- Chicony IR Camera (04f2:b58e) at /dev/video2 for face recognition
+- Chicony HD Camera (04f2:b58f) at /dev/video0 for video calls
+- Alcor Micro AU9560 smart card reader (optional - may not be present in all configurations)
 
 **Downloaded Files:**
 - [Arch Linux ISO (latest)](https://archlinux.org/download/) - Official download page with mirrors
@@ -5113,7 +5118,7 @@ hyprctl dispatch exit
 
 **Purpose:** Configure the built-in ID card reader for Czech eObčanka (electronic ID card) authentication and digital signatures.
 
-**Hardware:** HP EliteBook x360 1030 G2 has integrated smart card reader
+**Hardware:** HP EliteBook x360 1030 G2 may have integrated smart card reader (Alcor Micro AU9560, PC/SC compatible). Note: Smart card reader may not be present in all configurations or may require specific drivers.
 
 ---
 
@@ -5342,7 +5347,7 @@ sudo pacman -S --noconfirm openblas lapack
 
 ---
 
-### Step 15c.3: Install python-dlib (CPU-only build)
+### Step 15c.2: Install python-dlib (CPU-only build)
 
 **[python-dlib](https://aur.archlinux.org/packages/python-dlib)** is a Python library for machine learning, required by Howdy for face recognition.
 
@@ -5378,6 +5383,52 @@ python3 -c "import dlib; print('dlib version:', dlib.__version__)"
 
 ---
 
+### Step 15c.3: Install pam-python from GitHub (REQUIRED - AUR version crashes)
+
+**⚠️ CRITICAL:** The AUR package `pam-python` fails to compile on Arch Linux with newer GCC versions. Howdy requires `pam_python.so` to work, so we must install it from a GitHub fork with compiler fixes.
+
+**Why this is needed:**
+- AUR `pam-python` package crashes during compilation with newer compilers
+- Error: `assignment to 'char *' from 'int' makes pointer from integer without a cast`
+- GitHub forks have fixes for newer GCC versions and Python 3 support
+
+**Installation:**
+
+```bash
+# Install dependencies
+sudo pacman -S --noconfirm base-devel pam python python-setuptools make gcc git
+
+# Clone GitHub repository (castlabs/pam-python has fixes for newer compilers)
+cd /tmp
+git clone https://github.com/castlabs/pam-python.git
+cd pam-python/src
+
+# Modify Makefile for Arch Linux
+sed -i 's|LIBDIR ?= /lib/x86_64-linux-gnu/security|LIBDIR ?= /usr/lib/security|g' Makefile
+
+# Compile
+make
+
+# Install
+sudo make install PREFIX=/usr
+
+# Verify installation
+ls -lh /usr/lib/security/pam_python.so
+# Expected: /usr/lib/security/pam_python.so exists
+```
+
+**Alternative GitHub repository (if castlabs doesn't work):**
+```bash
+# Try aaron-riact/pam-python instead
+git clone https://github.com/aaron-riact/pam-python.git
+cd pam-python/src
+# ... continue with same steps above
+```
+
+**Reference:** See `HOWDY_PAM_PYTHON_FIX.md` for detailed troubleshooting.
+
+---
+
 ### Step 15c.4: Install Howdy from AUR
 
 ```bash
@@ -5391,7 +5442,7 @@ yay -S --noconfirm howdy-bin
 **Package dependencies installed:**
 - `howdy-bin` (main package)
 - `python-dlib` (face recognition library, already installed)
-- `pam-python` (PAM module for Python authentication)
+- **Note:** `pam-python` is NOT installed by howdy-bin (we installed it manually from GitHub in Step 15c.3)
 
 **Verify installation:**
 ```bash
@@ -5406,7 +5457,36 @@ howdy --version
 
 ---
 
-### Step 15c.5: Configure Howdy Video Device
+### Step 15c.5: Apply NumPy Round Fix (REQUIRED - prevents enrollment crashes)
+
+**⚠️ CRITICAL:** Howdy enrollment crashes with `TypeError` on newer NumPy versions. This fix must be applied before enrolling face models.
+
+**Why this is needed:**
+- Howdy's enrollment code uses `round()` on NumPy arrays, which fails on NumPy 1.25+
+- Error: `TypeError: type numpy.ndarray doesn't define __round__ method`
+- This prevents face model enrollment from working
+
+**Apply the fix:**
+
+```bash
+# Backup original file
+sudo cp /usr/lib/security/howdy/cli/add.py /usr/lib/security/howdy/cli/add.py.backup
+
+# Apply NumPy round fix using sed
+sudo sed -i 's/round(dark_running_total \/ max(1, valid_frames), 2)/round(float(dark_running_total.item()) \/ max(1, valid_frames), 2)/g' /usr/lib/security/howdy/cli/add.py
+
+# Verify fix was applied
+sudo grep -n "round.*dark_running_total" /usr/lib/security/howdy/cli/add.py
+# Expected output should show two lines with ".item()" in them:
+# 206:		print("Average darkness: " + str(round(float(dark_running_total.item()) / max(1, valid_frames), 2)) + ", Threshold: " + str(dark_threshold))
+# 210:		print("Average darkness: " + str(round(float(dark_running_total.item()) / max(1, valid_frames), 2)) + ", Threshold: " + str(dark_threshold))
+```
+
+**Reference:** See `HOWDY_NUMPY_ROUND_FIX.md` for detailed explanation and troubleshooting.
+
+---
+
+### Step 15c.6: Configure Howdy Video Device
 
 ```bash
 # List available video devices
@@ -5425,7 +5505,7 @@ sudo howdy config
 
 ```bash
 # Edit Howdy configuration file
-sudo nano /lib/security/howdy/config.ini
+sudo nano /usr/lib/security/howdy/config.ini
 
 # Find [video] section and set:
 # device_path = /dev/video2
@@ -5433,11 +5513,16 @@ sudo nano /lib/security/howdy/config.ini
 # Save and exit
 ```
 
-**Configuration file location:** `/lib/security/howdy/config.ini`
+**HP EliteBook x360 1030 G2 specific:**
+- IR Camera: `/dev/video2` (Chicony IR Camera, 04f2:b58e)
+- HD Camera: `/dev/video0` (for video calls, not for face recognition)
+```
+
+**Configuration file location:** `/usr/lib/security/howdy/config.ini`
 
 ---
 
-### Step 15c.6: Test Camera Access
+### Step 15c.7: Test Camera Access
 
 ```bash
 # Test IR camera with Howdy
@@ -5456,7 +5541,7 @@ sudo howdy test
 
 ---
 
-### Step 15c.7: Enroll Face Model
+### Step 15c.8: Enroll Face Model
 
 **⚠️ IMPORTANT: This step requires interactive user input and cannot be automated.**
 
@@ -5494,7 +5579,7 @@ sudo howdy -U <USERNAME> add
 
 **Enrollment Details:**
 - Howdy captures multiple face images from different angles
-- Face model is stored in `/lib/security/howdy/models/`
+- Face model is stored in `/usr/lib/security/howdy/models/`
 - Each user has a separate model file
 - Label can be up to 24 characters
 
@@ -5512,7 +5597,7 @@ sudo howdy list
 
 ---
 
-### Step 15c.8: Configure PAM for sudo Authentication
+### Step 15c.9: Configure PAM for sudo Authentication
 
 ```bash
 # Backup original PAM configuration
@@ -5522,7 +5607,7 @@ sudo cp /etc/pam.d/sudo /etc/pam.d/sudo.backup
 sudo nano /etc/pam.d/sudo
 
 # Add at the TOP of the file (before other auth lines):
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 
 # Save and exit (Ctrl+X, Y, Enter)
 ```
@@ -5534,14 +5619,14 @@ auth      sufficient  pam_python.so /lib/security/howdy/pam.py
 
 **Example `/etc/pam.d/sudo` configuration:**
 ```
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 auth      sufficient  pam_fprintd.so
 auth      include    system-auth
 ```
 
 ---
 
-### Step 15c.9: Configure PAM for Login Authentication (Optional)
+### Step 15c.10: Configure PAM for Login Authentication (Optional)
 
 **For SDDM login screen authentication:**
 
@@ -5553,7 +5638,7 @@ sudo cp /etc/pam.d/sddm /etc/pam.d/sddm.backup
 sudo nano /etc/pam.d/sddm
 
 # Add at the TOP of the file:
-auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 
 # Save and exit
 ```
@@ -5583,7 +5668,7 @@ The SDDM theme has been enhanced with automatic biometric activation. The camera
 
 ---
 
-### Step 15c.10: Test Face Recognition Authentication
+### Step 15c.11: Test Face Recognition Authentication
 
 ```bash
 # Test sudo authentication with face recognition
@@ -5604,7 +5689,7 @@ sudo whoami
 
 ---
 
-### Step 15c.11: Configure Howdy Settings (Optional)
+### Step 15c.12: Configure Howdy Settings (Optional)
 
 ```bash
 # Open Howdy configuration
@@ -5627,11 +5712,11 @@ sudo howdy config
 # Save and exit
 ```
 
-**Configuration file:** `/lib/security/howdy/config.ini`
+**Configuration file:** `/usr/lib/security/howdy/config.ini`
 
 ---
 
-### Step 15c.12: Verify Howdy Service Status
+### Step 15c.13: Verify Howdy Service Status
 
 ```bash
 # Check Howdy installation
@@ -5645,12 +5730,12 @@ sudo howdy test
 
 # Check PAM configuration
 grep -i howdy /etc/pam.d/sudo
-# Expected: auth sufficient pam_python.so /lib/security/howdy/pam.py
+# Expected: auth sufficient pam_python.so /usr/lib/security/howdy/pam.py
 ```
 
 ---
 
-### Step 15c.13: Troubleshooting Common Issues
+### Step 15c.14: Troubleshooting Common Issues
 
 **Issue: Camera not detected**
 ```bash
@@ -5679,7 +5764,7 @@ sudo journalctl -u howdy -n 100
 **Issue: PAM authentication not working**
 ```bash
 # Verify PAM module is installed
-ls -la /lib/security/howdy/pam.py
+ls -la /usr/lib/security/howdy/pam.py
 
 # Check PAM configuration syntax
 sudo pamtest auth sudo
@@ -5694,7 +5779,7 @@ sudo journalctl -u pam -n 50
 ls -la /usr/bin/howdy
 
 # Check PAM module permissions
-ls -la /lib/security/howdy/pam.py
+ls -la /usr/lib/security/howdy/pam.py
 
 # Ensure user is in video group (if required)
 groups $USER
@@ -5702,11 +5787,11 @@ groups $USER
 
 ---
 
-### Step 15c.14: Security Considerations
+### Step 15c.15: Security Considerations
 
 **Howdy Security Notes:**
 - Face recognition is less secure than fingerprint authentication
-- Face models are stored in `/lib/security/howdy/models/` (root access required)
+- Face models are stored in `/usr/lib/security/howdy/models/` (root access required)
 - Failed authentication attempts can be logged (configure in `config.ini`)
 - IR camera provides better security than RGB camera (harder to spoof)
 

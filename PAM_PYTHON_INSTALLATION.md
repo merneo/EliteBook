@@ -118,7 +118,7 @@ ls -lh /usr/lib/security/pam_python.so
 grep -i pam_python /etc/pam.d/sudo
 
 # Expected output:
-# auth      sufficient  pam_python.so /lib/security/howdy/pam.py
+# auth      sufficient  pam_python.so /usr/lib/security/howdy/pam.py
 ```
 
 ---
@@ -181,7 +181,7 @@ sudo ln -s /path/to/pam_python.so /usr/lib/security/pam_python.so
 
 3. Check Howdy PAM script:
    ```bash
-   ls -la /lib/security/howdy/pam.py
+   ls -la /usr/lib/security/howdy/pam.py
    ```
 
 4. Check system logs:

@@ -239,7 +239,7 @@ sudo howdy add
 
 # Verify PAM configuration
 grep -i howdy /etc/pam.d/sudo
-# Should show: auth sufficient pam_python.so /lib/security/howdy/pam.py
+# Should show: auth sufficient pam_python.so /usr/lib/security/howdy/pam.py
 
 # Check PAM Python module
 ls -la /usr/lib/security/pam_python*.so

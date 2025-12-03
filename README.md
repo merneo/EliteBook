@@ -75,14 +75,15 @@ This repository contains a comprehensive, well-documented system configuration s
 
 ### Hardware Platform
 - **Model:** HP EliteBook x360 1030 G2
-- **Processor:** Intel Core i5-7300U (4 cores, 2.60 GHz base, 3.50 GHz turbo)
+- **Processor:** Intel Core i5-7300U (2 cores / 4 threads, 2.60 GHz base, 3.50 GHz turbo)
 - **Graphics:** Intel HD Graphics 620 (integrated)
 - **Memory:** 8 GB DDR4 RAM
 - **Storage:** 238.5 GB NVMe SSD (LUKS2 encrypted, Btrfs filesystem)
 - **Display:** 1920×1080 13.3" FHD touchscreen
 - **Network:** Intel Wireless 8265 (802.11ac), Bluetooth 4.2
+- **Audio:** Conexant CX8200 HD Audio Codec (HDA Intel PCH)
 - **Biometrics:** Validity Sensors 138a:0092 (fingerprint), Chicony IR Camera (face recognition)
-- **Smart Card:** Alcor Micro AU9560 (PC/SC compatible)
+- **Smart Card:** Alcor Micro AU9560 (PC/SC compatible, optional - may not be present in all configurations)
 
 ### Operating System Stack
 - **Distribution:** Arch Linux (rolling release)
@@ -128,8 +129,6 @@ EliteBook/
 │   │   ├── screenshot-*.sh # Screenshot capture workflows
 │   │   ├── wallpaper-*.sh   # Wallpaper rotation and management
 │   │   ├── waybar-*.sh      # Status bar theme switching
-│   │   └── howdy-add-auto.sh # Auto-enroll Howdy face model with timestamp name
-│   └── remove-fingerprint-from-pam.sh  # Remove fingerprint from PAM configuration
 │
 ├── systemd/                 # systemd user service definitions
 │   └── .config/systemd/user/
@@ -425,7 +424,6 @@ EliteBook/
 - `wallpaper-rotate.sh`: Automatic wallpaper rotation daemon (3-minute interval)
 - `wallpaper-change.sh`: Manual wallpaper rotation trigger
 - `waybar-theme-switch.sh`: Status bar theme switching
-- `howdy-add-auto.sh`: Automated Howdy face enrollment with timestamp-based naming
 
 **Operational Notes:**
 - All scripts are idempotent (safe to run multiple times)
